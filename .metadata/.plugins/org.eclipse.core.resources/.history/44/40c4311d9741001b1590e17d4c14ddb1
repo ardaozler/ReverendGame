@@ -1,0 +1,29 @@
+package me.javawarriors.reverend.desktop;
+
+
+import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.Display;
+
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import me.javawarriors.reverend.ReverendGame;
+
+public class DesktopLauncher {
+	public static void main (String[] arg) {
+        DisplayMode displayMode = null;
+        DisplayMode[] modes = Display.getAvailableDisplayModes();
+        
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		 for (int i = 0; i < modes.length; i++)
+         {
+             if (modes[i].getWidth() == width
+             && modes[i].getHeight() == height
+             && modes[i].isFullscreenCapable())
+               {
+                    displayMode = modes[i];
+               }
+         }
+		Display.
+		new LwjglApplication(new ReverendGame(), config);
+	}
+}

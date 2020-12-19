@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;me.javawarriors.reverend.Game&apos; to &apos;ReverendGame&apos;&#x0D;&#x0A;- Original project: &apos;Reverend-core&apos;&#x0D;&#x0A;- Original element: &apos;me.javawarriors.reverend.Game&apos;&#x0D;&#x0A;- Renamed element: &apos;me.javawarriors.reverend.ReverendGame&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Game&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src=/gradle_scope=/main=/=/gradle_used_by_scope=/main,test=/&lt;me.javawarriors.reverend{Game.java[Game" matchStrategy="1" name="ReverendGame" qualified="false" references="true" similarDeclarations="false" stamp="1608216726235" textual="false" version="1.0"/>
+</session>

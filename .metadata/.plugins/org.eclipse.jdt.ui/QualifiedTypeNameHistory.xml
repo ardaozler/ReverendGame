@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.Screen"/>
+    <fullyQualifiedTypeName name="me.javawarriors.reverend.ReverendGame"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
+    <fullyQualifiedTypeName name="me.javawarriors.reverend.screens.MainMenuScreen"/>
+    <fullyQualifiedTypeName name="java.awt.DisplayMode"/>
+    <fullyQualifiedTypeName name="org.lwjgl.opengl.Display"/>
+    <fullyQualifiedTypeName name="org.lwjgl.util.Display"/>
+    <fullyQualifiedTypeName name="org.lwjgl.opengl.DisplayMode"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
+</qualifiedTypeNameHistroy>

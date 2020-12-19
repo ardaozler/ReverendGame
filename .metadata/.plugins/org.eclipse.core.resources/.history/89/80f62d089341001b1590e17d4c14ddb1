@@ -1,0 +1,21 @@
+package me.javawarriors.reverend.desktop;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import me.javawarriors.reverend.ReverendGame;
+
+public class DesktopLauncher {
+	public static void main (String[] arg) {
+		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		try {
+			Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
+		} catch (LWJGLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		new LwjglApplication(new ReverendGame(), config);
+	}
+}
