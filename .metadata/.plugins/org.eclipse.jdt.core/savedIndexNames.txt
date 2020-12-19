@@ -2,7 +2,6 @@ INDEX VERSION 1.131+C:\Users\Arda\Reverend\.metadata\.plugins\org.eclipse.jdt.co
 1245002699.index
 134069505.index
 1306554161.index
-1494311759.index
 2865881771.index
 2936675619.index
 2601332382.index

@@ -24,7 +24,6 @@ public class MainMenuScreen implements Screen {
 		exitButtonActive = new Texture("ExitW.png");
 		exitButtonInactive = new Texture("ExitR.png");
 		playButtonActive = new Texture("PlayW.png");
-		
 		playButtonInactive = new Texture("PlayR.png");
 	}
 
