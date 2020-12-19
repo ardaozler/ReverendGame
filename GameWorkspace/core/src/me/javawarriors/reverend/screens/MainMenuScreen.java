@@ -24,7 +24,7 @@ public class MainMenuScreen implements Screen {
 		exitButtonActive = new Texture("ExitW.png");
 		exitButtonInactive = new Texture("ExitR.png");
 		playButtonActive = new Texture("PlayW.png");
-		
+
 		playButtonInactive = new Texture("PlayR.png");
 	}
 
@@ -48,8 +48,7 @@ public class MainMenuScreen implements Screen {
 	}
 
 	public int mouseInput() {
-		if ( Gdx.input.getY() > ((ExitButtonY))
-				&& Gdx.input.getY() < ((ExitButtonY))) {
+		if (Gdx.input.getY() > ((ExitButtonY)) && Gdx.input.getY() < ((ExitButtonY) + ButtonHeight)) {
 			return 0;
 		} else
 			return 1;
