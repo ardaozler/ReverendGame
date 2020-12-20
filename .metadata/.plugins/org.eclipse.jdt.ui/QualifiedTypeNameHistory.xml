@@ -9,4 +9,7 @@
     <fullyQualifiedTypeName name="org.lwjgl.util.Display"/>
     <fullyQualifiedTypeName name="org.lwjgl.opengl.DisplayMode"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
+    <fullyQualifiedTypeName name="me.javawarriors.reverend.screens.GameScreen"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Animation"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
 </qualifiedTypeNameHistroy>
