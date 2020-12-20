@@ -21,8 +21,8 @@ public class GameScreen implements Screen {
 	float charY;
 	int charWidthInPixels = 21;
 	int charHeightInPixels = 27;
-	float charWidth = charWidthInPixels * 5;
-	float charHeight = charHeightInPixels * 5;
+	float charWidth = charWidthInPixels * 3;
+	float charHeight = charHeightInPixels * 3;
 	private static float speed = 600;
 	
 	//char Animation properties
@@ -48,13 +48,33 @@ public class GameScreen implements Screen {
 	}
 
 	public void move() {
-		if (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) {
+		 if ((Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)))&& (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) ) {
+			 charY +=speed* Gdx.graphics.getDeltaTime()*0.7;
+			 charX +=speed* Gdx.graphics.getDeltaTime()*0.7;
+		}
+		 else if ((Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) &&(Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
+				charY += speed* Gdx.graphics.getDeltaTime()*0.7;
+				charX -= speed* Gdx.graphics.getDeltaTime()*0.7;
+			}
+		 else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))&&(Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)))) {
+				charY -= speed* Gdx.graphics.getDeltaTime()*0.7;
+				charX +=  speed* Gdx.graphics.getDeltaTime()*0.7;
+			} 
+		 else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))&&(Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
+				charY -= speed* Gdx.graphics.getDeltaTime()*0.7;
+				charX -=speed* Gdx.graphics.getDeltaTime()*0.7;
+			}
+		else if (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) {
 			charY += speed * Gdx.graphics.getDeltaTime();
-		} else if (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D))) {
+		}
+		
+		else if (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D))) {
 			charX += speed * Gdx.graphics.getDeltaTime();
-		} else if (Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S))) {
+		}
+		else if (Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S))) {
 			charY -= speed * Gdx.graphics.getDeltaTime();
-		} else if (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) {
+		}
+		else if (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) {
 			charX -= speed * Gdx.graphics.getDeltaTime();
 		}
 	}
