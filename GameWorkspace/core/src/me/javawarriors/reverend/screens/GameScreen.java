@@ -23,7 +23,7 @@ public class GameScreen implements Screen {
 	int charHeightInPixels = 27;
 	float charWidth = charWidthInPixels * 3;
 	float charHeight = charHeightInPixels * 3;
-	private static float speed = 600;
+	float speed = 600;
 	
 	//char Animation properties
 	Animation<TextureRegion>[] walk;
