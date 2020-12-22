@@ -48,6 +48,7 @@ public class GameScreen implements Screen {
 		
 		camera.setToOrtho(false);
 		camera.position.set(player.getX(), player.getY(), 0);
+		
 		camera.update();
 		
 		renderer.setView(camera);
