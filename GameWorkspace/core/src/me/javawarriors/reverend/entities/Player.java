@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Player extends Entity {
 	float stateTime;
@@ -23,8 +25,11 @@ public class Player extends Entity {
 	Animation<TextureRegion>[] walk;
 	private static final float charAnimationSpeed = 0.1f;
 	
-	public Player(){
-		
+	//collision
+	private TiledMapTileLayer collisionLayer;
+	
+	public Player(TiledMapTileLayer collisionLayer){
+		this.collisionLayer=collisionLayer;
 		frameNo = 0;
 		walk = new Animation[5];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
@@ -35,8 +40,24 @@ public class Player extends Entity {
 	}
 	
 	public void Update(float delta) {
+		float oldX=charX, oldY= charY;
+		boolean collision=false;
 		move();
+		//Cell Cell=collisionLayer.getCell((int)(charX/collisionLayer.getTileWidth()), (int)(charY/collisionLayer.getTileHeight()));
+		
+		collision=(collisionLayer.getCell((int)(getX()/(collisionLayer.getTileWidth()*2.4)), (int)(getY()/(collisionLayer.getTileHeight()*2.4))).getTile().getProperties().containsKey("blocked"));
+		
+		
+		if(collision) {
+			charX=oldX;
+			charY=oldY;
+		}
+		//Cell cell=collisionLayer.getCell((int)(x/collisionLayer.getTileWidth()), (int)(y/collisionLayer.getTileHeight()));
 	}
+	/*private boolean isCellBlocked(float x,float y) {
+		Cell cell=collisionLayer.getCell((int)(x), (int)(y));
+		return cell !=null&& cell.getTile()!= null&& cell.getTile().getProperties().containsKey("blocked");
+	}*/
 	
 	public void move() {
 		
