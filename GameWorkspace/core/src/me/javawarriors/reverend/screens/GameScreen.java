@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 import me.javawarriors.reverend.ReverendGame;
 import me.javawarriors.reverend.entities.Player;
@@ -46,8 +47,17 @@ public class GameScreen implements Screen {
 		player.Update(Gdx.graphics.getDeltaTime());
 
 		
-		camera.setToOrtho(false);
-		camera.position.set(player.getX(), player.getY(), 0);
+		//CAmera Smooth Follow lerp değerini değiştirerek kamera follow hızı değiştri=========================
+		
+		float lerp = 10f;
+		Vector3 position = camera.position;
+		position.x += (player.getX() - position.x + player.getWidth()/2) * lerp * Gdx.graphics.getDeltaTime();
+		position.y += (player.getY() - position.y + player.getHeight()/2) * lerp * Gdx.graphics.getDeltaTime();
+		
+		
+		//sabit cam============================================================================================
+		//camera.setToOrtho(false);
+		//camera.position.set(player.getX(), player.getY(), 0);
 		
 		camera.update();
 		

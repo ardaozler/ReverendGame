@@ -2,14 +2,21 @@
 <qualifiedTypeNameHistroy>
     <fullyQualifiedTypeName name="com.badlogic.gdx.Screen"/>
     <fullyQualifiedTypeName name="me.javawarriors.reverend.ReverendGame"/>
-    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
     <fullyQualifiedTypeName name="me.javawarriors.reverend.screens.MainMenuScreen"/>
     <fullyQualifiedTypeName name="java.awt.DisplayMode"/>
     <fullyQualifiedTypeName name="org.lwjgl.opengl.Display"/>
     <fullyQualifiedTypeName name="org.lwjgl.util.Display"/>
     <fullyQualifiedTypeName name="org.lwjgl.opengl.DisplayMode"/>
-    <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
     <fullyQualifiedTypeName name="me.javawarriors.reverend.screens.GameScreen"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Animation"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
+    <fullyQualifiedTypeName name="java.awt.Point"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
+    <fullyQualifiedTypeName name="me.javawarriors.reverend.entities.Entity"/>
+    <fullyQualifiedTypeName name="me.javawarriors.reverend.entities.Player"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.Graphics"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.math.Vector3"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
 </qualifiedTypeNameHistroy>
