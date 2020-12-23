@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 import me.javawarriors.reverend.ReverendGame;
+import me.javawarriors.reverend.entities.Bullet;
 import me.javawarriors.reverend.entities.Player;
 
 public class GameScreen implements Screen {
@@ -19,8 +20,8 @@ public class GameScreen implements Screen {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
+
 	private Player player;
-	//Player player = new Player();
 
 	ReverendGame game;
 
@@ -46,28 +47,31 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		player.Update(Gdx.graphics.getDeltaTime());
 
-		
-		//CAmera Smooth Follow lerp değerini değiştirerek kamera follow hızı değiştri=========================
-		
+		// CAmera Smooth Follow lerp değerini değiştirerek kamera follow hızı
+		// değiştri=========================
+
 		float lerp = 10f;
 		Vector3 position = camera.position;
-		position.x += (player.getX() - position.x + player.getWidth()/2) * lerp * Gdx.graphics.getDeltaTime();
-		position.y += (player.getY() - position.y + player.getHeight()/2) * lerp * Gdx.graphics.getDeltaTime();
-		
-		
-		//sabit cam============================================================================================
-		//camera.setToOrtho(false);
-		//camera.position.set(player.getX(), player.getY(), 0);
-		
+		position.x += (player.getX() - position.x + player.getWidth() / 2) * lerp * Gdx.graphics.getDeltaTime();
+		position.y += (player.getY() - position.y + player.getHeight() / 2) * lerp * Gdx.graphics.getDeltaTime();
+
+		// sabit
+		// cam============================================================================================
+		// camera.setToOrtho(false);
+		// camera.position.set(player.getX(), player.getY(), 0);
+
 		camera.update();
-		
+
 		renderer.setView(camera);
 		renderer.render();
-		
+
 		renderer.getBatch().begin();
-		renderer.getBatch().draw(player.GetFrame(), player.getX() , player.getY() , player.getWidth(),  player.getHeight());
+		for (Bullet bullet : player.getBullets()) {
+			bullet.render(renderer.getBatch());
+		}
+		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
+				player.getHeight());
 		renderer.getBatch().end();
-		
 
 	}
 

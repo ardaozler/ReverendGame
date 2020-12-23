@@ -1,5 +1,7 @@
 package me.javawarriors.reverend.entities;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,6 +31,9 @@ public class Player extends Entity {
 	// collision
 	private TiledMapTileLayer collisionLayer;
 
+	// bullet
+	private ArrayList<Bullet> bullets;
+
 	public Player(TiledMapTileLayer collisionLayer) {
 		this.collisionLayer = collisionLayer;
 		frameNo = 0;
@@ -38,12 +43,26 @@ public class Player extends Entity {
 
 		walk[frameNo] = new Animation(charAnimationSpeed, walkSpriteSheet[frameNo]);
 
+		bullets = new ArrayList<Bullet>();
+
 	}
 
 	public void Update(float delta) {
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		move();
+
+		if (Gdx.input.isTouched()) {
+			shoot(charX, charY);
+		}
+		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+		for (Bullet bullet : bullets) {
+			bullet.update(Gdx.graphics.getDeltaTime());
+			if (bullet.shouldRemove()) {
+				bulletsToRemove.add(bullet);
+			}
+		}
+		bullets.removeAll(bulletsToRemove);
 
 		// top left
 		collision = isCellBlocked(getX(), getY() + getHeight());
@@ -68,16 +87,28 @@ public class Player extends Entity {
 
 		// kasiyo anlamadim
 		/*
-		  if(collision) { if(colTopRight||colTopLeft||colBotRight||colBotLeft) {
-		  charX=oldX; charY=oldY; } else if(colTop||colBot) {
-		  
-		  charY=oldY; } else if(colLeft||colRight) { charX=oldX;
-		  
-		  }
-		  
-		  }
+		 * if(collision) { if(colTopRight||colTopLeft||colBotRight||colBotLeft) {
+		 * charX=oldX; charY=oldY; } else if(colTop||colBot) {
+		 * 
+		 * charY=oldY; } else if(colLeft||colRight) { charX=oldX;
+		 * 
+		 * }
+		 * 
+		 * }
 		 */
 
+	}
+
+	private void shoot(float playerX, float playerY) {
+		bullets.add(new Bullet(playerX, playerY));
+
+		// concurrent modification exception olmaması için ikinci array açıp looplama
+		// bittikten sorna siliyoruz
+
+	}
+
+	public ArrayList<Bullet> getBullets() {
+		return bullets;
 	}
 
 	private boolean isCellBlocked(float x, float y) {
@@ -143,8 +174,9 @@ public class Player extends Entity {
 	}
 
 	public void draw(SpriteBatch spriteBatch) {
+
 		Update(Gdx.graphics.getDeltaTime());
-		super.draw(spriteBatch);
+
 	}
 
 	public float getWidth() {
