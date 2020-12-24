@@ -52,13 +52,12 @@ public class GameScreen implements Screen {
 
 		float lerp = 10f;
 		Vector3 position = camera.position;
-		position.x += (player.getX() - position.x + player.getWidth() / 2) * lerp * Gdx.graphics.getDeltaTime();
-		position.y += (player.getY() - position.y + player.getHeight() / 2) * lerp * Gdx.graphics.getDeltaTime();
+		//position.x += (player.getX() - position.x + player.getWidth() / 2) * lerp * Gdx.graphics.getDeltaTime();
+		//position.y += (player.getY() - position.y + player.getHeight() / 2) * lerp * Gdx.graphics.getDeltaTime();
 
-		// sabit
-		// cam============================================================================================
-		// camera.setToOrtho(false);
-		// camera.position.set(player.getX(), player.getY(), 0);
+		// sabit cam============================================================================================
+		 camera.setToOrtho(false);
+		 camera.position.set(player.getX(), player.getY(), 0);
 
 		camera.update();
 

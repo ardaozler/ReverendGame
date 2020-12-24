@@ -57,7 +57,9 @@ public class Player extends Entity {
 		}
 		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
 		for (Bullet bullet : bullets) {
+			
 			bullet.update(Gdx.graphics.getDeltaTime());
+			
 			if (bullet.shouldRemove()) {
 				bulletsToRemove.add(bullet);
 			}
@@ -171,12 +173,6 @@ public class Player extends Entity {
 
 	public TextureRegion GetFrame() {
 		return (walk[frameNo].getKeyFrame(stateTime, true));
-	}
-
-	public void draw(SpriteBatch spriteBatch) {
-
-		Update(Gdx.graphics.getDeltaTime());
-
 	}
 
 	public float getWidth() {
