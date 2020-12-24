@@ -10,7 +10,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Bullet extends Entity {
 
-	public static final int Speed = 850;
+	public static final int Speed = 950;
 	private static Texture texture;
 	private static TextureRegion textureRegion;
 	float x, y;
@@ -29,7 +29,7 @@ public class Bullet extends Entity {
 		y = playerY + 50;
 		ykatsayisi = -(50 + 540 - 1080 + Gdx.input.getY());
 		xkatsayisi = -(50 + 960 - Gdx.input.getX());
-		Rot =  45 + (float) Math.toDegrees(- Math.atan2(xkatsayisi, ykatsayisi));
+		Rot = 45 + (float) Math.toDegrees(-Math.atan2(xkatsayisi, ykatsayisi));
 
 		magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi * ykatsayisi)));
 		ykatsayisi = ykatsayisi / magnitude;
@@ -75,6 +75,6 @@ public class Bullet extends Entity {
 	}
 
 	public void render(SpriteBatch batch) {
-		batch.draw(textureRegion, x, y, 4.5f, 4.5f, 9f, 9f, 3, 3, Rot);
+		batch.draw(textureRegion, x, y, 0f, 0f, 9f, 9f, 3, 3, Rot);
 	}
 }

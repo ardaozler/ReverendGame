@@ -14,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 public class Player extends Entity {
 	float stateTime;
 	// char properties
-	int frameNo;
 	float charX = 540;
 	float charY = 960;
 	int charWidthInPixels = 25;
@@ -26,7 +25,8 @@ public class Player extends Entity {
 			colLeft = false, colTop = false, colRight = false;
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
-	private static final float charAnimationSpeed = 0.1f;
+	private static final float charAnimationSpeed = 0.15f;
+	int frameNo;
 
 	// collision
 	private TiledMapTileLayer collisionLayer;
@@ -41,7 +41,8 @@ public class Player extends Entity {
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
 				charHeightInPixels);
 
-		walk[frameNo] = new Animation(charAnimationSpeed, walkSpriteSheet[frameNo]);
+		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
+		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
 
 		bullets = new ArrayList<Bullet>();
 
@@ -53,13 +54,16 @@ public class Player extends Entity {
 		move();
 
 		if (Gdx.input.isTouched()) {
-			shoot(charX, charY,collisionLayer);
+			shoot(charX, charY, collisionLayer);
 		}
+
+		// concurrent modification exception olmaması için ikinci array açıp looplama
+		// bittikten sorna siliyoruz
 		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
 		for (Bullet bullet : bullets) {
-			
+
 			bullet.update(Gdx.graphics.getDeltaTime());
-			
+
 			if (bullet.shouldRemove()) {
 				bulletsToRemove.add(bullet);
 			}
@@ -101,12 +105,10 @@ public class Player extends Entity {
 
 	}
 
-	private void shoot(float playerX, float playerY,TiledMapTileLayer collisionLayer) {
-		if(bullets.size()==0||bullets.get(bullets.size()-1).secondsElapsed>0.2) {
-		bullets.add(new Bullet(playerX, playerY,collisionLayer));
+	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
+		if (bullets.size() == 0 || bullets.get(bullets.size() - 1).secondsElapsed > 0.2) {
+			bullets.add(new Bullet(playerX, playerY, collisionLayer));
 		}
-		// concurrent modification exception olmaması için ikinci array açıp looplama
-		// bittikten sorna siliyoruz
 
 	}
 
@@ -120,53 +122,52 @@ public class Player extends Entity {
 		return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
 	}
 
-	// COMMENTLADIGIM YERLER COLLISIONDAKI SU JITTERY OLAYINI DUZELTMEK ICIN AMA
-	// IMPLEMENTLEDIGIMDE KASIYOR :(
-	// BOOLEAN YERINE INT KOYSAK OLABILIR,SIMDI DUSUNDUM,KAFAMI SIKIYIM BU YAPTIGIM
-	// BOS ISE
 	public void move() {
 
 		if ((Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)))
-				&& (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) && colTopRight == false) { // &&colTopRight==false
+				&& (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) && colTopRight == false) {
+			frameNo = 1;
 			charY += speed * Gdx.graphics.getDeltaTime() * 0.7;
 			charX += speed * Gdx.graphics.getDeltaTime() * 0.7;
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=true;colTopLeft=false;colBotRight=false;colBotLeft=false;colBot=false;colLeft=false;colTop=false;colRight=false;
+
 		} else if ((Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W)))
-				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) && colTopLeft == false) {// &&colTopLeft==false
+				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) && colTopLeft == false) {
+			frameNo = 1;
 			charY += speed * Gdx.graphics.getDeltaTime() * 0.7;
 			charX -= speed * Gdx.graphics.getDeltaTime() * 0.7;
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=false;colTopLeft=true;colBotRight=false;colBotLeft=false;colBot=false;colLeft=false;colTop=false;colRight=false;
+
 		} else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))
-				&& (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D))) && colBotRight == false) {// &&colBotRight==false
+				&& (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D))) && colBotRight == false) {
+			frameNo = 1;
 			charY -= speed * Gdx.graphics.getDeltaTime() * 0.7;
 			charX += speed * Gdx.graphics.getDeltaTime() * 0.7;
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=false;colTopLeft=false;colBotRight=true;colBotLeft=false;colBot=false;colLeft=false;colTop=false;colRight=false;
 		} else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))
-				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) && colBotLeft == false) {// &&colBotLeft==false
+				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) && colBotLeft == false) {
+			frameNo = 1;
 			charY -= speed * Gdx.graphics.getDeltaTime() * 0.7;
 			charX -= speed * Gdx.graphics.getDeltaTime() * 0.7;
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=false;colTopLeft=false;colBotRight=false;colBotLeft=true;colBot=false;colLeft=false;colTop=false;colRight=false;
-		} else if (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W)) && colTop == false) {// &&colTop==false
+		} else if (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W)) && colTop == false) {
+			frameNo = 1;
 			charY += speed * Gdx.graphics.getDeltaTime();
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=false;colTopLeft=false;colBotRight=false;colBotLeft=false;colBot=false;colLeft=false;colTop=true;colRight=false;
-		} else if (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)) && colRight == false) {// &&colRight==false
+		} else if (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)) && colRight == false) {
+			frameNo = 1;
 			charX += speed * Gdx.graphics.getDeltaTime();
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=false;colTopLeft=false;colBotRight=false;colBotLeft=false;colBot=false;colLeft=false;colTop=false;colRight=true;
-		} else if (Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)) && colLeft == false) {// &&colLeft==false
+		} else if (Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)) && colLeft == false) {
+			frameNo = 1;
 			charY -= speed * Gdx.graphics.getDeltaTime();
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=false;colTopLeft=false;colBotRight=false;colBotLeft=false;colBot=true;colLeft=false;colTop=false;colRight=false;
-		} else if (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)) && colBot == false) {// &&colBot==false
+		} else if (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)) && colBot == false) {
+			frameNo = 1;
 			charX -= speed * Gdx.graphics.getDeltaTime();
 			stateTime += Gdx.graphics.getDeltaTime();
-			// colTopRight=false;colTopLeft=false;colBotRight=false;colBotLeft=false;colBot=false;colLeft=true;colTop=false;colRight=false;
 		} else {
+			frameNo = 0;
 			stateTime = 0;
 		}
 		setPosition(charX, charY);
