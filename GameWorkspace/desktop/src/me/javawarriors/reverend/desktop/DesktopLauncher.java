@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.height = ReverendGame.getHeight();
 		config.width = ReverendGame.getWidth();
-		config.fullscreen = false;
+		config.fullscreen = true;
 
 		new LwjglApplication(new ReverendGame(), config);
 	}

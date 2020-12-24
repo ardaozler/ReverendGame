@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 
 public class Bullet extends Entity {
 
-	public static final int Speed = 500;
+	public static final int Speed = 7;
 	private static Texture texture;
 	float x, y;
 	double xkatsayısı,ykatsayısı;
@@ -18,9 +18,8 @@ public class Bullet extends Entity {
 	public Bullet(float playerX, float playerY) {
 		x = playerX;
 		y = playerY;
-		ykatsayısı = (playerY - 1080 - Gdx.input.getY());
-		xkatsayısı = (playerX - Gdx.input.getX());
-		Rot = Math.atan2(xkatsayısı, ykatsayısı);
+		ykatsayısı = -(540 - 1080 + Gdx.input.getY());
+		xkatsayısı = -(960 - Gdx.input.getX());
 		if (texture == null) {
 			texture = new Texture("Pew.png");
 		}
@@ -43,10 +42,8 @@ public class Bullet extends Entity {
 
 	@Override
 	public void move() {
-		//x += xkatsayısı*Speed* Gdx.graphics.getDeltaTime();
-		//y += ykatsayısı*Speed* Gdx.graphics.getDeltaTime();
-		x += (Speed * Gdx.graphics.getDeltaTime())* Math.cos(Rot);
-		y += (Speed * Gdx.graphics.getDeltaTime())* Math.sin(Rot);
+		x += xkatsayısı*Speed* Gdx.graphics.getDeltaTime();
+		y += ykatsayısı*Speed* Gdx.graphics.getDeltaTime();
 		System.out.println(x + " - " + y);
 		setPosition(x, y);
 	}
