@@ -19,4 +19,5 @@
     <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.math.Vector3"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
+    <fullyQualifiedTypeName name="java.lang.Math"/>
 </qualifiedTypeNameHistroy>

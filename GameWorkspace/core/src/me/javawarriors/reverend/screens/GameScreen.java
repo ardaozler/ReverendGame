@@ -34,9 +34,9 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		TmxMapLoader loader = new TmxMapLoader();
-		map = loader.load("try2.tmx");
+		map = loader.load("trymob.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 4f);
-		player = new Player((TiledMapTileLayer) map.getLayers().get(0));
+		player = new Player((TiledMapTileLayer) map.getLayers().get(1));
 		camera = new OrthographicCamera();
 
 	}
