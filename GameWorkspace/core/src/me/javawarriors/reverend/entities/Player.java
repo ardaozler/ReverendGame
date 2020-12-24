@@ -53,7 +53,7 @@ public class Player extends Entity {
 		move();
 
 		if (Gdx.input.isTouched()) {
-			shoot(charX, charY);
+			shoot(charX, charY,collisionLayer);
 		}
 		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
 		for (Bullet bullet : bullets) {
@@ -101,9 +101,10 @@ public class Player extends Entity {
 
 	}
 
-	private void shoot(float playerX, float playerY) {
-		bullets.add(new Bullet(playerX, playerY));
-
+	private void shoot(float playerX, float playerY,TiledMapTileLayer collisionLayer) {
+		if(bullets.size()==0||bullets.get(bullets.size()-1).secondsElapsed>0.2) {
+		bullets.add(new Bullet(playerX, playerY,collisionLayer));
+		}
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
 
