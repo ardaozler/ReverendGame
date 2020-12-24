@@ -17,10 +17,10 @@ public class Player extends Entity {
 	int frameNo;
 	float charX = 540;
 	float charY = 960;
-	int charWidthInPixels = 21;
-	int charHeightInPixels = 27;
-	float charWidth = charWidthInPixels * 3;
-	float charHeight = charHeightInPixels * 3;
+	int charWidthInPixels = 25;
+	int charHeightInPixels = 29;
+	float charWidth = charWidthInPixels * 4;
+	float charHeight = charHeightInPixels * 4;
 	float speed = 600;
 	boolean colTopRight = false, colTopLeft = false, colBotRight = false, colBotLeft = false, colBot = false,
 			colLeft = false, colTop = false, colRight = false;
@@ -37,7 +37,7 @@ public class Player extends Entity {
 	public Player(TiledMapTileLayer collisionLayer) {
 		this.collisionLayer = collisionLayer;
 		frameNo = 0;
-		walk = new Animation[5];
+		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
 				charHeightInPixels);
 
