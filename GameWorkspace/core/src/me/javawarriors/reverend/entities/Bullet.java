@@ -18,8 +18,8 @@ public class Bullet extends Entity {
 	public Bullet(float playerX, float playerY) {
 		x = playerX;
 		y = playerY;
-		ykatsayısı = (playerX - 1080 - Gdx.input.getY());
-		xkatsayısı = (playerY - Gdx.input.getX());
+		ykatsayısı = (playerY - 1080 - Gdx.input.getY());
+		xkatsayısı = (playerX - Gdx.input.getX());
 		Rot = Math.atan2(xkatsayısı, ykatsayısı);
 		if (texture == null) {
 			texture = new Texture("Pew.png");
