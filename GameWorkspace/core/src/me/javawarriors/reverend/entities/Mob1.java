@@ -60,7 +60,7 @@ public class Mob1 extends Entity{
 		
 		public boolean HitScan() {
 			
-			for(Bullet bullet: screen.getBullets()) {
+			for(Bullet bullet: screen.getPbullets()) {
 			
 				
 				
@@ -87,7 +87,7 @@ public class Mob1 extends Entity{
 			// concurrent modification exception olmaması için ikinci array açıp looplama
 			// bittikten sorna siliyoruz
 			ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-			for (Bullet bullet : screen.getBullets()) {
+			for (Bullet bullet : screen.getMbullets()) {
 
 				bullet.update(Gdx.graphics.getDeltaTime());
 
@@ -120,11 +120,11 @@ public class Mob1 extends Entity{
 
 			}
 			HitScan();
-
+			Vicinity();
 		}
 		
 		
-		public void Vicinity(Player player) {
+		public void Vicinity() {
 			
 			if(Math.abs(charX-screen.getPlayer().charX)<300 &&Math.abs(charY-screen.getPlayer().charY)<300) {
 				shoot(charX,charY,collisionLayer);
@@ -134,8 +134,8 @@ public class Mob1 extends Entity{
 		
 		
 		private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-			if (screen.getBullets().size() == 0 || screen.getBullets().get(screen.getBullets().size() - 1).secondsElapsed > 0.2) {
-				screen.getBullets().add(new Bullet(playerX, playerY, collisionLayer));
+			if (screen.getMbullets().size() == 0 || screen.getMbullets().get(screen.getMbullets().size() - 1).secondsElapsed > 0.2) {
+				screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer,screen.getPlayer().charX,screen.getPlayer().charY));
 			}
 
 		}

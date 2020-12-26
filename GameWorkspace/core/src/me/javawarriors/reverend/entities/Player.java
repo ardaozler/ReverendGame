@@ -55,7 +55,7 @@ public class Player extends Entity {
 	}
 	public boolean HitScan() {
 		
-		for(Bullet bullet: screen.getBullets()) {
+		for(Bullet bullet: screen.getMbullets()) {
 		
 			
 			
@@ -86,7 +86,7 @@ public class Player extends Entity {
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
 		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-		for (Bullet bullet : screen.getBullets()) {
+		for (Bullet bullet : screen.getPbullets()) {
 
 			bullet.update(Gdx.graphics.getDeltaTime());
 
@@ -123,14 +123,14 @@ public class Player extends Entity {
 	}
 
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-		if (screen.getBullets().size() == 0 || screen.getBullets().get(screen.getBullets().size() - 1).secondsElapsed > 0.4) {
-			screen.getBullets().add(new Bullet(playerX, playerY, collisionLayer));
+		if (screen.getPbullets().size() == 0 || screen.getPbullets().get(screen.getPbullets().size() - 1).secondsElapsed > 0.4) {
+			screen.getPbullets().add(new Bullet(playerX, playerY, collisionLayer,-(50 + 960 - Gdx.input.getX())+charX,-(50 + 540 - 1080 + Gdx.input.getY())+charY));
 		}
 
 	}
 
 	public ArrayList<Bullet> getPBullets() {
-		return screen.getBullets();
+		return screen.getPbullets();
 	}
 
 	private boolean isCellBlocked(float x, float y) {

@@ -22,12 +22,12 @@ public class Bullet extends Entity {
 	// collision with map
 	private TiledMapTileLayer collisionLayer;
 
-	public Bullet(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
+	public Bullet(float playerX, float playerY, TiledMapTileLayer collisionLayer,float targetX,float targetY) {
 		this.collisionLayer = collisionLayer;
 		x = playerX + 50;
 		y = playerY + 50;
-		ykatsayisi = -(50 + 540 - 1080 + Gdx.input.getY());
-		xkatsayisi = -(50 + 960 - Gdx.input.getX());
+		ykatsayisi = targetY-playerY;
+		xkatsayisi = targetX-playerX;
 		Rot = 45 + (float) Math.toDegrees(-Math.atan2(xkatsayisi, ykatsayisi));
 
 		magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi * ykatsayisi)));

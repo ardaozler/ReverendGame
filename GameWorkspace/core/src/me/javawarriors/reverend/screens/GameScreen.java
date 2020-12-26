@@ -27,12 +27,16 @@ public class GameScreen implements Screen {
 	private Mob1 mob1;
 	private Player player;
 	private ArrayList<Bullet> bullets;
+	private ArrayList<Bullet> pbullets;
+	private ArrayList<Bullet> mbullets;
 	ReverendGame game;
 
 	public GameScreen(ReverendGame game) {
 
 		this.game = game;
 		bullets=new ArrayList<Bullet>();
+		pbullets=new ArrayList<Bullet>();
+		mbullets=new ArrayList<Bullet>();
 	}
 
 	@Override
@@ -47,7 +51,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-
+		bullets.addAll(pbullets);
+		bullets.addAll(mbullets);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		player.Update(Gdx.graphics.getDeltaTime());
@@ -90,6 +95,22 @@ public class GameScreen implements Screen {
 
 	public ArrayList<Bullet> getBullets() {
 		return bullets;
+	}
+
+	public ArrayList<Bullet> getPbullets() {
+		return pbullets;
+	}
+
+	public void setPbullets(ArrayList<Bullet> pbullets) {
+		this.pbullets = pbullets;
+	}
+
+	public ArrayList<Bullet> getMbullets() {
+		return mbullets;
+	}
+
+	public void setMbullets(ArrayList<Bullet> mbullets) {
+		this.mbullets = mbullets;
 	}
 
 	public void setBullets(ArrayList<Bullet> bullets) {
