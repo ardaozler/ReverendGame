@@ -35,10 +35,10 @@ public class GameScreen implements Screen {
 	public GameScreen(ReverendGame game) {
 
 		this.game = game;
-		bullets=new ArrayList<Bullet>();
-		pbullets=new ArrayList<Bullet>();
-		mbullets=new ArrayList<Bullet>();
-		mob1s=new ArrayList<Mob1>();
+		bullets = new ArrayList<Bullet>();
+		pbullets = new ArrayList<Bullet>();
+		mbullets = new ArrayList<Bullet>();
+		mob1s = new ArrayList<Mob1>();
 	}
 
 	@Override
@@ -48,8 +48,8 @@ public class GameScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map, 4f);
 		player = new Player((TiledMapTileLayer) map.getLayers().get(1), this);
 		camera = new OrthographicCamera();
-		
-		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(1), this);
+
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(1), this, "Mob1a");
 	}
 
 	@Override
@@ -59,41 +59,47 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		player.Update(Gdx.graphics.getDeltaTime());
-		
+
 		// CAmera Smooth Follow lerp değerini değiştirerek kamera follow hızı
 		// değiştri=========================
 
 		float lerp = 10f;
 		Vector3 position = camera.position;
-		//position.x += (player.getX() - position.x + player.getWidth() / 2) * lerp * Gdx.graphics.getDeltaTime();
-		//position.y += (player.getY() - position.y + player.getHeight() / 2) * lerp * Gdx.graphics.getDeltaTime();
+		// position.x += (player.getX() - position.x + player.getWidth() / 2) * lerp *
+		// Gdx.graphics.getDeltaTime();
+		// position.y += (player.getY() - position.y + player.getHeight() / 2) * lerp *
+		// Gdx.graphics.getDeltaTime();
 
-		// sabit cam============================================================================================
-		 camera.setToOrtho(false);
-		 camera.position.set(player.getX(), player.getY(), 0);
+		// sabit
+		// cam============================================================================================
+		camera.setToOrtho(false);
+		camera.position.set(player.getX(), player.getY(), 0);
 
 		camera.update();
 
 		renderer.setView(camera);
 		renderer.render();
-
 		renderer.getBatch().begin();
-		
-		for(Mob1 mob1: mob1s) {
-			//mob1.Update(Gdx.graphics.getDeltaTime());
-			//renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(), mob1.getWidth(),
-					//mob1.getHeight());
-			mob1.Update(Gdx.graphics.getDeltaTime());
+
+		for (Mob1 mob : mob1s) {
+			mob.Update(Gdx.graphics.getDeltaTime());
+			if (mob.isDead()) {
+				mob.setInactive();
+			}
+		}
+
+		for (Mob1 mob1 : mob1s) {
 			mob1.render((SpriteBatch) renderer.getBatch());
 		}
-		
+
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
 				player.getHeight());
-		//renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(), mob1.getWidth(),
-				//player.getHeight());
+		// renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(),
+		// mob1.getWidth(),
+		// player.getHeight());
 		renderer.getBatch().end();
 
 	}
@@ -128,7 +134,6 @@ public class GameScreen implements Screen {
 	public void setBullets(ArrayList<Bullet> bullets) {
 		this.bullets = bullets;
 	}
-	
 
 	public ArrayList<Mob1> getMob1s() {
 		return mob1s;
@@ -165,7 +170,7 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		map.dispose();
 		renderer.dispose();
-		
+
 	}
 
 }

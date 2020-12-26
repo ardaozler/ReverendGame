@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 import me.javawarriors.reverend.screens.GameScreen;
+
 public class Player extends Entity {
 
 	GameScreen screen;
@@ -24,8 +25,6 @@ public class Player extends Entity {
 	float speed = 600;
 	int dx = 0, dy = 0;
 	int HP;
-	
-	
 
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
@@ -37,11 +36,11 @@ public class Player extends Entity {
 	private TiledMapTileLayer collisionLayer;
 
 	// bullet
-	//private ArrayList<Bullet> bullets;
+	// private ArrayList<Bullet> bullets;
 
-	public Player(TiledMapTileLayer collisionLayer,GameScreen screen) {
+	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
 		this.collisionLayer = collisionLayer;
-		this.screen= screen;
+		this.screen = screen;
 		frameNo = 0;
 		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
@@ -49,39 +48,39 @@ public class Player extends Entity {
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
 		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
-		 HP=100;
-		
+		HP = 100;
 
 	}
+
 	public boolean HitScan() {
-		
-		for(Bullet bullet: screen.getMbullets()) {
-		
-			
-			
-		float x=bullet.getX()+bullet.getWidth();
-			float y=bullet.getY()+bullet.getHeight();
-			if(x>charX&& x<charX+charWidth&&y>charY&& y<charY+charHeight) {
+
+		for (Bullet bullet : screen.getMbullets()) {
+
+			float x = bullet.getX() + bullet.getWidth();
+			float y = bullet.getY() + bullet.getHeight();
+			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight) {
 				System.out.println(x);
-				if(bullet.secondsElapsed>0.25) {
-				bullet.setRemove(true);
-				HP-=5;
-				System.out.println(HP);}
+				if (bullet.secondsElapsed > 0.25) {
+					bullet.setRemove(true);
+					HP -= 5;
+					System.out.println(HP);
+				}
 				return true;
-				
+
 			}
-				
-			}
+
+		}
 		return false;
 	}
-	
-public boolean udead() {
-	
-	if(HP<0) {
-		return true;
+
+	public boolean udead() {
+
+		if (HP < 0) {
+			return true;
+		}
+		return false;
 	}
-	return false;
-}
+
 	public void Update(float delta) {
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
@@ -127,14 +126,16 @@ public boolean udead() {
 
 		}
 		HitScan();
-		if(udead()) {
-			
+		if (udead()) {
+
 		}
 	}
 
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-		if (screen.getPbullets().size() == 0 || screen.getPbullets().get(screen.getPbullets().size() - 1).secondsElapsed > 0.2) {
-			screen.getPbullets().add(new Bullet(playerX, playerY, collisionLayer,-(50 + 960 - Gdx.input.getX())+charX,-(50 + 540 - 1080 + Gdx.input.getY())+charY));
+		if (screen.getPbullets().size() == 0
+				|| screen.getPbullets().get(screen.getPbullets().size() - 1).secondsElapsed > 0.2) {
+			screen.getPbullets().add(new Bullet(playerX, playerY, collisionLayer,
+					-(50 + 960 - Gdx.input.getX()) + charX, -(50 + 540 - 1080 + Gdx.input.getY()) + charY, "Player", this.screen));
 		}
 
 	}
@@ -149,7 +150,6 @@ public boolean udead() {
 		return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
 	}
 
-	
 	private void collisionCheck() {
 		if (isCellBlocked(charX - 10, charY)) {
 			System.out.println("sol alt sol bok");
@@ -273,10 +273,6 @@ public boolean udead() {
 			if (isCellBlocked(charX - 10, charY)) {
 				System.out.println("sol alt sol bok");
 				dx = 0;
-			}
-			if (isCellBlocked(charX, charY - 10)) {
-				System.out.println("sol alt alt bok");
-				dy = 0;
 			}
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
 				System.out.println("sol üst sol bok");
