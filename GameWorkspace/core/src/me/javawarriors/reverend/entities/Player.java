@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
+import me.javawarriors.reverend.screens.GameScreen;
 public class Player extends Entity {
 
+	GameScreen screen;
 	// char properties
 	float charX = 540;
 	float charY = 960;
@@ -21,6 +23,9 @@ public class Player extends Entity {
 	float charHeight = charHeightInPixels * 4;
 	float speed = 600;
 	int dx = 0, dy = 0;
+	int HP;
+	
+	
 
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
@@ -32,10 +37,11 @@ public class Player extends Entity {
 	private TiledMapTileLayer collisionLayer;
 
 	// bullet
-	private ArrayList<Bullet> bullets;
+	//private ArrayList<Bullet> bullets;
 
-	public Player(TiledMapTileLayer collisionLayer) {
+	public Player(TiledMapTileLayer collisionLayer,GameScreen screen) {
 		this.collisionLayer = collisionLayer;
+		this.screen= screen;
 		frameNo = 0;
 		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
@@ -43,10 +49,30 @@ public class Player extends Entity {
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
 		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
-
-		bullets = new ArrayList<Bullet>();
+		 HP=100;
+		
 
 	}
+	public boolean HitScan() {
+		
+		for(Bullet bullet: screen.getBullets()) {
+		
+			
+			
+		float x=bullet.getX()+bullet.getWidth();
+			float y=bullet.getY()+bullet.getHeight();
+			if(x>charX&& x<charX+charWidth&&y>charY&& y<charY+charHeight) {
+				System.out.println(x);
+				if(bullet.secondsElapsed>0.25) {
+				bullet.setRemove(true);}
+				return true;
+				
+			}
+				
+			}
+		return false;
+	}
+	
 
 	public void Update(float delta) {
 		float oldX = charX, oldY = charY;
@@ -60,7 +86,7 @@ public class Player extends Entity {
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
 		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-		for (Bullet bullet : bullets) {
+		for (Bullet bullet : screen.getBullets()) {
 
 			bullet.update(Gdx.graphics.getDeltaTime());
 
@@ -68,7 +94,7 @@ public class Player extends Entity {
 				bulletsToRemove.add(bullet);
 			}
 		}
-		bullets.removeAll(bulletsToRemove);
+		screen.getBullets().removeAll(bulletsToRemove);
 
 		// top left
 		collision = isCellBlocked(getX(), getY() + getHeight() * 1 / 3);
@@ -92,18 +118,19 @@ public class Player extends Entity {
 			charY = oldY;
 
 		}
+		HitScan();
 
 	}
 
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-		if (bullets.size() == 0 || bullets.get(bullets.size() - 1).secondsElapsed > 0.2) {
-			bullets.add(new Bullet(playerX, playerY, collisionLayer));
+		if (screen.getBullets().size() == 0 || screen.getBullets().get(screen.getBullets().size() - 1).secondsElapsed > 0.4) {
+			screen.getBullets().add(new Bullet(playerX, playerY, collisionLayer));
 		}
 
 	}
 
-	public ArrayList<Bullet> getBullets() {
-		return bullets;
+	public ArrayList<Bullet> getPBullets() {
+		return screen.getBullets();
 	}
 
 	private boolean isCellBlocked(float x, float y) {

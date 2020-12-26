@@ -2,7 +2,6 @@ package me.javawarriors.reverend.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Bullet extends Entity {
 
-	public static final int Speed = 950;
+	public static final int Speed = 600;
 	private static Texture texture;
 	private static TextureRegion textureRegion;
 	float x, y;
@@ -46,12 +45,12 @@ public class Bullet extends Entity {
 		boolean collision = false;
 		move();
 		collision = isCellBlocked(x, y);
-		if (collision) {
+		if (collision ) {
 			remove = true;
 		}
 		secondsElapsed += delta;
 
-		if (secondsElapsed > 2) {
+		if (secondsElapsed > 5) {
 			remove = true;
 		}
 
@@ -59,6 +58,10 @@ public class Bullet extends Entity {
 
 	public boolean shouldRemove() {
 		return remove;
+	}
+
+	public void setRemove(boolean remove) {
+		this.remove = remove;
 	}
 
 	private boolean isCellBlocked(float x, float y) {
