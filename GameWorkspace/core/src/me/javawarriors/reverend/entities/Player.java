@@ -64,7 +64,9 @@ public class Player extends Entity {
 			if(x>charX&& x<charX+charWidth&&y>charY&& y<charY+charHeight) {
 				System.out.println(x);
 				if(bullet.secondsElapsed>0.25) {
-				bullet.setRemove(true);}
+				bullet.setRemove(true);
+				HP-=5;
+				System.out.println(HP);}
 				return true;
 				
 			}
@@ -73,7 +75,13 @@ public class Player extends Entity {
 		return false;
 	}
 	
-
+public boolean udead() {
+	
+	if(HP<0) {
+		return true;
+	}
+	return false;
+}
 	public void Update(float delta) {
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
@@ -119,11 +127,13 @@ public class Player extends Entity {
 
 		}
 		HitScan();
-
+		if(udead()) {
+			
+		}
 	}
 
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-		if (screen.getPbullets().size() == 0 || screen.getPbullets().get(screen.getPbullets().size() - 1).secondsElapsed > 0.4) {
+		if (screen.getPbullets().size() == 0 || screen.getPbullets().get(screen.getPbullets().size() - 1).secondsElapsed > 0.2) {
 			screen.getPbullets().add(new Bullet(playerX, playerY, collisionLayer,-(50 + 960 - Gdx.input.getX())+charX,-(50 + 540 - 1080 + Gdx.input.getY())+charY));
 		}
 

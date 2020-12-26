@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
@@ -36,6 +37,7 @@ public class Mob1 extends Entity{
 		private static final float charAnimationSpeed = 0.15f;
 		int frameNo;
 		float stateTime;
+		boolean inVicinity;
 
 		// collision
 		private TiledMapTileLayer collisionLayer;
@@ -44,6 +46,7 @@ public class Mob1 extends Entity{
 		//private ArrayList<Bullet> bullets;
 
 		public Mob1(TiledMapTileLayer collisionLayer,GameScreen screen) {
+			
 			this.collisionLayer = collisionLayer;
 			this.screen= screen;
 			frameNo = 0;
@@ -54,8 +57,7 @@ public class Mob1 extends Entity{
 			walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
 			walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
 			 HP=100;
-			
-
+			 screen.getMob1s().add(this);
 		}
 		
 		public boolean HitScan() {
@@ -69,12 +71,21 @@ public class Mob1 extends Entity{
 				if(x>charX&& x<charX+charWidth&&y>charY&& y<charY+charHeight) {
 					System.out.println(x);
 					if(bullet.secondsElapsed>0.15) {
-					bullet.setRemove(true);}
+						HP-=5;
+						System.out.println("mob "+HP);
+						bullet.setRemove(true);}
 					return true;
 					
 				}
 					
 				}
+			return false;
+		}
+		public boolean udead() {
+			
+			if(HP<0) {
+				return true;
+			}
 			return false;
 		}
 		public void Update(float delta) {
@@ -121,20 +132,23 @@ public class Mob1 extends Entity{
 			}
 			HitScan();
 			Vicinity();
+			if(udead()) {
+				screen.getMob1s().remove(0);
+			}
 		}
 		
 		
 		public void Vicinity() {
 			
-			if(Math.abs(charX-screen.getPlayer().charX)<300 &&Math.abs(charY-screen.getPlayer().charY)<300) {
+			if(Math.abs(charX-screen.getPlayer().charX)<600 &&Math.abs(charY-screen.getPlayer().charY)<600) {
 				shoot(charX,charY,collisionLayer);
-			
+				inVicinity=true;
 			}
 		}
 		
 		
 		private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-			if (screen.getMbullets().size() == 0 || screen.getMbullets().get(screen.getMbullets().size() - 1).secondsElapsed > 0.2) {
+			if (screen.getMbullets().size() == 0 || screen.getMbullets().get(screen.getMbullets().size() - 1).secondsElapsed > 0.15) {
 				screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer,screen.getPlayer().charX,screen.getPlayer().charY));
 			}
 
@@ -157,27 +171,37 @@ public class Mob1 extends Entity{
 			moveChange++;
 			if(moveChange>15) {
 			moveChange=0;
+			
 			xkatsayisi = Math.random();
 			ykatsayisi= Math.random();
+			//magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi * ykatsayisi)));
+			//ykatsayisi = ykatsayisi / magnitude;
+			//xkatsayisi = xkatsayisi / magnitude;
+			
+			double random = Math.random();
+			if(random<0.14) {
+				dirx=-1;
+				diry=-1;
+			}else if(random>0.14 && random<0.28){
+				dirx=-1;
+				diry=1;
+			}else if(random>0.42 && random<0.56){
+				dirx=1;
+				diry=-1;
+			}else if(random>0.56&&random<0.7) {
+				dirx=1;
+				diry=1;
+				}else {
+					if (inVicinity) {
+						dirx=1;
+						diry=1;
+						xkatsayisi=screen.getPlayer().getX()-charX;
+						ykatsayisi=screen.getPlayer().getY()-charY;
+					}
+				}
 			magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi * ykatsayisi)));
 			ykatsayisi = ykatsayisi / magnitude;
 			xkatsayisi = xkatsayisi / magnitude;
-			
-			double random = Math.random();
-			if(random<0.25) {
-				dirx=-1;
-				diry=-1;
-			}else if(random>0.25 && random<0.5){
-				dirx=-1;
-				diry=1;
-			}else if(random>0.5 && random<0.75){
-				dirx=1;
-				diry=-1;
-			}else {
-				dirx=1;
-				diry=1;
-				
-			}
 			}
 			charX+= dirx*xkatsayisi*Speed*Gdx.graphics.getDeltaTime();
 			charY+= diry*ykatsayisi*Speed*Gdx.graphics.getDeltaTime();
@@ -197,7 +221,10 @@ public class Mob1 extends Entity{
 		public float getHeight() {
 			return charHeight;
 		}
-	
+		public void render(SpriteBatch batch) {
+			batch.draw(GetFrame(), getX(), getY(), getWidth(),
+					getHeight());
+		}
 	
 }
 

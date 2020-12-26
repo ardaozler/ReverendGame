@@ -9,7 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 public class Bullet extends Entity {
 
-	public static final int Speed = 600;
+	public static final int Speed = 800;
 	private static Texture texture;
 	private static TextureRegion textureRegion;
 	float x, y;
