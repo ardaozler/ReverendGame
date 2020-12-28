@@ -67,8 +67,9 @@ public class Mob1 extends Entity {
 			float x = bullet.getX() + bullet.getWidth();
 			float y = bullet.getY() + bullet.getHeight();
 
-			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight) {
+			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight&& !bullet.isCollided()) {
 				if (bullet.secondsElapsed > 0.15) {
+					bullet.setCollided(true);
 					HP -= 5;
 					System.out.println("mob " + HP);
 					bullet.setRemove(true);
@@ -89,7 +90,7 @@ public class Mob1 extends Entity {
 
 	public void Update(float delta) {
 		float oldX = charX, oldY = charY;
-		boolean collision = true;
+		boolean collision = false;
 		if (active) {
 			move();
 		}

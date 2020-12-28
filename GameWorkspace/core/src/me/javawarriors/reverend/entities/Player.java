@@ -58,8 +58,9 @@ public class Player extends Entity {
 			
 			float x = bullet.getX() + bullet.getWidth();
 			float y = bullet.getY() + bullet.getHeight();
-			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight) {
+			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight&& !bullet.isCollided()) {
 				if (bullet.secondsElapsed > 0.1 && !isDamaged) {
+					bullet.setCollided(true);
 					bullet.setRemove(true);
 					HP -= 5;
 					System.out.println( "Player " + HP);

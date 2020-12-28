@@ -21,7 +21,7 @@ public class Bullet extends Entity {
 	float secondsElapsed;
 	String ShootersName;
 	GameScreen screen;
-
+	boolean collided=false;
 	private boolean remove = false;
 
 	// collision with map
@@ -54,6 +54,7 @@ public class Bullet extends Entity {
 		move();
 		collision = isCellBlocked(x, y);
 		if (collision) {
+			collided=true;
 			remove = true;
 		}
 		secondsElapsed += delta;
@@ -167,6 +168,14 @@ public class Bullet extends Entity {
 
 	public boolean isRemove() {
 		return remove;
+	}
+
+	public boolean isCollided() {
+		return collided;
+	}
+
+	public void setCollided(boolean collided) {
+		this.collided = collided;
 	}
 
 }
