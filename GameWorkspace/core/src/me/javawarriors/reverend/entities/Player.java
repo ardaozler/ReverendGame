@@ -15,11 +15,12 @@ import me.javawarriors.reverend.screens.GameScreen;
 public class Player extends Entity {
 
 	GameScreen screen;
+	boolean isDamaged = false;
 	// char properties
 	float charX = 540;
 	float charY = 960;
-	int charWidthInPixels = 25;
-	int charHeightInPixels = 29;
+	int charWidthInPixels = 20;
+	int charHeightInPixels = 39;
 	float charWidth = charWidthInPixels * 4;
 	float charHeight = charHeightInPixels * 4;
 	float speed = 600;
@@ -47,7 +48,6 @@ public class Player extends Entity {
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
-		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
 		HP = 100;
 
 	}
@@ -55,15 +55,15 @@ public class Player extends Entity {
 	public boolean HitScan() {
 
 		for (Bullet bullet : screen.getMbullets()) {
-
+			
 			float x = bullet.getX() + bullet.getWidth();
 			float y = bullet.getY() + bullet.getHeight();
 			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight) {
-				System.out.println(x);
-				if (bullet.secondsElapsed > 0.25) {
+				if (bullet.secondsElapsed > 0.1 && !isDamaged) {
 					bullet.setRemove(true);
 					HP -= 5;
-					System.out.println(HP);
+					System.out.println( "Player " + HP);
+					isDamaged =true;
 				}
 				return true;
 
@@ -82,12 +82,14 @@ public class Player extends Entity {
 	}
 
 	public void Update(float delta) {
+		
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
+		stateTime += delta;
 		move();
 
 		if (Gdx.input.isTouched()) {
-			shoot(charX, charY, collisionLayer);
+			shoot(charX + 5*3, charY + 27*3, collisionLayer);
 		}
 
 		// concurrent modification exception olmaması için ikinci array açıp looplama
@@ -99,6 +101,7 @@ public class Player extends Entity {
 
 			if (bullet.shouldRemove()) {
 				bulletsToRemove.add(bullet);
+				isDamaged =false;
 			}
 		}
 		screen.getBullets().removeAll(bulletsToRemove);
@@ -134,8 +137,9 @@ public class Player extends Entity {
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
 		if (screen.getPbullets().size() == 0
 				|| screen.getPbullets().get(screen.getPbullets().size() - 1).secondsElapsed > 0.2) {
-			screen.getPbullets().add(new Bullet(playerX, playerY, collisionLayer,
-					-(50 + 960 - Gdx.input.getX()) + charX, -(50 + 540 - 1080 + Gdx.input.getY()) + charY, "Player", this.screen));
+			screen.getPbullets()
+					.add(new Bullet(playerX, playerY, collisionLayer, -(50 + 960 - Gdx.input.getX()) + charX,
+							-(50 + 540 - 1080 + Gdx.input.getY()) + charY, "Player", this.screen));
 		}
 
 	}
@@ -211,7 +215,6 @@ public class Player extends Entity {
 			// collisionChech();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
-			stateTime += Gdx.graphics.getDeltaTime();
 
 		} else if ((Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W)))
 				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
@@ -237,7 +240,6 @@ public class Player extends Entity {
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
-			stateTime += Gdx.graphics.getDeltaTime();
 
 		} else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))
 				&& (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)))) {
@@ -263,7 +265,6 @@ public class Player extends Entity {
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
-			stateTime += Gdx.graphics.getDeltaTime();
 
 		} else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))
 				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
@@ -285,7 +286,6 @@ public class Player extends Entity {
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
-			stateTime += Gdx.graphics.getDeltaTime();
 
 		} else if (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) {
 			frameNo = 1;
@@ -302,7 +302,6 @@ public class Player extends Entity {
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
-			stateTime += Gdx.graphics.getDeltaTime();
 
 		} else if (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D))) {
 			frameNo = 1;
@@ -319,7 +318,6 @@ public class Player extends Entity {
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
-			stateTime += Gdx.graphics.getDeltaTime();
 
 		} else if (Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S))) {
 			frameNo = 1;
@@ -336,7 +334,6 @@ public class Player extends Entity {
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
-			stateTime += Gdx.graphics.getDeltaTime();
 
 		} else if (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) {
 			frameNo = 1;
@@ -353,19 +350,17 @@ public class Player extends Entity {
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
-			stateTime += Gdx.graphics.getDeltaTime();
+			
 		} else {
 			dx = 0;
 			dy = 0;
-			frameNo = 0;
-			stateTime = 0;
 		}
 
 		setPosition(charX, charY);
 	}
 
 	public TextureRegion GetFrame() {
-		return (walk[frameNo].getKeyFrame(stateTime, true));
+		return (walk[0].getKeyFrame(stateTime, true));
 	}
 
 	public float getWidth() {

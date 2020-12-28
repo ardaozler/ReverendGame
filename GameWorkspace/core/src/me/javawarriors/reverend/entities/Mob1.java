@@ -51,7 +51,7 @@ public class Mob1 extends Entity {
 		this.screen = screen;
 		frameNo = 0;
 		walk = new Animation[6];
-		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
+		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnimOld2.png"), charWidthInPixels,
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
@@ -68,7 +68,6 @@ public class Mob1 extends Entity {
 			float y = bullet.getY() + bullet.getHeight();
 
 			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight) {
-				System.out.println(x);
 				if (bullet.secondsElapsed > 0.15) {
 					HP -= 5;
 					System.out.println("mob " + HP);
@@ -89,11 +88,12 @@ public class Mob1 extends Entity {
 	}
 
 	public void Update(float delta) {
+		float oldX = charX, oldY = charY;
+		boolean collision = true;
 		if (active) {
 			move();
 		}
-		float oldX = charX, oldY = charY;
-		boolean collision = false;
+
 
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
@@ -169,16 +169,17 @@ public class Mob1 extends Entity {
 
 	@Override
 	public void move() {
-
+		stateTime += Gdx.graphics.getDeltaTime();
 		moveChange++;
+		frameNo = 1;
 		if (moveChange > 15) {
 			moveChange = 0;
 
 			xkatsayisi = Math.random();
 			ykatsayisi = Math.random();
-			// magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi *
-			// ykatsayisi)));
-			// ykatsayisi = ykatsayisi / magnitude;
+			 //magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi *
+			 //ykatsayisi)));
+			 //ykatsayisi = ykatsayisi / magnitude;
 			// xkatsayisi = xkatsayisi / magnitude;
 
 			double random = Math.random();
@@ -214,6 +215,8 @@ public class Mob1 extends Entity {
 	}
 
 	public void setInactive() {
+		frameNo = 0;
+		stateTime = 0;
 		active = false;
 		charX = -100;
 		charY = -100;
