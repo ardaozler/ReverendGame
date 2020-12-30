@@ -20,8 +20,8 @@ public class Mob1 extends Entity {
 	String MobName;
 	float charX = 1852;
 	float charY = 2600;
-	int charWidthInPixels = 25;
-	int charHeightInPixels = 29;
+	int charWidthInPixels = 20;
+	int charHeightInPixels = 39;
 	float charWidth = charWidthInPixels * 4;
 	float charHeight = charHeightInPixels * 4;
 	float speed = 600;
@@ -35,7 +35,6 @@ public class Mob1 extends Entity {
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
 	private static final float charAnimationSpeed = 0.15f;
-	int frameNo;
 	float stateTime;
 	boolean inVicinity;
 
@@ -49,13 +48,11 @@ public class Mob1 extends Entity {
 		this.MobName = MobName;
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
-		frameNo = 0;
 		walk = new Animation[6];
-		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnimOld2.png"), charWidthInPixels,
+		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
-		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
 		HP = 100;
 		screen.getMob1s().add(this);
 	}
@@ -172,7 +169,6 @@ public class Mob1 extends Entity {
 	public void move() {
 		stateTime += Gdx.graphics.getDeltaTime();
 		moveChange++;
-		frameNo = 1;
 		if (moveChange > 15) {
 			moveChange = 0;
 
@@ -216,7 +212,6 @@ public class Mob1 extends Entity {
 	}
 
 	public void setInactive() {
-		frameNo = 0;
 		stateTime = 0;
 		active = false;
 		charX = -100;
@@ -249,7 +244,7 @@ public class Mob1 extends Entity {
 	}
 
 	public TextureRegion GetFrame() {
-		return (walk[frameNo].getKeyFrame(stateTime, true));
+		return (walk[0].getKeyFrame(stateTime, true));
 	}
 
 	public float getWidth() {

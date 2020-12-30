@@ -19,8 +19,8 @@ public class Player extends Entity {
 	// char properties
 	float charX = 540;
 	float charY = 960;
-	int charWidthInPixels = 20;
-	int charHeightInPixels = 39;
+	int charWidthInPixels = 25; 
+	int charHeightInPixels = 29;
 	float charWidth = charWidthInPixels * 4;
 	float charHeight = charHeightInPixels * 4;
 	float speed = 600;
@@ -44,10 +44,12 @@ public class Player extends Entity {
 		this.screen = screen;
 		frameNo = 0;
 		walk = new Animation[6];
-		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
+		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnimOld2.png"), charWidthInPixels,
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
+		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
+		walk[2] = new Animation<>(charAnimationSpeed, walkSpriteSheet[2]);
 		HP = 100;
 
 	}
@@ -90,7 +92,7 @@ public class Player extends Entity {
 		move();
 
 		if (Gdx.input.isTouched()) {
-			shoot(charX + 5*3, charY + 27*3, collisionLayer);
+			shoot(charX + 27, charY + 37, collisionLayer);
 		}
 
 		// concurrent modification exception olmaması için ikinci array açıp looplama
@@ -219,7 +221,7 @@ public class Player extends Entity {
 
 		} else if ((Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W)))
 				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
-			frameNo = 1;
+			frameNo = 2;
 			dx = -1;
 			dy = 1;
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
@@ -269,7 +271,7 @@ public class Player extends Entity {
 
 		} else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))
 				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
-			frameNo = 1;
+			frameNo = 2;
 			dx = -1;
 			dy = -1;
 			if (isCellBlocked(charX - 10, charY)) {
@@ -321,7 +323,7 @@ public class Player extends Entity {
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
 
 		} else if (Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S))) {
-			frameNo = 1;
+			frameNo = 2;
 			dx = 0;
 			dy = -1;
 			if (isCellBlocked(charX, charY - 10)) {
@@ -337,7 +339,7 @@ public class Player extends Entity {
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
 
 		} else if (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) {
-			frameNo = 1;
+			frameNo = 2;
 			dx = -1;
 			dy = 0;
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
@@ -353,6 +355,7 @@ public class Player extends Entity {
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
 			
 		} else {
+			frameNo = 0;
 			dx = 0;
 			dy = 0;
 		}
@@ -361,7 +364,7 @@ public class Player extends Entity {
 	}
 
 	public TextureRegion GetFrame() {
-		return (walk[0].getKeyFrame(stateTime, true));
+		return (walk[frameNo].getKeyFrame(stateTime, true));
 	}
 
 	public float getWidth() {
