@@ -18,8 +18,8 @@ public class Mob1 extends Entity {
 	boolean active = false;
 	// char properties
 	String MobName;
-	float charX = 1852;
-	float charY = 2600;
+	float charX = 600;
+	float charY = 1800;
 	int charWidthInPixels = 20;
 	int charHeightInPixels = 39;
 	float charWidth = charWidthInPixels * 4;

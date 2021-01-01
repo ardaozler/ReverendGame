@@ -53,7 +53,7 @@ public class Bullet extends Entity {
 		boolean collision = false;
 		move();
 		collision = isCellBlocked(x, y);
-		if (collision) {
+		if (collision && secondsElapsed>0.05) {
 			collided=true;
 			remove = true;
 		}

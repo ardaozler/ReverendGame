@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.4" tiledversion="1.4.3" name="please" tilewidth="16" tileheight="16" tilecount="1024" columns="32">
  <image source="tiles.png" width="512" height="512"/>
+ <tile id="0">
+  <properties>
+   <property name="blocked" value="blocked"/>
+  </properties>
+ </tile>
  <tile id="1">
   <properties>
    <property name="blocked" value="blocked"/>
@@ -61,6 +66,36 @@
    <property name="blocked" value="blocked"/>
   </properties>
  </tile>
+ <tile id="65">
+  <properties>
+   <property name="blocked" value="blocked"/>
+  </properties>
+ </tile>
+ <tile id="66">
+  <properties>
+   <property name="blocked" value="blocked"/>
+  </properties>
+ </tile>
+ <tile id="67">
+  <properties>
+   <property name="blocked" value="blocked"/>
+  </properties>
+ </tile>
+ <tile id="97">
+  <properties>
+   <property name="blocked" value="blocked"/>
+  </properties>
+ </tile>
+ <tile id="98">
+  <properties>
+   <property name="blocked" value="blocked"/>
+  </properties>
+ </tile>
+ <tile id="99">
+  <properties>
+   <property name="blocked" value="blocked"/>
+  </properties>
+ </tile>
  <tile id="100">
   <properties>
    <property name="blocked" value="blocked"/>
@@ -112,16 +147,6 @@
   </properties>
  </tile>
  <tile id="227">
-  <properties>
-   <property name="blocked" value="blocked"/>
-  </properties>
- </tile>
- <tile id="229">
-  <properties>
-   <property name="blocked" value="blocked"/>
-  </properties>
- </tile>
- <tile id="230">
   <properties>
    <property name="blocked" value="blocked"/>
   </properties>

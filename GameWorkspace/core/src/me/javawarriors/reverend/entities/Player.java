@@ -17,8 +17,8 @@ public class Player extends Entity {
 	GameScreen screen;
 	boolean isDamaged = false;
 	// char properties
-	float charX = 540;
-	float charY = 960;
+	float charX = 150;
+	float charY = 200;
 	int charWidthInPixels = 25; 
 	int charHeightInPixels = 29;
 	float charWidth = charWidthInPixels * 4;
