@@ -159,35 +159,35 @@ public class Player extends Entity {
 
 	private void collisionCheck() {
 		if (isCellBlocked(charX - 10, charY)) {
-			System.out.println("sol alt sol bok");
+			//System.out.println("sol alt sol bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX, charY - 10)) {
-			System.out.println("sol alt alt bok");
+			//System.out.println("sol alt alt bok");
 			dy = 0;
 		}
 		if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-			System.out.println("sol üst sol bok");
+			//System.out.println("sol üst sol bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-			System.out.println("sol üst üst bok");
+			//System.out.println("sol üst üst bok");
 			dy = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-			System.out.println("sağ alt sağ bok");
+			//System.out.println("sağ alt sağ bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-			System.out.println("sağ alt alt bok");
+			//System.out.println("sağ alt alt bok");
 			dy = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-			System.out.println("sağ üst sağ bok");
+			//System.out.println("sağ üst sağ bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-			System.out.println("sağ üst üst bok");
+			//System.out.println("sağ üst üst bok");
 			dy = 0;
 		}
 	}
@@ -200,19 +200,19 @@ public class Player extends Entity {
 			dx = 1;
 			dy = 1;
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-				System.out.println("sağ üst sağ bok");
+				//System.out.println("sağ üst sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-				System.out.println("sağ üst üst bok");
+				//System.out.println("sağ üst üst bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-				System.out.println("sağ alt sağ bok");
+				//System.out.println("sağ alt sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-				System.out.println("sol üst üst bok");
+				//System.out.println("sol üst üst bok");
 				dy = 0;
 			}
 			// collisionChech();
@@ -225,19 +225,19 @@ public class Player extends Entity {
 			dx = -1;
 			dy = 1;
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-				System.out.println("sol üst sol bok");
+				//System.out.println("sol üst sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-				System.out.println("sol üst üst bok");
+				//System.out.println("sol üst üst bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX - 10, charY)) {
-				System.out.println("sol alt sol bok");
+				//System.out.println("sol alt sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-				System.out.println("sağ üst üst bok");
+				//System.out.println("sağ üst üst bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -250,19 +250,19 @@ public class Player extends Entity {
 			dx = 1;
 			dy = -1;
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-				System.out.println("sağ alt sağ bok");
+				//System.out.println("sağ alt sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-				System.out.println("sağ alt alt bok");
+				//System.out.println("sağ alt alt bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-				System.out.println("sağ üst sağ bok");
+				//System.out.println("sağ üst sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX, charY - 10)) {
-				System.out.println("sol alt alt bok");
+				//System.out.println("sol alt alt bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -275,15 +275,15 @@ public class Player extends Entity {
 			dx = -1;
 			dy = -1;
 			if (isCellBlocked(charX - 10, charY)) {
-				System.out.println("sol alt sol bok");
+				//System.out.println("sol alt sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-				System.out.println("sol üst sol bok");
+				//System.out.println("sol üst sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-				System.out.println("sağ alt alt bok");
+				//System.out.println("sağ alt alt bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -295,11 +295,11 @@ public class Player extends Entity {
 			dx = 0;
 			dy = 1;
 			if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-				System.out.println("sol üst üst bok");
+				//System.out.println("sol üst üst bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-				System.out.println("sağ üst üst bok");
+				//System.out.println("sağ üst üst bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -311,11 +311,11 @@ public class Player extends Entity {
 			dx = 1;
 			dy = 0;
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-				System.out.println("sağ alt sağ bok");
+				//System.out.println("sağ alt sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-				System.out.println("sağ üst sağ bok");
+				//System.out.println("sağ üst sağ bok");
 				dx = 0;
 			}
 			// collisionCheck();
@@ -327,11 +327,11 @@ public class Player extends Entity {
 			dx = 0;
 			dy = -1;
 			if (isCellBlocked(charX, charY - 10)) {
-				System.out.println("sol alt alt bok");
+				//System.out.println("sol alt alt bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-				System.out.println("sağ alt alt bok");
+				//System.out.println("sağ alt alt bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -343,11 +343,11 @@ public class Player extends Entity {
 			dx = -1;
 			dy = 0;
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-				System.out.println("sol üst sol bok");
+				//System.out.println("sol üst sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX - 10, charY)) {
-				System.out.println("sol alt sol bok");
+				//System.out.println("sol alt sol bok");
 				dx = 0;
 			}
 			// collisionCheck();

@@ -12,7 +12,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 import me.javawarriors.reverend.screens.GameScreen;
 
-public class Mob1 extends Entity {
+public class Mob2 extends Entity {
 
 	GameScreen screen;
 	boolean active = false;
@@ -45,9 +45,7 @@ public class Mob1 extends Entity {
 	// bullet
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-	public Mob1(TiledMapTileLayer collisionLayer,TiledMapTileLayer MobcollisionLayer, GameScreen screen, String MobName,int x,int y) {
-		this.charX=x;
-		this.charY=y;
+	public Mob2(TiledMapTileLayer collisionLayer,TiledMapTileLayer MobcollisionLayer, GameScreen screen, String MobName) {
 		this.MobName = MobName;
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
@@ -58,7 +56,7 @@ public class Mob1 extends Entity {
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
 		HP = 100;
-		screen.getMob1s().add(this);
+		//screen.getMob1s().add(this);
 	}
 
 	public boolean HitScan() {
