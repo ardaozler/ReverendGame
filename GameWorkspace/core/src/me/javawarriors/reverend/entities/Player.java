@@ -81,7 +81,9 @@ public class Player extends Entity {
 		if (Gdx.input.isTouched()) {
 			shoot(charX + 27, charY + 37, collisionLayer);
 		}
-
+		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			Shield= new Shield(float playerX,float playerY, GameScreen screen); 
+		}
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
 		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
@@ -123,7 +125,7 @@ public class Player extends Entity {
 
 		}
 	}
-
+	
 	public boolean HitScan() {
 
 		for (Bullet bullet : screen.getMbullets()) {

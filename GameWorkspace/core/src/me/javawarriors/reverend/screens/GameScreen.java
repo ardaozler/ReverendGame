@@ -18,6 +18,7 @@ import me.javawarriors.reverend.entities.Bullet;
 import me.javawarriors.reverend.entities.Mob1;
 import me.javawarriors.reverend.entities.Mob2;
 import me.javawarriors.reverend.entities.Player;
+import me.javawarriors.reverend.entities.Shield;
 
 public class GameScreen implements Screen {
 
@@ -28,13 +29,14 @@ public class GameScreen implements Screen {
 	private Mob1 mob1a, mob1b, mob1c;
 	private Mob2 mob2a;
 	private Player player;
+	private Shield Shield;
 	private ArrayList<Bullet> bullets;
 	private ArrayList<Bullet> pbullets;
 	private ArrayList<Bullet> mbullets;
 	private ArrayList<Mob1> mob1s;
 	private ArrayList<Mob2> mob2s;
 	ReverendGame game;
-
+	
 	public GameScreen(ReverendGame game) {
 
 		this.game = game;
@@ -52,7 +54,7 @@ public class GameScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map, 4f);
 		player = new Player((TiledMapTileLayer) map.getLayers().get(3), this);
 		camera = new OrthographicCamera();
-
+		
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 600, 1800, 300);
 		mob1b = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -115,6 +117,7 @@ public class GameScreen implements Screen {
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
+		Shield.render((SpriteBatch) renderer.getBatch());
 		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x- 800, camera.position.y-this.camera.viewportWidth/4 , 45*3,
 				9*3);
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
