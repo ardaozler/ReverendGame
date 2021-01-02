@@ -16,6 +16,9 @@ public class Player extends Entity {
 
 	GameScreen screen;
 	boolean isDamaged = false;
+
+	Shield Shield;
+
 	// char properties
 	float charX = 150;
 	float charY = 200;
@@ -27,6 +30,7 @@ public class Player extends Entity {
 	int dx = 0, dy = 0;
 	int HP;
 	int bulletSpeed = 800;
+	boolean isShieldOn = false;
 
 	// char Animation properties
 	Animation<TextureRegion>[] healthBar;
@@ -38,21 +42,22 @@ public class Player extends Entity {
 	// collision
 	private TiledMapTileLayer collisionLayer;
 
-	// bullet
+	// shield
+	float shieldCooldown = 0;
 	// private ArrayList<Bullet> bullets;
 
 	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		frameNo = 0;
-		
+
 		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnimOld2.png"), charWidthInPixels,
 				charHeightInPixels);
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
 		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
 		walk[2] = new Animation<>(charAnimationSpeed, walkSpriteSheet[2]);
-		
+
 		healthBar = new Animation[11];
 		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("charHealth.png"), 41, 7);
 		healthBar[0] = new Animation<>(0, healthBarSpriteSheet[0]);
@@ -76,13 +81,28 @@ public class Player extends Entity {
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		stateTime += delta;
+		shieldCooldown += delta;
 		move();
 
 		if (Gdx.input.isTouched()) {
 			shoot(charX + 27, charY + 37, collisionLayer);
 		}
-		if(Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			Shield= new Shield(float playerX,float playerY, GameScreen screen); 
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+			if(shieldCooldown > 8) {
+			isShieldOn = true;
+			Shield = new Shield(charX, charY, screen, "player");
+			screen.getShields().add(Shield);
+			shieldCooldown = 0;
+			}else System.out.println("Liderim cooldown bekle aq " + (8 -(int)shieldCooldown) + " saniye var");
+			
+		}
+
+		if (Shield != null) {
+			Shield.update(delta);
+			if (Shield.shouldRemove()) {
+				isShieldOn = false;
+				screen.getShields().remove(Shield);
+			}
 		}
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
@@ -125,7 +145,7 @@ public class Player extends Entity {
 
 		}
 	}
-	
+
 	public boolean HitScan() {
 
 		for (Bullet bullet : screen.getMbullets()) {
@@ -136,7 +156,9 @@ public class Player extends Entity {
 				if (bullet.secondsElapsed > 0.1 && !isDamaged) {
 					bullet.setCollided(true);
 					bullet.setRemove(true);
+					if(!isShieldOn) {
 					HP -= 5;
+					}
 					System.out.println("Player " + HP);
 					isDamaged = true;
 				}
@@ -380,8 +402,18 @@ public class Player extends Entity {
 		setPosition(charX, charY);
 	}
 
+	
+	
+	public boolean isShieldOn() {
+		return isShieldOn;
+	}
+
+	public void setShieldOn(boolean isShieldOn) {
+		this.isShieldOn = isShieldOn;
+	}
+
 	public TextureRegion GetHealthFrame() {
-		return (healthBar[10 - (HP/10)].getKeyFrame(stateTime));
+		return (healthBar[10 - (HP / 10)].getKeyFrame(stateTime));
 	}
 
 	public TextureRegion GetFrame() {

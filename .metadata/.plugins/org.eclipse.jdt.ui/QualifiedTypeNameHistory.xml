@@ -8,18 +8,21 @@
     <fullyQualifiedTypeName name="org.lwjgl.opengl.DisplayMode"/>
     <fullyQualifiedTypeName name="me.javawarriors.reverend.screens.GameScreen"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Animation"/>
-    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
     <fullyQualifiedTypeName name="java.awt.Point"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Sprite"/>
     <fullyQualifiedTypeName name="me.javawarriors.reverend.entities.Entity"/>
     <fullyQualifiedTypeName name="me.javawarriors.reverend.entities.Player"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.Texture"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.Graphics"/>
-    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.math.Vector3"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.Gdx"/>
     <fullyQualifiedTypeName name="java.lang.Math"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.Screen"/>
     <fullyQualifiedTypeName name="com.sun.java_cup.internal.runtime.Scanner"/>
     <fullyQualifiedTypeName name="java.util.Scanner"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.TextureRegion"/>
+    <fullyQualifiedTypeName name="me.javawarriors.reverend.entities.Mob2"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.Batch"/>
+    <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.g2d.SpriteBatch"/>
 </qualifiedTypeNameHistroy>

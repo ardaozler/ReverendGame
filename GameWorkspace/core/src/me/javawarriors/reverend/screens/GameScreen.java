@@ -3,6 +3,7 @@ package me.javawarriors.reverend.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,17 +30,18 @@ public class GameScreen implements Screen {
 	private Mob1 mob1a, mob1b, mob1c;
 	private Mob2 mob2a;
 	private Player player;
-	private Shield Shield;
 	private ArrayList<Bullet> bullets;
 	private ArrayList<Bullet> pbullets;
 	private ArrayList<Bullet> mbullets;
+	private ArrayList<Shield> shields;
 	private ArrayList<Mob1> mob1s;
 	private ArrayList<Mob2> mob2s;
 	ReverendGame game;
-	
+
 	public GameScreen(ReverendGame game) {
 
 		this.game = game;
+		shields = new ArrayList<Shield>();
 		bullets = new ArrayList<Bullet>();
 		pbullets = new ArrayList<Bullet>();
 		mbullets = new ArrayList<Bullet>();
@@ -67,7 +69,7 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		bullets.addAll(pbullets);
 		bullets.addAll(mbullets);
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		player.Update(Gdx.graphics.getDeltaTime());
 
@@ -102,7 +104,7 @@ public class GameScreen implements Screen {
 		for (Mob1 mob1 : mob1s) {
 			mob1.render((SpriteBatch) renderer.getBatch());
 		}
-		
+
 		for (Mob2 mob : mob2s) {
 			mob.Update(Gdx.graphics.getDeltaTime());
 			if (mob.isDead()) {
@@ -114,17 +116,22 @@ public class GameScreen implements Screen {
 			mob2.render((SpriteBatch) renderer.getBatch());
 		}
 
+
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
-		Shield.render((SpriteBatch) renderer.getBatch());
-		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x- 800, camera.position.y-this.camera.viewportWidth/4 , 45*3,
-				9*3);
+		
+		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
+				camera.position.y - this.camera.viewportWidth / 4, 45 * 3, 9 * 3);
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
 				player.getHeight());
+		for (Shield shield: shields) {
+			shield.render((SpriteBatch) renderer.getBatch());
+		}
 		// renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(),
 		// mob1.getWidth(),
 		// player.getHeight());
+		
 		renderer.getBatch().end();
 
 	}
@@ -134,6 +141,15 @@ public class GameScreen implements Screen {
 		camera.viewportHeight = height;
 		camera.viewportWidth = width;
 		camera.update();
+	}
+
+	
+	public ArrayList<Shield> getShields() {
+		return shields;
+	}
+
+	public void setShields(ArrayList<Shield> shields) {
+		this.shields = shields;
 	}
 
 	public ArrayList<Bullet> getBullets() {
@@ -167,7 +183,7 @@ public class GameScreen implements Screen {
 	public void setMob2s(ArrayList<Mob2> mob2s) {
 		this.mob2s = mob2s;
 	}
-	
+
 	public ArrayList<Mob1> getMob1s() {
 		return mob1s;
 	}
