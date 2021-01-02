@@ -16,6 +16,7 @@ public class Mob2 extends Entity {
 
 	GameScreen screen;
 	boolean active = false;
+
 	// char properties
 	String MobName;
 	float charX = 600;
@@ -32,6 +33,7 @@ public class Mob2 extends Entity {
 	int diry = 0;
 	double xkatsayisi, ykatsayisi, magnitude;
 	int moveChange = 0;
+
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
 	private static final float charAnimationSpeed = 0.15f;
@@ -42,10 +44,9 @@ public class Mob2 extends Entity {
 	private TiledMapTileLayer collisionLayer;
 	private TiledMapTileLayer mobcollisionLayer;
 
-	// bullet
-	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-
-	public Mob2(TiledMapTileLayer collisionLayer,TiledMapTileLayer MobcollisionLayer, GameScreen screen, String MobName) {
+	public Mob2(TiledMapTileLayer collisionLayer, TiledMapTileLayer MobcollisionLayer, GameScreen screen,
+			String MobName, int x, int y, int Speed) {
+		this.Speed = Speed;
 		this.MobName = MobName;
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
@@ -55,36 +56,8 @@ public class Mob2 extends Entity {
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
-		HP = 100;
-		//screen.getMob1s().add(this);
-	}
-
-	public boolean HitScan() {
-
-		for (Bullet bullet : screen.getPbullets()) {
-
-			float x = bullet.getX() + bullet.getWidth();
-			float y = bullet.getY() + bullet.getHeight();
-
-			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight&& !bullet.isCollided()) {
-				if (bullet.secondsElapsed > 0.15) {
-					bullet.setCollided(true);
-					HP -= 5;
-					System.out.println("mob " + HP);
-					bullet.setRemove(true);
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isDead() {
-
-		if (HP < 0) {
-			return true;
-		}
-		return false;
+		HP = 20;
+		screen.getMob2s().add(this);
 	}
 
 	public void Update(float delta) {
@@ -94,19 +67,8 @@ public class Mob2 extends Entity {
 			move();
 		}
 
-
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
-		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-		for (Bullet bullet : screen.getMbullets()) {
-
-			bullet.update(Gdx.graphics.getDeltaTime());
-
-			if (bullet.shouldRemove()) {
-				bulletsToRemove.add(bullet);
-			}
-		}
-		screen.getBullets().removeAll(bulletsToRemove);
 
 		// top left
 		collision = isCellBlocked(getX(), getY() + getHeight() * 1 / 3);
@@ -135,26 +97,42 @@ public class Mob2 extends Entity {
 		Vicinity();
 	}
 
+	public boolean HitScan() {
+
+		for (Bullet bullet : screen.getPbullets()) {
+
+			float x = bullet.getX() + bullet.getWidth();
+			float y = bullet.getY() + bullet.getHeight();
+
+			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight && !bullet.isCollided()) {
+				if (bullet.secondsElapsed > 0.15) {
+					bullet.setCollided(true);
+					HP -= 5;
+					System.out.println("mob " + HP);
+					bullet.setRemove(true);
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isDead() {
+
+		if (HP < 0) {
+			return true;
+		}
+		return false;
+	}
+
 	public void Vicinity() {
 		if (Math.abs(charX - screen.getPlayer().charX) < 1000 && Math.abs(charY - screen.getPlayer().charY) < 1000) {
 			active = true;
 		}
 
-		if (Math.abs(charX - screen.getPlayer().charX) < 600 && Math.abs(charY - screen.getPlayer().charY) < 600) {
-			shoot(charX, charY, collisionLayer);
+		if (Math.abs(charX - screen.getPlayer().charX) < 300 && Math.abs(charY - screen.getPlayer().charY) < 300) {
 			inVicinity = true;
 		}
-	}
-
-	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-		if (screen.getMbullets().size() == 0
-				|| screen.getMbullets().get(screen.getMbullets().size() - 1).secondsElapsed > 0.15) {
-			bullets.add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX, screen.getPlayer().charY,
-					MobName, this.screen, 1));
-			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
-					screen.getPlayer().charY, MobName, this.screen, 1));
-		}
-
 	}
 
 	public ArrayList<Bullet> getMBullets() {
@@ -164,47 +142,24 @@ public class Mob2 extends Entity {
 	private boolean isCellBlocked(float x, float y) {
 		Cell cell = collisionLayer.getCell((int) (x / (collisionLayer.getTileWidth() * 4)),
 				(int) (y / (collisionLayer.getTileHeight() * 4)));
-		Cell boschcell =mobcollisionLayer.getCell((int) (x / (mobcollisionLayer.getTileWidth() * 4)),
+		Cell boschcell = mobcollisionLayer.getCell((int) (x / (mobcollisionLayer.getTileWidth() * 4)),
 				(int) (y / (mobcollisionLayer.getTileHeight() * 4)));
 
-		return (cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked")) ||(boschcell != null && boschcell.getTile() != null &&boschcell.getTile().getProperties().containsKey("blocked") );
+		return (cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked"))
+				|| (boschcell != null && boschcell.getTile() != null
+						&& boschcell.getTile().getProperties().containsKey("blocked"));
 	}
 
 	@Override
 	public void move() {
 		stateTime += Gdx.graphics.getDeltaTime();
-		moveChange++;
-		if (moveChange > 15) {
-			moveChange = 0;
+		if (inVicinity) {
 
-			xkatsayisi = Math.random();
-			ykatsayisi = Math.random();
-			 //magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi *
-			 //ykatsayisi)));
-			 //ykatsayisi = ykatsayisi / magnitude;
-			// xkatsayisi = xkatsayisi / magnitude;
+			dirx = 1;
+			diry = 1;
+			xkatsayisi = screen.getPlayer().getX() - charX;
+			ykatsayisi = screen.getPlayer().getY() - charY;
 
-			double random = Math.random();
-			if (random < 0.14) {
-				dirx = -1;
-				diry = -1;
-			} else if (random > 0.14 && random < 0.28) {
-				dirx = -1;
-				diry = 1;
-			} else if (random > 0.42 && random < 0.56) {
-				dirx = 1;
-				diry = -1;
-			} else if (random > 0.56 && random < 0.7) {
-				dirx = 1;
-				diry = 1;
-			} else {
-				if (inVicinity) {
-					dirx = 1;
-					diry = 1;
-					xkatsayisi = screen.getPlayer().getX() - charX;
-					ykatsayisi = screen.getPlayer().getY() - charY;
-				}
-			}
 			magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi * ykatsayisi)));
 			ykatsayisi = ykatsayisi / magnitude;
 			xkatsayisi = xkatsayisi / magnitude;

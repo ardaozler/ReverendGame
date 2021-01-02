@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 import me.javawarriors.reverend.ReverendGame;
 import me.javawarriors.reverend.entities.Bullet;
 import me.javawarriors.reverend.entities.Mob1;
+import me.javawarriors.reverend.entities.Mob2;
 import me.javawarriors.reverend.entities.Player;
 
 public class GameScreen implements Screen {
@@ -25,11 +26,13 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	private Mob1 mob1a, mob1b, mob1c;
+	private Mob2 mob2a;
 	private Player player;
 	private ArrayList<Bullet> bullets;
 	private ArrayList<Bullet> pbullets;
 	private ArrayList<Bullet> mbullets;
 	private ArrayList<Mob1> mob1s;
+	private ArrayList<Mob2> mob2s;
 	ReverendGame game;
 
 	public GameScreen(ReverendGame game) {
@@ -39,6 +42,7 @@ public class GameScreen implements Screen {
 		pbullets = new ArrayList<Bullet>();
 		mbullets = new ArrayList<Bullet>();
 		mob1s = new ArrayList<Mob1>();
+		mob2s = new ArrayList<Mob2>();
 	}
 
 	@Override
@@ -53,8 +57,8 @@ public class GameScreen implements Screen {
 				"Mob1a", 600, 1800, 300);
 		mob1b = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1b", 300, 300, 300);
-		mob1c = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1c", 600, 1800, 300);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 600, 1800, 100);
 	}
 
 	@Override
@@ -95,6 +99,17 @@ public class GameScreen implements Screen {
 
 		for (Mob1 mob1 : mob1s) {
 			mob1.render((SpriteBatch) renderer.getBatch());
+		}
+		
+		for (Mob2 mob : mob2s) {
+			mob.Update(Gdx.graphics.getDeltaTime());
+			if (mob.isDead()) {
+				mob.setInactive();
+			}
+		}
+
+		for (Mob2 mob2 : mob2s) {
+			mob2.render((SpriteBatch) renderer.getBatch());
 		}
 
 		for (Bullet bullet : bullets) {
@@ -142,6 +157,14 @@ public class GameScreen implements Screen {
 		this.bullets = bullets;
 	}
 
+	public ArrayList<Mob2> getMob2s() {
+		return mob2s;
+	}
+
+	public void setMob2s(ArrayList<Mob2> mob2s) {
+		this.mob2s = mob2s;
+	}
+	
 	public ArrayList<Mob1> getMob1s() {
 		return mob1s;
 	}
