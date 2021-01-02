@@ -118,14 +118,18 @@ public class Mob1 extends Entity {
 	}
 
 	public void Vicinity() {
-		if (Math.abs(charX - screen.getPlayer().charX) < 1000 && Math.abs(charY - screen.getPlayer().charY) < 1000) {
+		if (Math.abs(charX - screen.getPlayer().charX) < 2000 && Math.abs(charY - screen.getPlayer().charY) < 2000) {
 			active = true;
 		}
 
-		if (Math.abs(charX - screen.getPlayer().charX) < 600 && Math.abs(charY - screen.getPlayer().charY) < 600) {
+		if (Math.abs(charX - screen.getPlayer().charX) < 700 && Math.abs(charY - screen.getPlayer().charY) < 700) {
 			shoot(charX, charY, collisionLayer);
-			inVicinity = true;
+			inVicinity=true;
+			if (Math.abs(charX - screen.getPlayer().charX) < 200 && Math.abs(charY - screen.getPlayer().charY) < 200) {
+				inVicinity=false;
+			}
 		}
+		
 	}
 	
 	public boolean HitScan() {
