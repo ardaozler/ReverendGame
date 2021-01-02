@@ -29,6 +29,7 @@ public class Player extends Entity {
 	int bulletSpeed = 800;
 
 	// char Animation properties
+	Animation<TextureRegion>[] healthBar;
 	Animation<TextureRegion>[] walk;
 	private static final float charAnimationSpeed = 0.15f;
 	int frameNo;
@@ -44,13 +45,28 @@ public class Player extends Entity {
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		frameNo = 0;
+		
 		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnimOld2.png"), charWidthInPixels,
 				charHeightInPixels);
-
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
 		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
 		walk[2] = new Animation<>(charAnimationSpeed, walkSpriteSheet[2]);
+		
+		healthBar = new Animation[11];
+		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("charHealth.png"), 41, 7);
+		healthBar[0] = new Animation<>(0, healthBarSpriteSheet[0]);
+		healthBar[1] = new Animation<>(0, healthBarSpriteSheet[1]);
+		healthBar[2] = new Animation<>(0, healthBarSpriteSheet[2]);
+		healthBar[3] = new Animation<>(0, healthBarSpriteSheet[3]);
+		healthBar[4] = new Animation<>(0, healthBarSpriteSheet[4]);
+		healthBar[5] = new Animation<>(0, healthBarSpriteSheet[5]);
+		healthBar[6] = new Animation<>(0, healthBarSpriteSheet[6]);
+		healthBar[7] = new Animation<>(0, healthBarSpriteSheet[7]);
+		healthBar[8] = new Animation<>(0, healthBarSpriteSheet[8]);
+		healthBar[9] = new Animation<>(0, healthBarSpriteSheet[9]);
+		healthBar[10] = new Animation<>(0, healthBarSpriteSheet[10]);
+
 		HP = 100;
 
 	}
@@ -360,6 +376,10 @@ public class Player extends Entity {
 		}
 
 		setPosition(charX, charY);
+	}
+
+	public TextureRegion GetHealthFrame() {
+		return (healthBar[10 - (HP/10)].getKeyFrame(stateTime));
 	}
 
 	public TextureRegion GetFrame() {

@@ -100,6 +100,8 @@ public class GameScreen implements Screen {
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
+		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x- 800, camera.position.y-this.camera.viewportWidth/4 , 45*3,
+				9*3);
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
 				player.getHeight());
 		// renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(),
