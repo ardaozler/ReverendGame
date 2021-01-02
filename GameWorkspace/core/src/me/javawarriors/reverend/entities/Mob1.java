@@ -16,6 +16,7 @@ public class Mob1 extends Entity {
 
 	GameScreen screen;
 	boolean active = false;
+	boolean isDamaged = false;
 	// char properties
 	String MobName;
 	float charX = 600;
@@ -32,6 +33,8 @@ public class Mob1 extends Entity {
 	int diry = 0;
 	double xkatsayisi, ykatsayisi, magnitude;
 	int moveChange = 0;
+	float shootTime = 0;
+	int bulletSpeed = 800;
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
 	private static final float charAnimationSpeed = 0.15f;
@@ -45,9 +48,10 @@ public class Mob1 extends Entity {
 	// bullet
 	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-	public Mob1(TiledMapTileLayer collisionLayer,TiledMapTileLayer MobcollisionLayer, GameScreen screen, String MobName,int x,int y) {
+	public Mob1(TiledMapTileLayer collisionLayer,TiledMapTileLayer MobcollisionLayer, GameScreen screen, String MobName,int x,int y , int bulletSpeed) {
 		this.charX=x;
 		this.charY=y;
+		this.bulletSpeed = bulletSpeed;
 		this.MobName = MobName;
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
@@ -61,35 +65,10 @@ public class Mob1 extends Entity {
 		screen.getMob1s().add(this);
 	}
 
-	public boolean HitScan() {
-
-		for (Bullet bullet : screen.getPbullets()) {
-
-			float x = bullet.getX() + bullet.getWidth();
-			float y = bullet.getY() + bullet.getHeight();
-
-			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight&& !bullet.isCollided()) {
-				if (bullet.secondsElapsed > 0.15) {
-					bullet.setCollided(true);
-					HP -= 5;
-					System.out.println("mob " + HP);
-					bullet.setRemove(true);
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean isDead() {
-
-		if (HP < 0) {
-			return true;
-		}
-		return false;
-	}
+	
 
 	public void Update(float delta) {
+		shootTime += delta;
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		if (active) {
@@ -106,6 +85,7 @@ public class Mob1 extends Entity {
 
 			if (bullet.shouldRemove()) {
 				bulletsToRemove.add(bullet);
+				isDamaged =false;
 			}
 		}
 		screen.getBullets().removeAll(bulletsToRemove);
@@ -147,14 +127,43 @@ public class Mob1 extends Entity {
 			inVicinity = true;
 		}
 	}
+	
+	public boolean HitScan() {
+
+		for (Bullet bullet : screen.getPbullets()) {
+
+			float x = bullet.getX() + bullet.getWidth();
+			float y = bullet.getY() + bullet.getHeight();
+			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight&& !bullet.isCollided()) {
+				if (bullet.secondsElapsed > 0.15 && !isDamaged) {
+					bullet.setCollided(true);
+					bullet.setRemove(true);
+					HP -= 5;
+					System.out.println("mob " + HP);
+					isDamaged = true;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean isDead() {
+
+		if (HP < 0) {
+			return true;
+		}
+		return false;
+	}
 
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
 		if (screen.getMbullets().size() == 0
-				|| screen.getMbullets().get(screen.getMbullets().size() - 1).secondsElapsed > 0.15) {
+				|| shootTime > 0.15) {
+			shootTime = 0;
 			bullets.add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX, screen.getPlayer().charY,
-					MobName, this.screen));
+					MobName, this.screen, bulletSpeed));
 			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
-					screen.getPlayer().charY, MobName, this.screen));
+					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
 		}
 
 	}
@@ -166,10 +175,10 @@ public class Mob1 extends Entity {
 	private boolean isCellBlocked(float x, float y) {
 		Cell cell = collisionLayer.getCell((int) (x / (collisionLayer.getTileWidth() * 4)),
 				(int) (y / (collisionLayer.getTileHeight() * 4)));
-		Cell boschcell =mobcollisionLayer.getCell((int) (x / (mobcollisionLayer.getTileWidth() * 4)),
+		Cell bosCell =mobcollisionLayer.getCell((int) (x / (mobcollisionLayer.getTileWidth() * 4)),
 				(int) (y / (mobcollisionLayer.getTileHeight() * 4)));
 
-		return (cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked")) ||(boschcell != null && boschcell.getTile() != null &&boschcell.getTile().getProperties().containsKey("blocked") );
+		return (cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked")) ||(bosCell != null && bosCell.getTile() != null &&bosCell.getTile().getProperties().containsKey("blocked") );
 	}
 
 	@Override

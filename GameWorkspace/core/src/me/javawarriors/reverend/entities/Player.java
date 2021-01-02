@@ -19,13 +19,14 @@ public class Player extends Entity {
 	// char properties
 	float charX = 150;
 	float charY = 200;
-	int charWidthInPixels = 25; 
+	int charWidthInPixels = 25;
 	int charHeightInPixels = 29;
 	float charWidth = charWidthInPixels * 4;
 	float charHeight = charHeightInPixels * 4;
 	float speed = 600;
 	int dx = 0, dy = 0;
 	int HP;
+	int bulletSpeed = 800;
 
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
@@ -54,38 +55,8 @@ public class Player extends Entity {
 
 	}
 
-	public boolean HitScan() {
-
-		for (Bullet bullet : screen.getMbullets()) {
-			
-			float x = bullet.getX() + bullet.getWidth();
-			float y = bullet.getY() + bullet.getHeight();
-			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight&& !bullet.isCollided()) {
-				if (bullet.secondsElapsed > 0.1 && !isDamaged) {
-					bullet.setCollided(true);
-					bullet.setRemove(true);
-					HP -= 5;
-					System.out.println( "Player " + HP);
-					isDamaged =true;
-				}
-				return true;
-
-			}
-
-		}
-		return false;
-	}
-
-	public boolean udead() {
-
-		if (HP < 0) {
-			return true;
-		}
-		return false;
-	}
-
 	public void Update(float delta) {
-		
+
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		stateTime += delta;
@@ -104,7 +75,7 @@ public class Player extends Entity {
 
 			if (bullet.shouldRemove()) {
 				bulletsToRemove.add(bullet);
-				isDamaged =false;
+				isDamaged = false;
 			}
 		}
 		screen.getBullets().removeAll(bulletsToRemove);
@@ -137,12 +108,40 @@ public class Player extends Entity {
 		}
 	}
 
+	public boolean HitScan() {
+
+		for (Bullet bullet : screen.getMbullets()) {
+
+			float x = bullet.getX() + bullet.getWidth();
+			float y = bullet.getY() + bullet.getHeight();
+			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight && !bullet.isCollided()) {
+				if (bullet.secondsElapsed > 0.1 && !isDamaged) {
+					bullet.setCollided(true);
+					bullet.setRemove(true);
+					HP -= 5;
+					System.out.println("Player " + HP);
+					isDamaged = true;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean udead() {
+
+		if (HP < 0) {
+			return true;
+		}
+		return false;
+	}
+
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
 		if (screen.getPbullets().size() == 0
 				|| screen.getPbullets().get(screen.getPbullets().size() - 1).secondsElapsed > 0.2) {
 			screen.getPbullets()
 					.add(new Bullet(playerX, playerY, collisionLayer, -(50 + 960 - Gdx.input.getX()) + charX,
-							-(50 + 540 - 1080 + Gdx.input.getY()) + charY, "Player", this.screen));
+							-(50 + 540 - 1080 + Gdx.input.getY()) + charY, "Player", this.screen, bulletSpeed));
 		}
 
 	}
@@ -159,35 +158,35 @@ public class Player extends Entity {
 
 	private void collisionCheck() {
 		if (isCellBlocked(charX - 10, charY)) {
-			//System.out.println("sol alt sol bok");
+			// System.out.println("sol alt sol bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX, charY - 10)) {
-			//System.out.println("sol alt alt bok");
+			// System.out.println("sol alt alt bok");
 			dy = 0;
 		}
 		if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-			//System.out.println("sol üst sol bok");
+			// System.out.println("sol üst sol bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-			//System.out.println("sol üst üst bok");
+			// System.out.println("sol üst üst bok");
 			dy = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-			//System.out.println("sağ alt sağ bok");
+			// System.out.println("sağ alt sağ bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-			//System.out.println("sağ alt alt bok");
+			// System.out.println("sağ alt alt bok");
 			dy = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-			//System.out.println("sağ üst sağ bok");
+			// System.out.println("sağ üst sağ bok");
 			dx = 0;
 		}
 		if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-			//System.out.println("sağ üst üst bok");
+			// System.out.println("sağ üst üst bok");
 			dy = 0;
 		}
 	}
@@ -200,19 +199,19 @@ public class Player extends Entity {
 			dx = 1;
 			dy = 1;
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-				//System.out.println("sağ üst sağ bok");
+				// System.out.println("sağ üst sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-				//System.out.println("sağ üst üst bok");
+				// System.out.println("sağ üst üst bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-				//System.out.println("sağ alt sağ bok");
+				// System.out.println("sağ alt sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-				//System.out.println("sol üst üst bok");
+				// System.out.println("sol üst üst bok");
 				dy = 0;
 			}
 			// collisionChech();
@@ -225,19 +224,19 @@ public class Player extends Entity {
 			dx = -1;
 			dy = 1;
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-				//System.out.println("sol üst sol bok");
+				// System.out.println("sol üst sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-				//System.out.println("sol üst üst bok");
+				// System.out.println("sol üst üst bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX - 10, charY)) {
-				//System.out.println("sol alt sol bok");
+				// System.out.println("sol alt sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-				//System.out.println("sağ üst üst bok");
+				// System.out.println("sağ üst üst bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -250,19 +249,19 @@ public class Player extends Entity {
 			dx = 1;
 			dy = -1;
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-				//System.out.println("sağ alt sağ bok");
+				// System.out.println("sağ alt sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-				//System.out.println("sağ alt alt bok");
+				// System.out.println("sağ alt alt bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-				//System.out.println("sağ üst sağ bok");
+				// System.out.println("sağ üst sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX, charY - 10)) {
-				//System.out.println("sol alt alt bok");
+				// System.out.println("sol alt alt bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -275,15 +274,15 @@ public class Player extends Entity {
 			dx = -1;
 			dy = -1;
 			if (isCellBlocked(charX - 10, charY)) {
-				//System.out.println("sol alt sol bok");
+				// System.out.println("sol alt sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-				//System.out.println("sol üst sol bok");
+				// System.out.println("sol üst sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-				//System.out.println("sağ alt alt bok");
+				// System.out.println("sağ alt alt bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -295,11 +294,11 @@ public class Player extends Entity {
 			dx = 0;
 			dy = 1;
 			if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-				//System.out.println("sol üst üst bok");
+				// System.out.println("sol üst üst bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-				//System.out.println("sağ üst üst bok");
+				// System.out.println("sağ üst üst bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -311,11 +310,11 @@ public class Player extends Entity {
 			dx = 1;
 			dy = 0;
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-				//System.out.println("sağ alt sağ bok");
+				// System.out.println("sağ alt sağ bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-				//System.out.println("sağ üst sağ bok");
+				// System.out.println("sağ üst sağ bok");
 				dx = 0;
 			}
 			// collisionCheck();
@@ -327,11 +326,11 @@ public class Player extends Entity {
 			dx = 0;
 			dy = -1;
 			if (isCellBlocked(charX, charY - 10)) {
-				//System.out.println("sol alt alt bok");
+				// System.out.println("sol alt alt bok");
 				dy = 0;
 			}
 			if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-				//System.out.println("sağ alt alt bok");
+				// System.out.println("sağ alt alt bok");
 				dy = 0;
 			}
 			// collisionCheck();
@@ -343,17 +342,17 @@ public class Player extends Entity {
 			dx = -1;
 			dy = 0;
 			if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-				//System.out.println("sol üst sol bok");
+				// System.out.println("sol üst sol bok");
 				dx = 0;
 			}
 			if (isCellBlocked(charX - 10, charY)) {
-				//System.out.println("sol alt sol bok");
+				// System.out.println("sol alt sol bok");
 				dx = 0;
 			}
 			// collisionCheck();
 			charX += speed * Gdx.graphics.getDeltaTime() * dx;
 			charY += speed * Gdx.graphics.getDeltaTime() * dy;
-			
+
 		} else {
 			frameNo = 0;
 			dx = 0;

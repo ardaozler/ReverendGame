@@ -150,9 +150,9 @@ public class Mob2 extends Entity {
 		if (screen.getMbullets().size() == 0
 				|| screen.getMbullets().get(screen.getMbullets().size() - 1).secondsElapsed > 0.15) {
 			bullets.add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX, screen.getPlayer().charY,
-					MobName, this.screen));
+					MobName, this.screen, 1));
 			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
-					screen.getPlayer().charY, MobName, this.screen));
+					screen.getPlayer().charY, MobName, this.screen, 1));
 		}
 
 	}

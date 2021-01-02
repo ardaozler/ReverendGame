@@ -12,7 +12,7 @@ import me.javawarriors.reverend.screens.GameScreen;
 
 public class Bullet extends Entity {
 
-	public static final int Speed = 800;
+	private int Speed = 800;
 	private static Texture texture;
 	private static TextureRegion textureRegion;
 	float x, y;
@@ -28,8 +28,9 @@ public class Bullet extends Entity {
 	private TiledMapTileLayer collisionLayer;
 
 	public Bullet(float playerX, float playerY, TiledMapTileLayer collisionLayer, float targetX, float targetY,
-			String ShootersName, GameScreen GameScreen) {
+			String ShootersName, GameScreen GameScreen, int Speed) {
 		this.screen = GameScreen;
+		this.Speed = Speed;
 		this.collisionLayer = collisionLayer;
 		this.ShootersName = ShootersName;
 		x = playerX + 50;
@@ -162,7 +163,7 @@ public class Bullet extends Entity {
 		this.collisionLayer = collisionLayer;
 	}
 
-	public static int getSpeed() {
+	public int getSpeed() {
 		return Speed;
 	}
 

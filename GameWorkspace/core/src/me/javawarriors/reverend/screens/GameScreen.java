@@ -24,7 +24,7 @@ public class GameScreen implements Screen {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
-	private Mob1 mob1a,mob1b;
+	private Mob1 mob1a, mob1b, mob1c;
 	private Player player;
 	private ArrayList<Bullet> bullets;
 	private ArrayList<Bullet> pbullets;
@@ -49,8 +49,12 @@ public class GameScreen implements Screen {
 		player = new Player((TiledMapTileLayer) map.getLayers().get(3), this);
 		camera = new OrthographicCamera();
 
-		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3),(TiledMapTileLayer) map.getLayers().get(0), this, "Mob1a",600,1800);
-		mob1b = new Mob1((TiledMapTileLayer) map.getLayers().get(3),(TiledMapTileLayer) map.getLayers().get(0), this, "Mob1b", 300,300);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 600, 1800, 300);
+		mob1b = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1b", 300, 300, 300);
+		mob1c = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1c", 600, 1800, 300);
 	}
 
 	@Override
