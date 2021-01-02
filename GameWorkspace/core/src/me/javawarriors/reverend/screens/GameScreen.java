@@ -27,7 +27,7 @@ public class GameScreen implements Screen {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
-	private Mob1 mob1a, mob1b, mob1c;
+	private Mob1 mob1a, mob1b, mob1c,mob1d,mob1e,mob1f;
 	private Mob2 mob2a;
 	private Player player;
 	private ArrayList<Bullet> bullets;
@@ -58,9 +58,25 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 600, 1800, 300);
-		mob1b = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1b", 300, 300, 300);
+				"Mob1a", 600, 1800, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 3500, 500, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 3900, 600, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 4538, 295, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 7534, 1205, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 9149, 1170, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 8637, 307, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 3947, 3713, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 5535, 3524, 100);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 5825, 3524, 100);
 		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob2a", 600, 1800, 100);
 	}
@@ -69,7 +85,7 @@ public class GameScreen implements Screen {
 	public void render(float delta) {
 		bullets.addAll(pbullets);
 		bullets.addAll(mbullets);
-		Gdx.gl.glClearColor(0.1f, 0.2f, 0.3f, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		player.Update(Gdx.graphics.getDeltaTime());
 

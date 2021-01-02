@@ -60,9 +60,9 @@ public class Bullet extends Entity {
 		}
 		secondsElapsed += delta;
 
-		if (secondsElapsed > 5) {
+		/*if (secondsElapsed > 5) {
 			remove = true;
-		}
+		}*/
 
 	}
 

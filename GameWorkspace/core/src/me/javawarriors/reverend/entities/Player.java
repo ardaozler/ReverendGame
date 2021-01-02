@@ -77,7 +77,7 @@ public class Player extends Entity {
 	}
 
 	public void Update(float delta) {
-
+		//System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY));
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		stateTime += delta;

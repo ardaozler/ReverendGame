@@ -15,7 +15,7 @@ import me.javawarriors.reverend.screens.GameScreen;
 public class Mob1 extends Entity {
 
 	GameScreen screen;
-	boolean active = false;
+	boolean active = true;
 	boolean isDamaged = false;
 	// char properties
 	String MobName;
@@ -61,7 +61,7 @@ public class Mob1 extends Entity {
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
-		HP = 100;
+		HP = 50;
 		screen.getMob1s().add(this);
 	}
 
@@ -150,7 +150,7 @@ public class Mob1 extends Entity {
 
 	public boolean isDead() {
 
-		if (HP < 0) {
+		if (HP <= 0) {
 			return true;
 		}
 		return false;
@@ -158,7 +158,7 @@ public class Mob1 extends Entity {
 
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
 		if (screen.getMbullets().size() == 0
-				|| shootTime > 0.15) {
+				|| shootTime > 0.16) {
 			shootTime = 0;
 			bullets.add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX, screen.getPlayer().charY,
 					MobName, this.screen, bulletSpeed));
@@ -230,8 +230,8 @@ public class Mob1 extends Entity {
 	public void setInactive() {
 		stateTime = 0;
 		active = false;
-		charX = -100;
-		charY = -100;
+		charX = -10000;
+		charY = -10000;
 		setPosition(charX, charY);
 	}
 
