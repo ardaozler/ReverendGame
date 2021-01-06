@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -44,6 +45,11 @@ public class Player extends Entity {
 
 	// shield
 	float shieldCooldown = 0;
+	// dash
+	int dash = 1;
+	float dashCooldown = 0;
+	float dashTimer = 0;
+	Sound dashSfx = Gdx.audio.newSound(Gdx.files.internal("dash.ogg"));
 	// private ArrayList<Bullet> bullets;
 
 	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
@@ -77,26 +83,42 @@ public class Player extends Entity {
 	}
 
 	public void Update(float delta) {
-		//System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY));
+		// System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY));
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		stateTime += delta;
 		shieldCooldown += delta;
+		dashCooldown += delta;
+		dashTimer += delta;
 		move();
 
 		if (Gdx.input.isTouched()) {
 			shoot(charX + 27, charY + 37, collisionLayer);
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
-			if(shieldCooldown > 8) {
-			isShieldOn = true;
-			Shield = new Shield(charX, charY, screen, "player");
-			screen.getShields().add(Shield);
-			shieldCooldown = 0;
-			}else System.out.println("Liderim cooldown bekle aq " + (8 -(int)shieldCooldown) + " saniye var");
-			
-		}
+			if (shieldCooldown > 8) {
+				isShieldOn = true;
+				Shield = new Shield(charX, charY, screen, "player");
+				screen.getShields().add(Shield);
+				shieldCooldown = 0;
+			} else
+				System.out.println("Liderim cooldown bekle aq " + (8 - (int) shieldCooldown) + " saniye var");
 
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.SHIFT_LEFT)) {
+			if (dashCooldown > 4) {
+				
+				dashTimer=0;
+				dash();
+				
+				dashCooldown = 0;
+			} else
+				System.out.println("Dash cd=" + (4 - (int)dashCooldown));
+
+		}
+		if(dashTimer>0.2) {
+			dash();
+		}
 		if (Shield != null) {
 			Shield.update(delta);
 			if (Shield.shouldRemove()) {
@@ -156,8 +178,8 @@ public class Player extends Entity {
 				if (bullet.secondsElapsed > 0.1 && !isDamaged) {
 					bullet.setCollided(true);
 					bullet.setRemove(true);
-					if(!isShieldOn) {
-					HP -= 5;
+					if (!isShieldOn) {
+						HP -= 5;
 					}
 					System.out.println("Player " + HP);
 					isDamaged = true;
@@ -231,6 +253,19 @@ public class Player extends Entity {
 		}
 	}
 
+	public void dash() {
+		
+		
+		if(dashTimer < 0.2) {
+			System.out.println("anan");
+			dashSfx.play();
+			dash = 5;
+		}
+		else {
+			dash=1;
+		}
+	}
+
 	public void move() {
 
 		if ((Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)))
@@ -255,8 +290,8 @@ public class Player extends Entity {
 				dy = 0;
 			}
 			// collisionChech();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx * 0.7;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy * 0.7;
 
 		} else if ((Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W)))
 				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
@@ -280,8 +315,8 @@ public class Player extends Entity {
 				dy = 0;
 			}
 			// collisionCheck();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx * 0.7;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy * 0.7;
 
 		} else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))
 				&& (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D)))) {
@@ -305,8 +340,8 @@ public class Player extends Entity {
 				dy = 0;
 			}
 			// collisionCheck();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx * 0.7;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy * 0.7;
 
 		} else if ((Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S)))
 				&& (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A)))) {
@@ -326,8 +361,8 @@ public class Player extends Entity {
 				dy = 0;
 			}
 			// collisionCheck();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx * 0.7;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy * 0.7;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx * 0.7;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy * 0.7;
 
 		} else if (Gdx.input.isKeyPressed(Keys.UP) || (Gdx.input.isKeyPressed(Keys.W))) {
 			frameNo = 1;
@@ -342,8 +377,8 @@ public class Player extends Entity {
 				dy = 0;
 			}
 			// collisionCheck();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy;
 
 		} else if (Gdx.input.isKeyPressed(Keys.RIGHT) || (Gdx.input.isKeyPressed(Keys.D))) {
 			frameNo = 1;
@@ -358,8 +393,8 @@ public class Player extends Entity {
 				dx = 0;
 			}
 			// collisionCheck();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy;
 
 		} else if (Gdx.input.isKeyPressed(Keys.DOWN) || (Gdx.input.isKeyPressed(Keys.S))) {
 			frameNo = 2;
@@ -374,8 +409,8 @@ public class Player extends Entity {
 				dy = 0;
 			}
 			// collisionCheck();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy;
 
 		} else if (Gdx.input.isKeyPressed(Keys.LEFT) || (Gdx.input.isKeyPressed(Keys.A))) {
 			frameNo = 2;
@@ -390,8 +425,8 @@ public class Player extends Entity {
 				dx = 0;
 			}
 			// collisionCheck();
-			charX += speed * Gdx.graphics.getDeltaTime() * dx;
-			charY += speed * Gdx.graphics.getDeltaTime() * dy;
+			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx;
+			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy;
 
 		} else {
 			frameNo = 0;
@@ -402,8 +437,6 @@ public class Player extends Entity {
 		setPosition(charX, charY);
 	}
 
-	
-	
 	public boolean isShieldOn() {
 		return isShieldOn;
 	}

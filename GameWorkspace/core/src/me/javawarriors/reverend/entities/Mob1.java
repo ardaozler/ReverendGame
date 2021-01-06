@@ -3,6 +3,7 @@ package me.javawarriors.reverend.entities;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +18,7 @@ public class Mob1 extends Entity {
 	GameScreen screen;
 	boolean active = true;
 	boolean isDamaged = false;
+	boolean isDead=false;
 	// char properties
 	String MobName;
 	float charX = 600;
@@ -40,7 +42,7 @@ public class Mob1 extends Entity {
 	private static final float charAnimationSpeed = 0.15f;
 	float stateTime;
 	boolean inVicinity;
-
+	Sound dead= Gdx.audio.newSound(Gdx.files.internal("calebblemum.mp3"));
 	// collision
 	private TiledMapTileLayer collisionLayer;
 	private TiledMapTileLayer mobcollisionLayer;
@@ -155,6 +157,7 @@ public class Mob1 extends Entity {
 	public boolean isDead() {
 
 		if (HP <= 0) {
+			
 			return true;
 		}
 		return false;
@@ -232,6 +235,10 @@ public class Mob1 extends Entity {
 	}
 
 	public void setInactive() {
+		if(!isDead) {
+			isDead=true;
+			dead.play();
+		}
 		stateTime = 0;
 		active = false;
 		charX = -10000;
