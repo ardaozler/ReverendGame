@@ -43,6 +43,8 @@ public class Mob1 extends Entity {
 	float stateTime;
 	boolean inVicinity;
 	Sound dead= Gdx.audio.newSound(Gdx.files.internal("calebblemum.mp3"));
+	Sound alert= Gdx.audio.newSound(Gdx.files.internal("alert.mp3"));
+	boolean alerted=false;
 	// collision
 	private TiledMapTileLayer collisionLayer;
 	private TiledMapTileLayer mobcollisionLayer;
@@ -120,11 +122,15 @@ public class Mob1 extends Entity {
 	}
 
 	public void Vicinity() {
-		if (Math.abs(charX - screen.getPlayer().charX) < 2000 && Math.abs(charY - screen.getPlayer().charY) < 2000) {
+		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1500) {
 			active = true;
 		}
 
 		if (Math.abs(charX - screen.getPlayer().charX) < 700 && Math.abs(charY - screen.getPlayer().charY) < 700) {
+			if(!alerted) {
+				alert.play();
+				alerted=true;
+			}
 			shoot(charX, charY, collisionLayer);
 			inVicinity=true;
 			if (Math.abs(charX - screen.getPlayer().charX) < 200 && Math.abs(charY - screen.getPlayer().charY) < 200) {

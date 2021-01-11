@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -43,6 +45,8 @@ public class GameScreen implements Screen {
 	private ArrayList<Trap> traps;
 	private ArrayList<Healing> heals;
 	ReverendGame game;
+	Music music;
+	boolean bgmusic=false;
 
 	public GameScreen(ReverendGame game) {
 
@@ -55,6 +59,10 @@ public class GameScreen implements Screen {
 		mob2s = new ArrayList<Mob2>();
 		traps = new ArrayList<Trap>();
 		heals = new ArrayList<Healing>();
+		music = Gdx.audio.newMusic(Gdx.files.internal("bgmusic.mp3"));
+		
+		
+		
 	}
 
 	@Override
@@ -66,6 +74,7 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		trap= new Trap(player, this, 300,300);
 		heal= new Healing(player,this,500 ,500);
+		heal= new Healing(player,this,800 ,800);
 		
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 600, 1800, 100);
@@ -93,6 +102,10 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		if(!bgmusic) {
+			music.play();
+			bgmusic=true;
+		}
 		bullets.addAll(pbullets);
 		bullets.addAll(mbullets);
 		Gdx.gl.glClearColor(0, 0, 0, 1);
