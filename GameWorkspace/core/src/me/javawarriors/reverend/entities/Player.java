@@ -32,14 +32,16 @@ public class Player extends Entity {
 	int HP;
 	int bulletSpeed = 800;
 	boolean isShieldOn = false;
-
+	boolean HealInVicinity=false;
+	boolean Heal=false;
 	// char Animation properties
 	Animation<TextureRegion>[] healthBar;
 	Animation<TextureRegion>[] walk;
+	Texture HealNotification;
 	private static final float charAnimationSpeed = 0.15f;
 	int frameNo;
 	float stateTime;
-
+	
 	// collision
 	private TiledMapTileLayer collisionLayer;
 
@@ -56,7 +58,9 @@ public class Player extends Entity {
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		frameNo = 0;
-
+		
+		//Heal notification seyi cikcak boyle ekranin ortasinda falan assetti var
+		
 		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnimOld2.png"), charWidthInPixels,
 				charHeightInPixels);
@@ -116,6 +120,19 @@ public class Player extends Entity {
 				System.out.println("Dash cd=" + (4 - (int)dashCooldown));
 
 		}
+		
+		if(HealInVicinity) {
+			//healnotification seysi
+			if(Gdx.input.isKeyJustPressed(Keys.E)) {
+				Heal=true;
+				
+			}
+			
+		}else {
+			Heal=false;
+		}
+		
+		
 		if(dashTimer>0.2) {
 			dash();
 		}

@@ -16,10 +16,12 @@ import com.badlogic.gdx.math.Vector3;
 
 import me.javawarriors.reverend.ReverendGame;
 import me.javawarriors.reverend.entities.Bullet;
+import me.javawarriors.reverend.entities.Healing;
 import me.javawarriors.reverend.entities.Mob1;
 import me.javawarriors.reverend.entities.Mob2;
 import me.javawarriors.reverend.entities.Player;
 import me.javawarriors.reverend.entities.Shield;
+import me.javawarriors.reverend.entities.Trap;
 
 public class GameScreen implements Screen {
 
@@ -30,12 +32,16 @@ public class GameScreen implements Screen {
 	private Mob1 mob1a, mob1b, mob1c,mob1d,mob1e,mob1f;
 	private Mob2 mob2a;
 	private Player player;
+	private Trap trap;
+	private Healing heal;
 	private ArrayList<Bullet> bullets;
 	private ArrayList<Bullet> pbullets;
 	private ArrayList<Bullet> mbullets;
 	private ArrayList<Shield> shields;
 	private ArrayList<Mob1> mob1s;
 	private ArrayList<Mob2> mob2s;
+	private ArrayList<Trap> traps;
+	private ArrayList<Healing> heals;
 	ReverendGame game;
 
 	public GameScreen(ReverendGame game) {
@@ -47,6 +53,8 @@ public class GameScreen implements Screen {
 		mbullets = new ArrayList<Bullet>();
 		mob1s = new ArrayList<Mob1>();
 		mob2s = new ArrayList<Mob2>();
+		traps = new ArrayList<Trap>();
+		heals = new ArrayList<Healing>();
 	}
 
 	@Override
@@ -56,6 +64,8 @@ public class GameScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map, 4f);
 		player = new Player((TiledMapTileLayer) map.getLayers().get(3), this);
 		camera = new OrthographicCamera();
+		trap= new Trap(player, this, 300,300);
+		heal= new Healing(player,this,500 ,500);
 		
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 600, 1800, 100);
@@ -88,6 +98,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		player.Update(Gdx.graphics.getDeltaTime());
+		
 
 		// CAmera Smooth Follow lerp değerini değiştirerek kamera follow hızı
 		// değiştri=========================
@@ -143,6 +154,14 @@ public class GameScreen implements Screen {
 				player.getHeight());
 		for (Shield shield: shields) {
 			shield.render((SpriteBatch) renderer.getBatch());
+		}
+		for (Trap trap: traps) {
+			trap.update(Gdx.graphics.getDeltaTime());
+			trap.render((SpriteBatch) renderer.getBatch());
+		}
+		for (Healing heal: heals) {
+			heal.update(Gdx.graphics.getDeltaTime());
+			heal.render((SpriteBatch) renderer.getBatch());
 		}
 		// renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(),
 		// mob1.getWidth(),
@@ -214,6 +233,24 @@ public class GameScreen implements Screen {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+	
+
+	public ArrayList<Trap> getTraps() {
+		return traps;
+	}
+
+	public void setTraps(ArrayList<Trap> traps) {
+		this.traps = traps;
+	}
+	
+
+	public ArrayList<Healing> getHeals() {
+		return heals;
+	}
+
+	public void setHeals(ArrayList<Healing> heals) {
+		this.heals = heals;
 	}
 
 	@Override
