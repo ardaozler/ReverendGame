@@ -72,7 +72,7 @@ public class GameScreen implements Screen {
 		renderer = new OrthogonalTiledMapRenderer(map, 4f);
 		player = new Player((TiledMapTileLayer) map.getLayers().get(3), this);
 		camera = new OrthographicCamera();
-		trap= new Trap(player, this, 300,300);
+		trap= new Trap(player, this, 384,384);
 		heal= new Healing(player,this,500 ,500);
 		heal= new Healing(player,this,800 ,800);
 		
@@ -160,6 +160,14 @@ public class GameScreen implements Screen {
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
+		for (Trap trap: traps) {
+			trap.update(Gdx.graphics.getDeltaTime());
+			renderer.getBatch().draw(trap.GetFrame(),trap.getX(), trap.getY(), 16 * 4,16 * 4);
+			//trap.render((SpriteBatch) renderer.getBatch());
+		}
+		for (Healing heal: heals) {
+			heal.update(Gdx.graphics.getDeltaTime());
+			heal.render((SpriteBatch) renderer.getBatch());
 		
 		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
 				camera.position.y - this.camera.viewportWidth / 4, 45 * 3, 9 * 3);
@@ -168,13 +176,7 @@ public class GameScreen implements Screen {
 		for (Shield shield: shields) {
 			shield.render((SpriteBatch) renderer.getBatch());
 		}
-		for (Trap trap: traps) {
-			trap.update(Gdx.graphics.getDeltaTime());
-			trap.render((SpriteBatch) renderer.getBatch());
-		}
-		for (Healing heal: heals) {
-			heal.update(Gdx.graphics.getDeltaTime());
-			heal.render((SpriteBatch) renderer.getBatch());
+		
 		}
 		// renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(),
 		// mob1.getWidth(),

@@ -10,26 +10,25 @@ import me.javawarriors.reverend.screens.GameScreen;
 
 public class Healing extends Entity {
 
-
 	private static Texture texture;
 	private static TextureRegion textureRegion;
-	float x, y,Px,Py;
-	
-	Boolean Active=true;
-	Boolean HealinVicinity=false;
+	float soundTime = 0;
+	float x, y, Px, Py;
+
+	Boolean Active = true;
+	Boolean HealinVicinity = false;
 	GameScreen screen;
 	Sound water = Gdx.audio.newSound(Gdx.files.internal("watersound.wav"));
 	private boolean remove = false;
 	Player player;
-	
-	public Healing(Player player, GameScreen GameScreen ,float x,float y) {
-		this.player=player;
+
+	public Healing(Player player, GameScreen GameScreen, float x, float y) {
+		this.player = player;
 		this.screen = GameScreen;
-		
-		
-		this.x=x;
-		this.y=y;
-		
+
+		this.x = x;
+		this.y = y;
+
 		if (texture == null) {
 			texture = new Texture("Shield.png");
 			textureRegion = new TextureRegion(texture);
@@ -41,23 +40,21 @@ public class Healing extends Entity {
 	public void update(float delta) {
 		float Px = screen.getPlayer().getX();
 		float Py = screen.getPlayer().getY();
-		
-		if(Active) {
-		if((Px>x && Px<x+150)&&(Py>y &&Py<y+150)) {
+
+		if (Active) {
 			
-			screen.getPlayer().HealInVicinity=true;
-			if(screen.getPlayer().Heal) {
-				screen.getPlayer().HP=100;
-				Active=false;
-				// Texturei degiscek
+			if ((Px > x && Px < x + 150) && (Py > y && Py < y + 150)) {
+				screen.getPlayer().HealInVicinity = true;
+				if (screen.getPlayer().Heal) {
+					screen.getPlayer().HP = 100;
+					Active = false;
+					water.play();
+				}
+				
+			} else {
+				screen.getPlayer().HealInVicinity = false;
 			}
-			water.play();
-			System.out.println("Get splashed");
-	}else {
-		screen.getPlayer().HealInVicinity=false;
-	}
 		}
-		
 
 	}
 
@@ -69,8 +66,6 @@ public class Healing extends Entity {
 		Active = active;
 	}
 
-
-
 	public boolean shouldRemove() {
 		return remove;
 	}
@@ -81,10 +76,10 @@ public class Healing extends Entity {
 
 	@Override
 	public void move() {
-		
+
 	}
 
 	public void render(SpriteBatch batch) {
-		batch.draw(textureRegion, x, y-8, 23*3, 32*3);
+		batch.draw(textureRegion, x, y - 8, 23 * 3, 32 * 3);
 	}
 }

@@ -34,6 +34,7 @@ public class Player extends Entity {
 	boolean isShieldOn = false;
 	boolean HealInVicinity=false;
 	boolean Heal=false;
+	
 	// char Animation properties
 	Animation<TextureRegion>[] healthBar;
 	Animation<TextureRegion>[] walk;
@@ -47,12 +48,12 @@ public class Player extends Entity {
 
 	// shield
 	float shieldCooldown = 0;
+	
 	// dash
 	int dash = 1;
 	float dashCooldown = 0;
 	float dashTimer = 0;
 	Sound dashSfx = Gdx.audio.newSound(Gdx.files.internal("dash.ogg"));
-	// private ArrayList<Bullet> bullets;
 
 	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
 		this.collisionLayer = collisionLayer;
