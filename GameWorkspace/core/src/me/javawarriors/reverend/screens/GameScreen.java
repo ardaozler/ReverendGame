@@ -60,7 +60,7 @@ public class GameScreen implements Screen {
 		traps = new ArrayList<Trap>();
 		heals = new ArrayList<Healing>();
 		music = Gdx.audio.newMusic(Gdx.files.internal("bgmusic.mp3"));
-		
+		music.setVolume(0.1f);
 		
 		
 	}
@@ -75,6 +75,7 @@ public class GameScreen implements Screen {
 		trap= new Trap(player, this, 384,384);
 		heal= new Healing(player,this,500 ,500);
 		heal= new Healing(player,this,800 ,800);
+		heal= new Healing(player,this,600 ,1800);
 		
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 600, 1800, 100);

@@ -14,14 +14,14 @@ public class Healing extends Entity {
 	private static TextureRegion textureRegion;
 	float soundTime = 0;
 	float x, y, Px, Py;
-
+	float secondsElapsed;
 	Boolean Active = true;
 	Boolean HealinVicinity = false;
 	GameScreen screen;
 	Sound water = Gdx.audio.newSound(Gdx.files.internal("watersound.wav"));
 	private boolean remove = false;
 	Player player;
-
+	boolean play =false;
 	public Healing(Player player, GameScreen GameScreen, float x, float y) {
 		this.player = player;
 		this.screen = GameScreen;
@@ -40,19 +40,27 @@ public class Healing extends Entity {
 	public void update(float delta) {
 		float Px = screen.getPlayer().getX();
 		float Py = screen.getPlayer().getY();
-
+		screen.getPlayer().HealInVicinity = false;
 		if (Active) {
 			
 			if ((Px > x && Px < x + 150) && (Py > y && Py < y + 150)) {
 				screen.getPlayer().HealInVicinity = true;
+				secondsElapsed+=delta;
+				if(!play|| secondsElapsed>4) {
+					secondsElapsed=0;
+					water.play();
+					play=true;
+				}
+				
 				if (screen.getPlayer().Heal) {
 					screen.getPlayer().HP = 100;
 					Active = false;
-					water.play();
+					
 				}
 				
 			} else {
-				screen.getPlayer().HealInVicinity = false;
+				water.stop();
+				
 			}
 		}
 
