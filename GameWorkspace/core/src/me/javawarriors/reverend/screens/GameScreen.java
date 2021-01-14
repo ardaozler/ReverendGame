@@ -98,7 +98,7 @@ public class GameScreen implements Screen {
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 5825, 3524, 100);
 		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob2a", 600, 1800, 100);
+				"Mob2a", 600, 1800, 200, 20, 40, "bebe1.png");
 	}
 
 	@Override
@@ -139,6 +139,7 @@ public class GameScreen implements Screen {
 			mob.Update(Gdx.graphics.getDeltaTime());
 			if (mob.isDead()) {
 				mob.setInactive();
+				;
 			}
 		}
 

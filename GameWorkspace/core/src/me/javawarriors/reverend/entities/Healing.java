@@ -1,6 +1,7 @@
 package me.javawarriors.reverend.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -40,11 +41,9 @@ public class Healing extends Entity {
 	public void update(float delta) {
 		float Px = screen.getPlayer().getX();
 		float Py = screen.getPlayer().getY();
-		screen.getPlayer().HealInVicinity = false;
 		if (Active) {
 			
 			if ((Px > x && Px < x + 150) && (Py > y && Py < y + 150)) {
-				screen.getPlayer().HealInVicinity = true;
 				secondsElapsed+=delta;
 				if(!play|| secondsElapsed>4) {
 					secondsElapsed=0;
@@ -52,10 +51,9 @@ public class Healing extends Entity {
 					play=true;
 				}
 				
-				if (screen.getPlayer().Heal) {
-					screen.getPlayer().HP = 100;
+				if (Gdx.input.isKeyJustPressed(Keys.E)) {
+					screen.getPlayer().setHP(100);
 					Active = false;
-					
 				}
 				
 			} else {

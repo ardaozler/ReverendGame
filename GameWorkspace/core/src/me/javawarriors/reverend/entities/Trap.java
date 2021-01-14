@@ -44,7 +44,7 @@ public class Trap extends Entity {
 	}
 
 	public void update(float delta) {
-		float Px = screen.getPlayer().getX();
+		float Px = screen.getPlayer().getX() + 25;
 		float Py = screen.getPlayer().getY();
 		stateTime += delta;
 

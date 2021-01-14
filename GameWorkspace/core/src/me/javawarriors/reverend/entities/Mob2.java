@@ -21,14 +21,14 @@ public class Mob2 extends Entity {
 	String MobName;
 	float charX = 600;
 	float charY = 1800;
-	int charWidthInPixels = 20;
-	int charHeightInPixels = 39;
+	int charWidthInPixels = 11;//constructora eklenmeli belki?
+	int charHeightInPixels = 12;//constructora eklenmeli belki?
 	float charWidth = charWidthInPixels * 4;
 	float charHeight = charHeightInPixels * 4;
-	float speed = 600;
 	int dx = 0, dy = 0;
 	int HP;
-	int Speed = 500;
+	int speed = 500;
+	int damage = 0;
 	int dirx = 0;
 	int diry = 0;
 	double xkatsayisi, ykatsayisi, magnitude;
@@ -45,18 +45,19 @@ public class Mob2 extends Entity {
 	private TiledMapTileLayer mobcollisionLayer;
 
 	public Mob2(TiledMapTileLayer collisionLayer, TiledMapTileLayer MobcollisionLayer, GameScreen screen,
-			String MobName, int x, int y, int Speed) {
-		this.Speed = Speed;
+			String MobName, int x, int y, int speed, int health, int damage, String TextureName) {
+		this.speed = speed;
+		this.damage = damage;
 		this.MobName = MobName;
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		this.mobcollisionLayer = MobcollisionLayer;
 		walk = new Animation[6];
-		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnim.png"), charWidthInPixels,
+		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture(TextureName), charWidthInPixels,
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
-		HP = 20;
+		HP = health;
 		screen.getMob2s().add(this);
 	}
 
@@ -66,10 +67,6 @@ public class Mob2 extends Entity {
 		if (active) {
 			move();
 		}
-
-		// concurrent modification exception olmaması için ikinci array açıp looplama
-		// bittikten sorna siliyoruz
-
 		// top left
 		collision = isCellBlocked(getX(), getY() + getHeight() * 1 / 3);
 
@@ -129,10 +126,18 @@ public class Mob2 extends Entity {
 		if (Math.abs(charX - screen.getPlayer().charX) < 1000 && Math.abs(charY - screen.getPlayer().charY) < 1000) {
 			active = true;
 		}
-
 		if (Math.abs(charX - screen.getPlayer().charX) < 300 && Math.abs(charY - screen.getPlayer().charY) < 300) {
 			inVicinity = true;
 		}
+		if (Math.abs(charX - screen.getPlayer().charX) < 30 && Math.abs(charY - screen.getPlayer().charY) < 30) {
+			BlowUp();
+		}
+	}
+	
+	public void BlowUp() {
+		HP = -1;
+		screen.getPlayer().setHP(screen.getPlayer().getHP()-damage);
+		
 	}
 
 	public ArrayList<Bullet> getMBullets() {
@@ -164,8 +169,8 @@ public class Mob2 extends Entity {
 			ykatsayisi = ykatsayisi / magnitude;
 			xkatsayisi = xkatsayisi / magnitude;
 		}
-		charX += dirx * xkatsayisi * Speed * Gdx.graphics.getDeltaTime();
-		charY += diry * ykatsayisi * Speed * Gdx.graphics.getDeltaTime();
+		charX += dirx * xkatsayisi * speed * Gdx.graphics.getDeltaTime();
+		charY += diry * ykatsayisi * speed * Gdx.graphics.getDeltaTime();
 
 		setPosition(charX, charY);
 

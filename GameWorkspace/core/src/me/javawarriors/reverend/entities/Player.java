@@ -21,8 +21,8 @@ public class Player extends Entity {
 	Shield Shield;
 
 	// char properties
-	float charX = 150;
-	float charY = 200;
+	float charX =-150;
+	float charY = 2200;
 	int charWidthInPixels = 25;
 	int charHeightInPixels = 29;
 	float charWidth = charWidthInPixels * 4;
@@ -32,8 +32,6 @@ public class Player extends Entity {
 	int HP;
 	int bulletSpeed = 800;
 	boolean isShieldOn = false;
-	boolean HealInVicinity=false;
-	boolean Heal=false;
 	
 	// char Animation properties
 	Animation<TextureRegion>[] healthBar;
@@ -120,17 +118,6 @@ public class Player extends Entity {
 			} else
 				System.out.println("Dash cd=" + (4 - (int)dashCooldown));
 
-		}
-		
-		if(HealInVicinity) {
-			//healnotification seysi
-			if(Gdx.input.isKeyJustPressed(Keys.E)) {
-				Heal=true;
-				
-			}
-			
-		}else {
-			Heal=false;
 		}
 		
 		
@@ -453,6 +440,15 @@ public class Player extends Entity {
 		}
 
 		setPosition(charX, charY);
+	}
+	
+
+	public int getHP() {
+		return HP;
+	}
+
+	public void setHP(int hP) {
+		HP = hP;
 	}
 
 	public boolean isShieldOn() {
