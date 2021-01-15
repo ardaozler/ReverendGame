@@ -21,8 +21,8 @@ public class Mob2 extends Entity {
 	String MobName;
 	float charX = 600;
 	float charY = 1800;
-	int charWidthInPixels = 11;//constructora eklenmeli belki?
-	int charHeightInPixels = 12;//constructora eklenmeli belki?
+	int charWidthInPixels = 11;// constructora eklenmeli belki?
+	int charHeightInPixels = 12;// constructora eklenmeli belki?
 	float charWidth = charWidthInPixels * 4;
 	float charHeight = charHeightInPixels * 4;
 	int dx = 0, dy = 0;
@@ -133,11 +133,11 @@ public class Mob2 extends Entity {
 			BlowUp();
 		}
 	}
-	
+
 	public void BlowUp() {
 		HP = -1;
-		screen.getPlayer().setHP(screen.getPlayer().getHP()-damage);
-		
+		screen.getPlayer().setHP(screen.getPlayer().getHP() - damage);
+
 	}
 
 	public ArrayList<Bullet> getMBullets() {
@@ -209,7 +209,11 @@ public class Mob2 extends Entity {
 	}
 
 	public TextureRegion GetFrame() {
-		return (walk[0].getKeyFrame(stateTime, true));
+		if (inVicinity) {
+			return (walk[0].getKeyFrame(stateTime, true));
+		} else {
+			return (walk[0].getKeyFrame(0, true));
+		}
 	}
 
 	public float getWidth() {

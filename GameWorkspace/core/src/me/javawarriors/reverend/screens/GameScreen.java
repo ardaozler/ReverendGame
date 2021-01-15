@@ -162,6 +162,21 @@ public class GameScreen implements Screen {
 		renderer.setView(camera);
 		renderer.render();
 		renderer.getBatch().begin();
+				
+		for (Trap trap : traps) {
+			trap.update(Gdx.graphics.getDeltaTime());
+			renderer.getBatch().draw(trap.GetFrame(), trap.getX(), trap.getY(), 16 * 4, 16 * 4);
+			// trap.render((SpriteBatch) renderer.getBatch());
+		}
+
+		for (Healing heal : heals) {
+			heal.update(Gdx.graphics.getDeltaTime());
+			renderer.getBatch().draw(heal.GetFrame(), heal.getX(), heal.getY(), 16 * 4, 33 * 4);
+			if(heal.inHealRange()) {
+				heal.render((SpriteBatch) renderer.getBatch());
+
+			}
+		}
 
 		for (Mob1 mob : mob1s) {
 			mob.Update(Gdx.graphics.getDeltaTime());
@@ -189,24 +204,21 @@ public class GameScreen implements Screen {
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
-		for (Trap trap : traps) {
-			trap.update(Gdx.graphics.getDeltaTime());
-			renderer.getBatch().draw(trap.GetFrame(), trap.getX(), trap.getY(), 16 * 4, 16 * 4);
-			// trap.render((SpriteBatch) renderer.getBatch());
+		
+		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
+				camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
+		
+		renderer.getBatch().draw(player.GetShieldFrame(), camera.position.x - 658,
+				camera.position.y - this.camera.viewportWidth / 4 + 39,17 * 3f, 18 * 3f);
+		renderer.getBatch().draw(player.GetDashFrame(), camera.position.x - 531,
+				camera.position.y - this.camera.viewportWidth / 4 + 39,17 * 3f, 18 * 3f);
+		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
+				player.getHeight());
+		
+		for (Shield shield : shields) {
+			shield.render((SpriteBatch) renderer.getBatch());
 		}
-		for (Healing heal : heals) {
-			heal.update(Gdx.graphics.getDeltaTime());
-			heal.render((SpriteBatch) renderer.getBatch());
 
-			renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
-					camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
-			renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
-					player.getHeight());
-			for (Shield shield : shields) {
-				shield.render((SpriteBatch) renderer.getBatch());
-			}
-
-		}
 		// renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(),
 		// mob1.getWidth(),
 		// player.getHeight());

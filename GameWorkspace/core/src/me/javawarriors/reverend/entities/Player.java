@@ -21,7 +21,7 @@ public class Player extends Entity {
 	Shield Shield;
 
 	// char properties
-	float charX =500;
+	float charX = 500;
 	float charY = 2200;
 	int charWidthInPixels = 25;
 	int charHeightInPixels = 29;
@@ -32,26 +32,31 @@ public class Player extends Entity {
 	int HP;
 	int bulletSpeed = 800;
 	boolean isShieldOn = false;
-	
+
 	// char Animation properties
 	Animation<TextureRegion>[] dashIndicator;
+	Animation<TextureRegion>[] shieldIndicator;
 	Animation<TextureRegion>[] healthBar;
 	Animation<TextureRegion>[] walk;
 	Texture HealNotification;
 	private static final float charAnimationSpeed = 0.15f;
 	int frameNo;
+	int dashFrameNo;
+	int dashFrameNoTemp;
+	int shieldFrameNo;
+	int shieldFrameNoTemp;
 	float stateTime;
-	
+
 	// collision
 	private TiledMapTileLayer collisionLayer;
 
 	// shield
 	float shieldCooldown = 0;
-	
+
 	// dash
 	int dash = 1;
 	float dashCooldown = 0;
-	float dashTimer = 0;//duration of the dash
+	float dashTimer = 0;// duration of the dash
 	Sound dashSfx = Gdx.audio.newSound(Gdx.files.internal("dash.ogg"));
 
 	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
@@ -59,13 +64,30 @@ public class Player extends Entity {
 		this.screen = screen;
 		frameNo = 0;
 		
-		dashIndicator = new Animation[4];
-		//TextureRegion[][] dashSpriteSheet = TextureRegion.split(new Texture("DashIndicator.png"), charWidthInPixels, //TODO:DASH INDICATOR DEVAM
-		//		charHeightInPixels);
-		//dashIndicator[0] = new Animation<>(0, dashSpriteSheet[0]);
-		
-		//Heal notification seyi cikcak boyle ekranin ortasinda falan assetti var
-		
+		shieldIndicator = new Animation[9];
+		TextureRegion[][] shieldSpriteSheet = TextureRegion.split(new Texture("shieldIndicator.png"), 17, 18);
+		shieldIndicator[0] = new Animation<>(0, shieldSpriteSheet[0]);
+		shieldIndicator[1] = new Animation<>(0, shieldSpriteSheet[1]);
+		shieldIndicator[2] = new Animation<>(0, shieldSpriteSheet[2]);
+		shieldIndicator[3] = new Animation<>(0, shieldSpriteSheet[3]);
+		shieldIndicator[4] = new Animation<>(0, shieldSpriteSheet[4]);
+		shieldIndicator[5] = new Animation<>(0, shieldSpriteSheet[5]);
+		shieldIndicator[6] = new Animation<>(0, shieldSpriteSheet[6]);
+		shieldIndicator[7] = new Animation<>(0, shieldSpriteSheet[7]);
+		shieldIndicator[8] = new Animation<>(0, shieldSpriteSheet[8]);
+
+		dashIndicator = new Animation[9];
+		TextureRegion[][] dashSpriteSheet = TextureRegion.split(new Texture("dashIndicator.png"), 17, 18);
+		dashIndicator[0] = new Animation<>(0, dashSpriteSheet[0]);
+		dashIndicator[1] = new Animation<>(0, dashSpriteSheet[1]);
+		dashIndicator[2] = new Animation<>(0, dashSpriteSheet[2]);
+		dashIndicator[3] = new Animation<>(0, dashSpriteSheet[3]);
+		dashIndicator[4] = new Animation<>(0, dashSpriteSheet[4]);
+		dashIndicator[5] = new Animation<>(0, dashSpriteSheet[5]);
+		dashIndicator[6] = new Animation<>(0, dashSpriteSheet[6]);
+		dashIndicator[7] = new Animation<>(0, dashSpriteSheet[7]);
+		dashIndicator[8] = new Animation<>(0, dashSpriteSheet[8]);
+
 		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("charAnimOld2.png"), charWidthInPixels,
 				charHeightInPixels);
@@ -74,7 +96,7 @@ public class Player extends Entity {
 		walk[2] = new Animation<>(charAnimationSpeed, walkSpriteSheet[2]);
 
 		healthBar = new Animation[11];
-		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("bossHealth.png"), 41, 7);
+		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("charHealth.png"), 119, 42);
 		healthBar[0] = new Animation<>(0, healthBarSpriteSheet[0]);
 		healthBar[1] = new Animation<>(0, healthBarSpriteSheet[1]);
 		healthBar[2] = new Animation<>(0, healthBarSpriteSheet[2]);
@@ -116,18 +138,17 @@ public class Player extends Entity {
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.SHIFT_LEFT)) {
 			if (dashCooldown > 4) {
-				
-				dashTimer=0;
+
+				dashTimer = 0;
 				dash();
-				
+
 				dashCooldown = 0;
 			} else
-				System.out.println("Dash cd=" + (4 - (int)dashCooldown));
+				System.out.println("Dash cd=" + (4 - (int) dashCooldown));
 
 		}
-		
-		
-		if(dashTimer>0.2) {
+
+		if (dashTimer > 0.2) {
 			dash();
 		}
 		if (Shield != null) {
@@ -229,51 +250,30 @@ public class Player extends Entity {
 		return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
 	}
 
-	/*private void collisionCheck() {
-		if (isCellBlocked(charX - 10, charY)) {
-			// System.out.println("sol alt sol bok");
-			dx = 0;
-		}
-		if (isCellBlocked(charX, charY - 10)) {
-			// System.out.println("sol alt alt bok");
-			dy = 0;
-		}
-		if (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) {
-			// System.out.println("sol üst sol bok");
-			dx = 0;
-		}
-		if (isCellBlocked(charX, charY + 10 + getHeight() * 1 / 3)) {
-			// System.out.println("sol üst üst bok");
-			dy = 0;
-		}
-		if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY)) {
-			// System.out.println("sağ alt sağ bok");
-			dx = 0;
-		}
-		if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) {
-			// System.out.println("sağ alt alt bok");
-			dy = 0;
-		}
-		if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
-			// System.out.println("sağ üst sağ bok");
-			dx = 0;
-		}
-		if (isCellBlocked(charX + getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) {
-			// System.out.println("sağ üst üst bok");
-			dy = 0;
-		}
-	}
-*/
+	/*
+	 * private void collisionCheck() { if (isCellBlocked(charX - 10, charY)) { //
+	 * System.out.println("sol alt sol bok"); dx = 0; } if (isCellBlocked(charX,
+	 * charY - 10)) { // System.out.println("sol alt alt bok"); dy = 0; } if
+	 * (isCellBlocked(charX - 10, charY + getHeight() * 1 / 3)) { //
+	 * System.out.println("sol üst sol bok"); dx = 0; } if (isCellBlocked(charX,
+	 * charY + 10 + getHeight() * 1 / 3)) { //
+	 * System.out.println("sol üst üst bok"); dy = 0; } if (isCellBlocked(charX +
+	 * getWidth() * 1 / 2 + 10, charY)) { // System.out.println("sağ alt sağ bok");
+	 * dx = 0; } if (isCellBlocked(charX + getWidth() * 1 / 2, charY - 10)) { //
+	 * System.out.println("sağ alt alt bok"); dy = 0; } if (isCellBlocked(charX +
+	 * getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) { //
+	 * System.out.println("sağ üst sağ bok"); dx = 0; } if (isCellBlocked(charX +
+	 * getWidth() * 1 / 2, charY + 10 + getHeight() * 1 / 3)) { //
+	 * System.out.println("sağ üst üst bok"); dy = 0; } }
+	 */
 	public void dash() {
-		
-		
-		if(dashTimer < 0.2) {
+
+		if (dashTimer < 0.2) {
 			System.out.println("anan");
 			dashSfx.play();
 			dash = 5;
-		}
-		else {
-			dash=1;
+		} else {
+			dash = 1;
 		}
 	}
 
@@ -447,7 +447,6 @@ public class Player extends Entity {
 
 		setPosition(charX, charY);
 	}
-	
 
 	public int getHP() {
 		return HP;
@@ -464,15 +463,20 @@ public class Player extends Entity {
 	public void setShieldOn(boolean isShieldOn) {
 		this.isShieldOn = isShieldOn;
 	}
-	
-	//public TextureRegion GetHealthFrame() {
-		//return (healthBar[10 - (HP / 10)].getKeyFrame(stateTime)); //TODO: GetShieldFrame()
-	//}
 
-	public TextureRegion GetDashFrame() {
-		return (dashIndicator[10 - (HP / 10)].getKeyFrame(stateTime));
+	public TextureRegion GetShieldFrame() {
+		shieldFrameNoTemp = 8 - (int)(shieldCooldown);
+		shieldFrameNo = shieldFrameNoTemp;
+		if (shieldFrameNoTemp  <= 0) shieldFrameNo = 0;
+		return (shieldIndicator[shieldFrameNo].getKeyFrame(stateTime));
 	}
 
+	public TextureRegion GetDashFrame() {
+		dashFrameNoTemp = 8 - ((int)(dashCooldown*10))/5;
+		dashFrameNo = dashFrameNoTemp;
+		if (dashFrameNoTemp  <= 0) dashFrameNo = 0;
+		return (dashIndicator[dashFrameNo].getKeyFrame(stateTime));
+	}
 
 	public TextureRegion GetHealthFrame() {
 		return (healthBar[10 - (HP / 10)].getKeyFrame(stateTime));
