@@ -6,6 +6,7 @@
 		<item key="isRegEx" value="false"/>
 		<item key="selection" value="speed"/>
 		<list key="findhistory">
+			<item value="renderer"/>
 			<item value="anan"/>
 			<item value="speed"/>
 			<item value="walk"/>
@@ -13,7 +14,6 @@
 			<item value="isDamaged"/>
 			<item value="sys"/>
 			<item value="state"/>
-			<item value="frameNo"/>
 		</list>
 		<list key="replacehistory">
 		</list>

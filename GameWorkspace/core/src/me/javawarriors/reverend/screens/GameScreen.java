@@ -10,6 +10,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Attribute;
+import com.badlogic.gdx.graphics.g3d.shaders.BaseShader.Uniform;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -27,11 +30,16 @@ import me.javawarriors.reverend.entities.Trap;
 
 public class GameScreen implements Screen {
 
+	// Shader
+	private ShaderProgram shader;
+	private boolean shaderON = false;
 	// map
 	private TiledMap map;
+	// cam
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
-	private Mob1 mob1a, mob1b, mob1c,mob1d,mob1e,mob1f;
+	// game
+	private Mob1 mob1a, mob1b, mob1c, mob1d, mob1e, mob1f;
 	private Mob2 mob2a;
 	private Player player;
 	private Trap trap;
@@ -45,8 +53,10 @@ public class GameScreen implements Screen {
 	private ArrayList<Trap> traps;
 	private ArrayList<Healing> heals;
 	ReverendGame game;
+
+	// music
 	Music music;
-	boolean bgmusic=false;
+	boolean bgmusic = false;
 
 	public GameScreen(ReverendGame game) {
 
@@ -61,22 +71,29 @@ public class GameScreen implements Screen {
 		heals = new ArrayList<Healing>();
 		music = Gdx.audio.newMusic(Gdx.files.internal("bgmusic.mp3"));
 		music.setVolume(0.1f);
-		
-		
+
 	}
 
 	@Override
 	public void show() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+
 		TmxMapLoader loader = new TmxMapLoader();
 		map = loader.load("map1.tmx");
 		renderer = new OrthogonalTiledMapRenderer(map, 4f);
 		player = new Player((TiledMapTileLayer) map.getLayers().get(3), this);
 		camera = new OrthographicCamera();
-		trap= new Trap(player, this, 384,384);
-		heal= new Healing(player,this,500 ,500);
-		heal= new Healing(player,this,800 ,800);
-		heal= new Healing(player,this,600 ,1800);
-		
+
+		ShaderProgram.pedantic = false;
+		shader = new ShaderProgram(Gdx.files.internal("shaders/vignette.vsh"),
+				Gdx.files.internal("shaders/vignette.fsh"));
+		System.out.println(shader.isCompiled() ? "shader compiled." : shader.getLog());
+
+		trap = new Trap(player, this, 384, 384);
+		heal = new Healing(player, this, 500, 500);
+		heal = new Healing(player, this, 800, 800);
+		heal = new Healing(player, this, 600, 1800);
+
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 600, 1800, 100);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -99,20 +116,32 @@ public class GameScreen implements Screen {
 				"Mob1a", 5825, 3524, 100);
 		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob2a", 600, 1800, 200, 20, 40, "bebe1.png");
+		renderer.getBatch().setShader(shader);
 	}
 
 	@Override
 	public void render(float delta) {
-		if(!bgmusic) {
+		if (!bgmusic) {
 			music.play();
-			bgmusic=true;
+			bgmusic = true;
 		}
+		// camera.viewportHeight = 1920;
+		// camera.viewportWidth = 1080;
+		// camera.update();
+
+		shader.setUniformf("innerRadius", (float) player.getHP() / 100);
+		if (player.getHP() < 60) {
+			shader.setUniformf("intensity", 0.9f);
+		} else {
+			shader.setUniformf("intensity", 0f);
+		}
+		shader.setUniformf("u_resolution", 1920, 1080);
+
 		bullets.addAll(pbullets);
 		bullets.addAll(mbullets);
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		// Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		player.Update(Gdx.graphics.getDeltaTime());
-		
 
 		// CAmera Smooth Follow lerp değerini değiştirerek kamera follow hızı
 		// değiştri=========================
@@ -130,7 +159,6 @@ public class GameScreen implements Screen {
 		camera.position.set(player.getX(), player.getY(), 0);
 
 		camera.update();
-
 		renderer.setView(camera);
 		renderer.render();
 		renderer.getBatch().begin();
@@ -158,32 +186,31 @@ public class GameScreen implements Screen {
 			mob2.render((SpriteBatch) renderer.getBatch());
 		}
 
-
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
-		for (Trap trap: traps) {
+		for (Trap trap : traps) {
 			trap.update(Gdx.graphics.getDeltaTime());
-			renderer.getBatch().draw(trap.GetFrame(),trap.getX(), trap.getY(), 16 * 4,16 * 4);
-			//trap.render((SpriteBatch) renderer.getBatch());
+			renderer.getBatch().draw(trap.GetFrame(), trap.getX(), trap.getY(), 16 * 4, 16 * 4);
+			// trap.render((SpriteBatch) renderer.getBatch());
 		}
-		for (Healing heal: heals) {
+		for (Healing heal : heals) {
 			heal.update(Gdx.graphics.getDeltaTime());
 			heal.render((SpriteBatch) renderer.getBatch());
-		
-		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
-				camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
-		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
-				player.getHeight());
-		for (Shield shield: shields) {
-			shield.render((SpriteBatch) renderer.getBatch());
-		}
-		
+
+			renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
+					camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
+			renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
+					player.getHeight());
+			for (Shield shield : shields) {
+				shield.render((SpriteBatch) renderer.getBatch());
+			}
+
 		}
 		// renderer.getBatch().draw(mob1.GetFrame(), mob1.getX(), mob1.getY(),
 		// mob1.getWidth(),
 		// player.getHeight());
-		
+
 		renderer.getBatch().end();
 
 	}
@@ -192,10 +219,10 @@ public class GameScreen implements Screen {
 	public void resize(int width, int height) {
 		camera.viewportHeight = height;
 		camera.viewportWidth = width;
-		camera.update();
+		// camera.update();
+		shader.setUniformf("u_resolution", width, height);
 	}
 
-	
 	public ArrayList<Shield> getShields() {
 		return shields;
 	}
@@ -251,7 +278,6 @@ public class GameScreen implements Screen {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
-	
 
 	public ArrayList<Trap> getTraps() {
 		return traps;
@@ -260,7 +286,6 @@ public class GameScreen implements Screen {
 	public void setTraps(ArrayList<Trap> traps) {
 		this.traps = traps;
 	}
-	
 
 	public ArrayList<Healing> getHeals() {
 		return heals;

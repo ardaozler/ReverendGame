@@ -69,8 +69,6 @@ public class Mob1 extends Entity {
 		screen.getMob1s().add(this);
 	}
 
-	
-
 	public void Update(float delta) {
 		shootTime += delta;
 		float oldX = charX, oldY = charY;

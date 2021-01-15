@@ -21,7 +21,7 @@ public class Player extends Entity {
 	Shield Shield;
 
 	// char properties
-	float charX =-150;
+	float charX =500;
 	float charY = 2200;
 	int charWidthInPixels = 25;
 	int charHeightInPixels = 29;
@@ -51,7 +51,7 @@ public class Player extends Entity {
 	// dash
 	int dash = 1;
 	float dashCooldown = 0;
-	float dashTimer = 0;
+	float dashTimer = 0;//duration of the dash
 	Sound dashSfx = Gdx.audio.newSound(Gdx.files.internal("dash.ogg"));
 
 	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
@@ -60,9 +60,9 @@ public class Player extends Entity {
 		frameNo = 0;
 		
 		dashIndicator = new Animation[4];
-		TextureRegion[][] dashSpriteSheet = TextureRegion.split(new Texture("DashIndicator.png"), charWidthInPixels, //TODO:DASH INDICATOR DEVAM
-				charHeightInPixels);
-		dashIndicator[0] = new Animation<>(0, dashSpriteSheet[0]);
+		//TextureRegion[][] dashSpriteSheet = TextureRegion.split(new Texture("DashIndicator.png"), charWidthInPixels, //TODO:DASH INDICATOR DEVAM
+		//		charHeightInPixels);
+		//dashIndicator[0] = new Animation<>(0, dashSpriteSheet[0]);
 		
 		//Heal notification seyi cikcak boyle ekranin ortasinda falan assetti var
 		
@@ -74,7 +74,7 @@ public class Player extends Entity {
 		walk[2] = new Animation<>(charAnimationSpeed, walkSpriteSheet[2]);
 
 		healthBar = new Animation[11];
-		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("CharHealth.png"), 72, 25);
+		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("bossHealth.png"), 41, 7);
 		healthBar[0] = new Animation<>(0, healthBarSpriteSheet[0]);
 		healthBar[1] = new Animation<>(0, healthBarSpriteSheet[1]);
 		healthBar[2] = new Animation<>(0, healthBarSpriteSheet[2]);
@@ -464,6 +464,15 @@ public class Player extends Entity {
 	public void setShieldOn(boolean isShieldOn) {
 		this.isShieldOn = isShieldOn;
 	}
+	
+	//public TextureRegion GetHealthFrame() {
+		//return (healthBar[10 - (HP / 10)].getKeyFrame(stateTime)); //TODO: GetShieldFrame()
+	//}
+
+	public TextureRegion GetDashFrame() {
+		return (dashIndicator[10 - (HP / 10)].getKeyFrame(stateTime));
+	}
+
 
 	public TextureRegion GetHealthFrame() {
 		return (healthBar[10 - (HP / 10)].getKeyFrame(stateTime));
