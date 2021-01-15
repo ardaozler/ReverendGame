@@ -172,7 +172,7 @@ public class GameScreen implements Screen {
 			heal.render((SpriteBatch) renderer.getBatch());
 		
 		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
-				camera.position.y - this.camera.viewportWidth / 4, 45 * 3, 9 * 3);
+				camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
 				player.getHeight());
 		for (Shield shield: shields) {

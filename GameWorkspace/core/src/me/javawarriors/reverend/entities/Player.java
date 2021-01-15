@@ -34,6 +34,7 @@ public class Player extends Entity {
 	boolean isShieldOn = false;
 	
 	// char Animation properties
+	Animation<TextureRegion>[] dashIndicator;
 	Animation<TextureRegion>[] healthBar;
 	Animation<TextureRegion>[] walk;
 	Texture HealNotification;
@@ -58,6 +59,11 @@ public class Player extends Entity {
 		this.screen = screen;
 		frameNo = 0;
 		
+		dashIndicator = new Animation[4];
+		TextureRegion[][] dashSpriteSheet = TextureRegion.split(new Texture("DashIndicator.png"), charWidthInPixels, //TODO:DASH INDICATOR DEVAM
+				charHeightInPixels);
+		dashIndicator[0] = new Animation<>(0, dashSpriteSheet[0]);
+		
 		//Heal notification seyi cikcak boyle ekranin ortasinda falan assetti var
 		
 		walk = new Animation[6];
@@ -68,7 +74,7 @@ public class Player extends Entity {
 		walk[2] = new Animation<>(charAnimationSpeed, walkSpriteSheet[2]);
 
 		healthBar = new Animation[11];
-		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("charHealth.png"), 41, 7);
+		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("CharHealth.png"), 72, 25);
 		healthBar[0] = new Animation<>(0, healthBarSpriteSheet[0]);
 		healthBar[1] = new Animation<>(0, healthBarSpriteSheet[1]);
 		healthBar[2] = new Animation<>(0, healthBarSpriteSheet[2]);
@@ -223,7 +229,7 @@ public class Player extends Entity {
 		return cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked");
 	}
 
-	private void collisionCheck() {
+	/*private void collisionCheck() {
 		if (isCellBlocked(charX - 10, charY)) {
 			// System.out.println("sol alt sol bok");
 			dx = 0;
@@ -257,7 +263,7 @@ public class Player extends Entity {
 			dy = 0;
 		}
 	}
-
+*/
 	public void dash() {
 		
 		
