@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
 		traps = new ArrayList<Trap>();
 		heals = new ArrayList<Healing>();
 		music = Gdx.audio.newMusic(Gdx.files.internal("bgmusic.mp3"));
-		music.setVolume(0.1f);
+		music.setVolume(0.2f);
 
 	}
 
@@ -88,34 +88,99 @@ public class GameScreen implements Screen {
 		shader = new ShaderProgram(Gdx.files.internal("shaders/vignette.vsh"),
 				Gdx.files.internal("shaders/vignette.fsh"));
 		System.out.println(shader.isCompiled() ? "shader compiled." : shader.getLog());
-
-		trap = new Trap(player, this, 384, 384);
-		heal = new Healing(player, this, 500, 500);
-		heal = new Healing(player, this, 800, 800);
-		heal = new Healing(player, this, 600, 1800);
-
+		
+		
+		//Tutorial room
+		trap = new Trap(player, this, 126, 3136);
+		heal = new Healing(player, this, 1150, 3712);
+		
+		//first mob room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 600, 1800, 100);
+				"Mob1a",3596 ,1851, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 3500, 500, 100);
+				"Mob1a", 4351, 2336, 50);
+		trap = new Trap(player, this, 4159, 2052);
+		trap = new Trap(player, this, 4158, 2430);
+		
+		
+		//second room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 3900, 600, 100);
+				"Mob1a", 7567, 2889, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 4538, 295, 100);
+				"Mob1a", 9021, 2616, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 7534, 1205, 100);
-		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 9149, 1170, 100);
-		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 8637, 307, 100);
-		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 3947, 3713, 100);
-		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 5535, 3524, 100);
-		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 5825, 3524, 100);
+				"Mob1a", 8836, 1761, 50);
 		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob2a", 600, 1800, 200, 20, 40, "bebe1.png");
+				"Mob2a", 8500, 2000, 200, 20, 40, "bebe1.png");
+		trap = new Trap(player, this, 7423, 2364);
+		trap = new Trap(player, this, 8441, 2942);
+		trap = new Trap(player, this, 8777, 2436);
+		trap = new Trap(player, this, 8455, 1787);
+		heal = new Healing(player, this, 8188, 3204);
+		
+		//2 kapili room
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 4219, 5315, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 5673, 4750, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 5129, 5385, 50);
+		trap = new Trap(player, this, 5176, 4606);
+		trap = new Trap(player, this, 3773, 4481);
+		trap = new Trap(player, this, 5701, 4858);
+		
+		//first to the left
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 457, 4401, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 1341, 4475, 500);
+		trap = new Trap(player, this, 3898, 6143);
+		trap = new Trap(player, this, 1216, 4542);
+		trap = new Trap(player, this, 318, 4669);
+		trap = new Trap(player, this, 959, 5112);
+		heal = new Healing(player, this, 2745, 6275);
+		
+		//fake boss room
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 1173, 8250, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 212, 8950, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 2113, 7551, 50);
+		trap = new Trap(player, this, 695, 7613);
+		trap = new Trap(player, this, 956, 8452);
+		trap = new Trap(player, this, 1851, 8386);
+		trap = new Trap(player, this, 1851, 7555);
+		trap = new Trap(player, this, 386, 8450);
+		trap = new Trap(player, this, 1084, 9088);
+		trap = new Trap(player, this, 2170, 9146);
+		heal = new Healing(player, this, 1273, 9343);
+		
+		//sagdan ilk room
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 7269, 4986, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 8118, 4278, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 8134, 5484, 50);
+		trap = new Trap(player, this, 6650, 5444);
+		trap = new Trap(player, this, 7677, 4925);
+		trap = new Trap(player, this, 8183, 4289);
+		trap = new Trap(player, this, 8315, 5124);
+		
+		
+		//sagdan ikinci room
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 8778, 8919, 50);
+		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob1a", 7764, 8271, 50);
+		trap = new Trap(player, this, 8893, 8126);
+		trap = new Trap(player, this, 7806, 8252);
+		trap = new Trap(player, this, 8504, 8766);
+		
+		//Boss room
+		
+		
 		renderer.getBatch().setShader(shader);
 	}
 
@@ -129,6 +194,11 @@ public class GameScreen implements Screen {
 		// camera.viewportWidth = 1080;
 		// camera.update();
 
+		if(player.getHP()==0) {
+			game.setScreen(new MainMenuScreen(game));
+		}
+		
+		
 		shader.setUniformf("innerRadius", (float) player.getHP() / 100);
 		if (player.getHP() < 60) {
 			shader.setUniformf("intensity", 0.9f);

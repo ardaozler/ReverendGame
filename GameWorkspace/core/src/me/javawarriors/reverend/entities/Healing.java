@@ -78,6 +78,7 @@ public class Healing extends Entity {
 				}
 
 			} else {
+				secondsElapsed+=4;
 				inVicinity = false;
 				water.stop();
 

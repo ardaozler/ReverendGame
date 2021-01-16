@@ -17,7 +17,7 @@ public class Player extends Entity {
 
 	GameScreen screen;
 	boolean isDamaged = false;
-
+	boolean isDead;
 	Shield Shield;
 
 	// char properties
@@ -46,20 +46,23 @@ public class Player extends Entity {
 	int shieldFrameNo;
 	int shieldFrameNoTemp;
 	float stateTime;
-
+	float soundTimer=25;
+	
 	// collision
 	private TiledMapTileLayer collisionLayer;
 
 	// shield
-	float shieldCooldown = 0;
+	float shieldCooldown = 7;
 
 	// dash
 	int dash = 1;
-	float dashCooldown = 0;
+	float dashCooldown = 4;
 	float dashTimer = 0;// duration of the dash
 	Sound dashSfx = Gdx.audio.newSound(Gdx.files.internal("dash.ogg"));
-
+	Sound walking = Gdx.audio.newSound(Gdx.files.internal("running_og.wav"));
+	
 	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
+		
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		frameNo = 0;
@@ -114,14 +117,29 @@ public class Player extends Entity {
 	}
 
 	public void Update(float delta) {
-		// System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY));
+		
+		System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY));
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		stateTime += delta;
 		shieldCooldown += delta;
 		dashCooldown += delta;
 		dashTimer += delta;
+		soundTimer+=delta;
 		move();
+		//walking.play();
+		if((dx!=0||dy!=0)&&soundTimer>=25) {
+			
+			soundTimer=0;
+			walking.play(0.2f);
+		}else if(dx==0&&dy==0) {
+			soundTimer=25;
+			walking.stop();
+			
+			
+		}
+		
+		System.out.println(soundTimer);
 
 		if (Gdx.input.isTouched()) {
 			shoot(charX + 27, charY + 37, collisionLayer);
@@ -269,7 +287,7 @@ public class Player extends Entity {
 	public void dash() {
 
 		if (dashTimer < 0.2) {
-			System.out.println("anan");
+			//System.out.println("anan");
 			dashSfx.play();
 			dash = 5;
 		} else {
@@ -284,6 +302,7 @@ public class Player extends Entity {
 			frameNo = 1;
 			dx = 1;
 			dy = 1;
+			
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
 				// System.out.println("sağ üst sağ bok");
 				dx = 0;

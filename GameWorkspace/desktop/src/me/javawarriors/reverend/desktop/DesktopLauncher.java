@@ -12,7 +12,7 @@ public class DesktopLauncher {
 		config.title = "Reverend";
 		config.height = ReverendGame.getHeight();
 		config.width = ReverendGame.getWidth();
-		config.fullscreen = true;
+		config.fullscreen = false;
 
 		new LwjglApplication(new ReverendGame(), config);
 	}

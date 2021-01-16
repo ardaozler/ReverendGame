@@ -2,6 +2,7 @@ package me.javawarriors.reverend.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -23,7 +24,7 @@ public class Bullet extends Entity {
 	GameScreen screen;
 	boolean collided=false;
 	private boolean remove = false;
-
+	//Sound bam = Gdx.audio.newSound(Gdx.files.internal("basicAttack2.ogg"));
 	// collision with map
 	private TiledMapTileLayer collisionLayer;
 
@@ -42,7 +43,7 @@ public class Bullet extends Entity {
 		magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi * ykatsayisi)));
 		ykatsayisi = ykatsayisi / magnitude;
 		xkatsayisi = xkatsayisi / magnitude;
-
+		//bam.play(0.8f);
 		if (texture == null) {
 			texture = new Texture("Pew.png");
 			textureRegion = new TextureRegion(texture);
@@ -60,7 +61,7 @@ public class Bullet extends Entity {
 		}
 		secondsElapsed += delta;
 
-		if (secondsElapsed > 10) {
+		if (secondsElapsed > 20) {
 			remove = true;
 		}
 
