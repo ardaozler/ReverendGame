@@ -21,7 +21,7 @@ public class DeathScreen implements Screen {
 
 	public DeathScreen(ReverendGame game) {
 		this.game = game;
-		uDed = new Texture("uded.png");
+		uDed = new Texture("UrDEAD.png");
 		exitButtonActive = new Texture("ExitW.png");
 		exitButtonInactive = new Texture("ExitR.png");
 		playButtonActive = new Texture("PlayW.png");
@@ -35,10 +35,10 @@ public class DeathScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.getBatch().begin();
-		game.getBatch().draw(uDed, ButtonX , PlayButtonY + ExitButtonY, ButtonWidth, ButtonHeight);
+		game.getBatch().draw(uDed, ButtonX - 130*2 , 1.6f*(PlayButtonY + ExitButtonY), 212*4, 57*4);
 		if (mouseInput() == 1) {
 			game.getBatch().draw(playButtonInactive, ButtonX, PlayButtonY, ButtonWidth, ButtonHeight);
 			game.getBatch().draw(exitButtonActive, ButtonX, ExitButtonY, ButtonWidth, ButtonHeight);

@@ -17,10 +17,11 @@ public class MainMenuScreen implements Screen {
 
 	ReverendGame game;
 
-	Texture exitButtonActive, exitButtonInactive, playButtonActive, playButtonInactive;
+	Texture exitButtonActive, exitButtonInactive, playButtonActive, playButtonInactive, reverendLogo;
 
 	public MainMenuScreen(ReverendGame game) {
 		this.game = game;
+		reverendLogo = new Texture("REVERENDBaslik.png");
 		exitButtonActive = new Texture("ExitW.png");
 		exitButtonInactive = new Texture("ExitR.png");
 		playButtonActive = new Texture("PlayW.png");
@@ -34,9 +35,10 @@ public class MainMenuScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
+		Gdx.gl.glClearColor(0.2f, 0.3f, 0.35f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.getBatch().begin();
+		game.getBatch().draw(reverendLogo, ButtonX - 130*2 , 1.6f*(PlayButtonY + ExitButtonY), 212*4, 57*4);
 		if (mouseInput() == 1) {
 			game.getBatch().draw(playButtonInactive, ButtonX, PlayButtonY, ButtonWidth, ButtonHeight);
 			game.getBatch().draw(exitButtonActive, ButtonX, ExitButtonY, ButtonWidth, ButtonHeight);

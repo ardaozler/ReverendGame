@@ -38,18 +38,20 @@ public class miniBoss extends Entity {
 	int moveChange = 0;
 	float shootTime = 0;
 	int bulletSpeed = 800;
-	
+
 	// char Animation properties
 	Animation<TextureRegion>[] bossHealthBar;
 	Animation<TextureRegion>[] walk;
 	int bossHealthBarFrameNoTemp, bossHealthBarFrameNo;
 	private static final float charAnimationSpeed = 0.15f;
+	boolean showHealthBar = false;
 	float stateTime;
+
 	boolean inVicinity;
 	Sound dead = Gdx.audio.newSound(Gdx.files.internal("calebblemum.mp3"));
 	Sound alert = Gdx.audio.newSound(Gdx.files.internal("alert.mp3"));
 	boolean alerted = false;
-	
+
 	// collision
 	private TiledMapTileLayer collisionLayer;
 	private TiledMapTileLayer mobcollisionLayer;
@@ -69,12 +71,12 @@ public class miniBoss extends Entity {
 		this.screen = screen;
 		this.mobcollisionLayer = MobcollisionLayer;
 		walk = new Animation[6];
-		
+
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("RedBoi-sheet.png"), charWidthInPixels,
 				charHeightInPixels);
 
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
-		
+
 		bossHealthBar = new Animation[11];
 		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("bossHealth.png"), 41, 7);
 		bossHealthBar[0] = new Animation<>(0, healthBarSpriteSheet[0]);
@@ -88,7 +90,7 @@ public class miniBoss extends Entity {
 		bossHealthBar[8] = new Animation<>(0, healthBarSpriteSheet[8]);
 		bossHealthBar[9] = new Animation<>(0, healthBarSpriteSheet[9]);
 		bossHealthBar[10] = new Animation<>(0, healthBarSpriteSheet[10]);
-		
+
 		HP = 300;
 		screen.getMiniBosses().add(this);
 	}
@@ -207,8 +209,7 @@ public class miniBoss extends Entity {
 		ykatsayisiShoot = screen.getPlayer().getY() - charY;
 		ykatsayisiShoot = ykatsayisiShoot / hipotenus;
 		xkatsayisiShoot = xkatsayisiShoot / hipotenus;
-		System.out.println("im shootin here");
-
+		
 		if (screen.getMbullets().size() == 0 || shootTime > 0.16) {
 			shootTime = 0;
 
@@ -216,26 +217,20 @@ public class miniBoss extends Entity {
 					MobName, this.screen, bulletSpeed));
 			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
 					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
+			// some retardness is in this but idk how to find it dinçer helb
+			bullets.add(new Bullet(playerX, playerY, collisionLayer,
+					(float) (screen.getPlayer().charX + hipotenus * Math.sin(0.1)),
+					(float) (screen.getPlayer().charY + hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
+			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer,
+					(float) (screen.getPlayer().charX + hipotenus * Math.sin(0.1)),
+					(float) (screen.getPlayer().charY + hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
 
 			bullets.add(new Bullet(playerX, playerY, collisionLayer,
-					(float) (screen.getPlayer().charX + hipotenus * Math.cos(0.0873)),
-					(float) (screen.getPlayer().charY + hipotenus * Math.sin(0.0873)), MobName, this.screen,
-					bulletSpeed));
-			screen.getMbullets()
-					.add(new Bullet(playerX, playerY, collisionLayer,
-							(float) (screen.getPlayer().charX + hipotenus * Math.cos(0.0873)),
-							(float) (screen.getPlayer().charY + hipotenus * Math.sin(0.0873)), MobName, this.screen,
-							bulletSpeed));
-			
-			bullets.add(new Bullet(playerX, playerY, collisionLayer,
-					(float) (screen.getPlayer().charX - hipotenus * Math.cos(0.0873)),
-					(float) (screen.getPlayer().charY - hipotenus * Math.sin(0.0873)), MobName, this.screen,
-					bulletSpeed));
-			screen.getMbullets()
-					.add(new Bullet(playerX, playerY, collisionLayer,
-							(float) (screen.getPlayer().charX - hipotenus * Math.cos(0.0873)),
-							(float) (screen.getPlayer().charY - hipotenus * Math.sin(0.0873)), MobName, this.screen,
-							bulletSpeed));
+					(float) (screen.getPlayer().charX - hipotenus * Math.sin(0.1)),
+					(float) (screen.getPlayer().charY - hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
+			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer,
+					(float) (screen.getPlayer().charX - hipotenus * Math.sin(0.1)),
+					(float) (screen.getPlayer().charY - hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
 
 		}
 
@@ -352,18 +347,19 @@ public class miniBoss extends Entity {
 	public TextureRegion GetFrame() {
 		return (walk[0].getKeyFrame(stateTime, true));
 	}
+
 	public TextureRegion GetBossHealthFrame() {
 		HPtemp = HP;
 		System.out.println(HPtemp);
-		if(HP>200) {
-		bossHealthBarFrameNoTemp = 30-(HPtemp/10);
-		}else if(HP>100 && HP<= 200) {
-			bossHealthBarFrameNoTemp = 20-(HPtemp/10);
-		}else {
-			bossHealthBarFrameNoTemp = 10-(HPtemp/10);
+		if (HP > 200) {
+			bossHealthBarFrameNoTemp = 30 - (HPtemp / 10);
+		} else if (HP > 100 && HP <= 200) {
+			bossHealthBarFrameNoTemp = 20 - (HPtemp / 10);
+		} else {
+			bossHealthBarFrameNoTemp = 10 - (HPtemp / 10);
 		}
 		bossHealthBarFrameNo = bossHealthBarFrameNoTemp;
-		if(bossHealthBarFrameNoTemp>=30) {
+		if (bossHealthBarFrameNoTemp >= 30) {
 			bossHealthBarFrameNo = 10;
 		}
 		System.out.println(bossHealthBarFrameNo);
