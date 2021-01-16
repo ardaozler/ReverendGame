@@ -41,6 +41,8 @@ public class Player extends Entity {
 	Texture HealNotification;
 	private static final float charAnimationSpeed = 0.15f;
 	int frameNo;
+	int healthBarFrameNo;
+	int healthBarFrameNoTemp;
 	int dashFrameNo;
 	int dashFrameNoTemp;
 	int shieldFrameNo;
@@ -118,7 +120,7 @@ public class Player extends Entity {
 
 	public void Update(float delta) {
 		
-		System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY));
+		//System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY)); 
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		stateTime += delta;
@@ -138,23 +140,21 @@ public class Player extends Entity {
 			
 			
 		}
-		
-		System.out.println(soundTimer);
 
 		if (Gdx.input.isTouched()) {
 			shoot(charX + 27, charY + 37, collisionLayer);
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
+		if (Gdx.input.isKeyJustPressed(Keys.SHIFT_LEFT)) {
 			if (shieldCooldown > 8) {
 				isShieldOn = true;
 				Shield = new Shield(charX, charY, screen, "player");
 				screen.getShields().add(Shield);
 				shieldCooldown = 0;
 			} else
-				System.out.println("Liderim cooldown bekle aq " + (8 - (int) shieldCooldown) + " saniye var");
+				System.out.println("Shield cooldown" + (8 - (int) shieldCooldown) + " saniye var");
 
 		}
-		if (Gdx.input.isKeyJustPressed(Keys.SHIFT_LEFT)) {
+		if (Gdx.input.isKeyJustPressed(Keys.SPACE)) {
 			if (dashCooldown > 4) {
 
 				dashTimer = 0;
@@ -214,7 +214,11 @@ public class Player extends Entity {
 		}
 		HitScan();
 		if (udead()) {
-
+			dashSfx.dispose();
+			walking.dispose();
+			dx = 0;
+			dy = 0;
+			
 		}
 	}
 
@@ -231,7 +235,7 @@ public class Player extends Entity {
 					if (!isShieldOn) {
 						HP -= 5;
 					}
-					System.out.println("Player " + HP);
+					//System.out.println("Player " + HP);
 					isDamaged = true;
 				}
 				return true;
@@ -287,7 +291,6 @@ public class Player extends Entity {
 	public void dash() {
 
 		if (dashTimer < 0.2) {
-			//System.out.println("anan");
 			dashSfx.play();
 			dash = 5;
 		} else {
@@ -483,6 +486,22 @@ public class Player extends Entity {
 		this.isShieldOn = isShieldOn;
 	}
 
+	public Sound getDashSfx() {
+		return dashSfx;
+	}
+
+	public void setDashSfx(Sound dashSfx) {
+		this.dashSfx = dashSfx;
+	}
+
+	public Sound getWalking() {
+		return walking;
+	}
+
+	public void setWalking(Sound walking) {
+		this.walking = walking;
+	}
+
 	public TextureRegion GetShieldFrame() {
 		shieldFrameNoTemp = 8 - (int)(shieldCooldown);
 		shieldFrameNo = shieldFrameNoTemp;
@@ -498,7 +517,10 @@ public class Player extends Entity {
 	}
 
 	public TextureRegion GetHealthFrame() {
-		return (healthBar[10 - (HP / 10)].getKeyFrame(stateTime));
+		healthBarFrameNoTemp = 10-(HP/10);
+		healthBarFrameNo = healthBarFrameNoTemp;
+		if(healthBarFrameNoTemp>=10) healthBarFrameNo = 10;
+		return (healthBar[healthBarFrameNo].getKeyFrame(stateTime));
 	}
 
 	public TextureRegion GetFrame() {

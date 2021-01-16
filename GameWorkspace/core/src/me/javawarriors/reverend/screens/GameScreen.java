@@ -3,15 +3,11 @@ package me.javawarriors.reverend.screens;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g3d.Attribute;
-import com.badlogic.gdx.graphics.g3d.shaders.BaseShader.Uniform;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -27,6 +23,7 @@ import me.javawarriors.reverend.entities.Mob2;
 import me.javawarriors.reverend.entities.Player;
 import me.javawarriors.reverend.entities.Shield;
 import me.javawarriors.reverend.entities.Trap;
+import me.javawarriors.reverend.entities.miniBoss;
 
 public class GameScreen implements Screen {
 
@@ -39,8 +36,10 @@ public class GameScreen implements Screen {
 	private OrthogonalTiledMapRenderer renderer;
 	private OrthographicCamera camera;
 	// game
-	private Mob1 mob1a, mob1b, mob1c, mob1d, mob1e, mob1f;
+	private Mob1 mob1a;
 	private Mob2 mob2a;
+	private miniBoss miniBoss;
+
 	private Player player;
 	private Trap trap;
 	private Healing heal;
@@ -50,6 +49,7 @@ public class GameScreen implements Screen {
 	private ArrayList<Shield> shields;
 	private ArrayList<Mob1> mob1s;
 	private ArrayList<Mob2> mob2s;
+	private ArrayList<miniBoss> miniBosses;
 	private ArrayList<Trap> traps;
 	private ArrayList<Healing> heals;
 	ReverendGame game;
@@ -66,6 +66,7 @@ public class GameScreen implements Screen {
 		pbullets = new ArrayList<Bullet>();
 		mbullets = new ArrayList<Bullet>();
 		mob1s = new ArrayList<Mob1>();
+		miniBosses = new ArrayList<miniBoss>();
 		mob2s = new ArrayList<Mob2>();
 		traps = new ArrayList<Trap>();
 		heals = new ArrayList<Healing>();
@@ -88,22 +89,20 @@ public class GameScreen implements Screen {
 		shader = new ShaderProgram(Gdx.files.internal("shaders/vignette.vsh"),
 				Gdx.files.internal("shaders/vignette.fsh"));
 		System.out.println(shader.isCompiled() ? "shader compiled." : shader.getLog());
-		
-		
-		//Tutorial room
+
+		// Tutorial room
 		trap = new Trap(player, this, 126, 3136);
 		heal = new Healing(player, this, 1150, 3712);
-		
-		//first mob room
+
+		// first mob room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a",3596 ,1851, 50);
+				"Mob1a", 3596, 1851, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 4351, 2336, 50);
 		trap = new Trap(player, this, 4159, 2052);
 		trap = new Trap(player, this, 4158, 2430);
-		
-		
-		//second room
+
+		// second room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 7567, 2889, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -117,8 +116,8 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 8777, 2436);
 		trap = new Trap(player, this, 8455, 1787);
 		heal = new Healing(player, this, 8188, 3204);
-		
-		//2 kapili room
+
+		// 2 kapili room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 4219, 5315, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -128,19 +127,21 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 5176, 4606);
 		trap = new Trap(player, this, 3773, 4481);
 		trap = new Trap(player, this, 5701, 4858);
-		
-		//first to the left
+
+		// first to the left
+		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
+				this, "miniBoss", 457, 2201, 50, 500);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 457, 4401, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 1341, 4475, 500);
+				"Mob1a", 1341, 4475, 50);
 		trap = new Trap(player, this, 3898, 6143);
 		trap = new Trap(player, this, 1216, 4542);
 		trap = new Trap(player, this, 318, 4669);
 		trap = new Trap(player, this, 959, 5112);
 		heal = new Healing(player, this, 2745, 6275);
-		
-		//fake boss room
+
+		// fake boss room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 1173, 8250, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -155,8 +156,8 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 1084, 9088);
 		trap = new Trap(player, this, 2170, 9146);
 		heal = new Healing(player, this, 1273, 9343);
-		
-		//sagdan ilk room
+
+		// sagdan ilk room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 7269, 4986, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -167,9 +168,8 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 7677, 4925);
 		trap = new Trap(player, this, 8183, 4289);
 		trap = new Trap(player, this, 8315, 5124);
-		
-		
-		//sagdan ikinci room
+
+		// sagdan ikinci room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 8778, 8919, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -177,10 +177,9 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 8893, 8126);
 		trap = new Trap(player, this, 7806, 8252);
 		trap = new Trap(player, this, 8504, 8766);
-		
-		//Boss room
-		
-		
+
+		// Boss room
+
 		renderer.getBatch().setShader(shader);
 	}
 
@@ -194,11 +193,6 @@ public class GameScreen implements Screen {
 		// camera.viewportWidth = 1080;
 		// camera.update();
 
-		if(player.getHP()==0) {
-			game.setScreen(new MainMenuScreen(game));
-		}
-		
-		
 		shader.setUniformf("innerRadius", (float) player.getHP() / 100);
 		if (player.getHP() < 60) {
 			shader.setUniformf("intensity", 0.9f);
@@ -232,17 +226,16 @@ public class GameScreen implements Screen {
 		renderer.setView(camera);
 		renderer.render();
 		renderer.getBatch().begin();
-				
+
 		for (Trap trap : traps) {
 			trap.update(Gdx.graphics.getDeltaTime());
 			renderer.getBatch().draw(trap.GetFrame(), trap.getX(), trap.getY(), 16 * 4, 16 * 4);
-			// trap.render((SpriteBatch) renderer.getBatch());
 		}
 
 		for (Healing heal : heals) {
 			heal.update(Gdx.graphics.getDeltaTime());
 			renderer.getBatch().draw(heal.GetFrame(), heal.getX(), heal.getY(), 16 * 4, 33 * 4);
-			if(heal.inHealRange()) {
+			if (heal.inHealRange()) {
 				heal.render((SpriteBatch) renderer.getBatch());
 
 			}
@@ -254,6 +247,15 @@ public class GameScreen implements Screen {
 				mob.setInactive();
 				;
 			}
+		}
+		for (miniBoss miniBoss : miniBosses) {
+			miniBoss.Update(Gdx.graphics.getDeltaTime());
+			if (miniBoss.isDead()) {
+				miniBoss.setInactive();
+			}
+		}
+		for (miniBoss miniBoss : miniBosses) {
+			miniBoss.render((SpriteBatch) renderer.getBatch());
 		}
 
 		for (Mob1 mob1 : mob1s) {
@@ -274,17 +276,22 @@ public class GameScreen implements Screen {
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
-		
+		// HUD
+		renderer.getBatch().draw(player.GetDashFrame(), camera.position.x - 658,
+				camera.position.y - this.camera.viewportWidth / 4 + 39, 17 * 3f, 18 * 3f);
+		renderer.getBatch().draw(player.GetShieldFrame(), camera.position.x - 531,
+				camera.position.y - this.camera.viewportWidth / 4 + 39, 17 * 3f, 18 * 3f);
 		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
 				camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
-		
-		renderer.getBatch().draw(player.GetShieldFrame(), camera.position.x - 658,
-				camera.position.y - this.camera.viewportWidth / 4 + 39,17 * 3f, 18 * 3f);
-		renderer.getBatch().draw(player.GetDashFrame(), camera.position.x - 531,
-				camera.position.y - this.camera.viewportWidth / 4 + 39,17 * 3f, 18 * 3f);
+		// miniBossHealth
+		if (miniBoss.isActive()) {
+			renderer.getBatch().draw(miniBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
+					10 * 3f);
+		}
+		// player
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
 				player.getHeight());
-		
+
 		for (Shield shield : shields) {
 			shield.render((SpriteBatch) renderer.getBatch());
 		}
@@ -295,6 +302,16 @@ public class GameScreen implements Screen {
 
 		renderer.getBatch().end();
 
+		if (player.getHP() <= 0) {
+			this.dispose();
+			game.setScreen(new DeathScreen(game));
+		}
+
+		if (player.getHP() >= 1000) {
+			this.dispose();
+			game.setScreen(new GameEndScreen(game));// TODO: Game End Screen Reverend yazısı altında Made By Bora
+													// Güneral Dinçer İnce Arda Özler
+		}
 	}
 
 	@Override
@@ -335,6 +352,14 @@ public class GameScreen implements Screen {
 
 	public void setBullets(ArrayList<Bullet> bullets) {
 		this.bullets = bullets;
+	}
+
+	public ArrayList<miniBoss> getMiniBosses() {
+		return miniBosses;
+	}
+
+	public void setMiniBosses(ArrayList<miniBoss> miniBosses) {
+		this.miniBosses = miniBosses;
 	}
 
 	public ArrayList<Mob2> getMob2s() {
@@ -394,6 +419,9 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		player.getDashSfx().dispose();
+		player.getWalking().dispose();
+		music.dispose();
 		map.dispose();
 		renderer.dispose();
 
