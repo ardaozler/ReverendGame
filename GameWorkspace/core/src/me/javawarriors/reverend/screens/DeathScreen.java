@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 import me.javawarriors.reverend.ReverendGame;
 
-public class GameEndScreen implements Screen {
+public class DeathScreen implements Screen {
 
 	private static final int ButtonWidth = 300;
 	private static final int ButtonHeight = 100;
@@ -19,7 +19,7 @@ public class GameEndScreen implements Screen {
 
 	Texture exitButtonActive, exitButtonInactive, playButtonActive, playButtonInactive;
 
-	public GameEndScreen(ReverendGame game) {
+	public DeathScreen(ReverendGame game) {
 		this.game = game;
 		exitButtonActive = new Texture("ExitW.png");
 		exitButtonInactive = new Texture("ExitR.png");
