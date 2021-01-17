@@ -61,7 +61,7 @@ public class Bullet extends Entity {
 		}
 		secondsElapsed += delta;
 
-		if (secondsElapsed > 20) {
+		if (secondsElapsed > 30) {
 			remove = true;
 		}
 

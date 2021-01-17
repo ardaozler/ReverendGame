@@ -129,8 +129,7 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 5701, 4858);
 
 		// first to the left
-		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
-				this, "miniBoss", 457, 2201, 50, 500);
+		
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 457, 4401, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -179,7 +178,9 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 8504, 8766);
 
 		// Boss room
-
+		heal = new Healing(player, this, 4667, 9408);
+		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
+				this, "miniBoss", 4672, 7776, 50, 500);
 		renderer.getBatch().setShader(shader);
 	}
 
@@ -284,7 +285,7 @@ public class GameScreen implements Screen {
 		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
 				camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
 		// miniBossHealth
-		if (miniBoss.isActive()) {
+		if (miniBoss.isShowHealthBar()) {
 			renderer.getBatch().draw(miniBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
 					10 * 3f);
 		}

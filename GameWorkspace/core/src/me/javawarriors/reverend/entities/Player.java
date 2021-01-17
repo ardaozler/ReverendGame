@@ -133,7 +133,7 @@ public class Player extends Entity {
 		if((dx!=0||dy!=0)&&soundTimer>=25) {
 			
 			soundTimer=0;
-			walking.play(0.2f);
+			walking.play(0.15f);
 		}else if(dx==0&&dy==0) {
 			soundTimer=25;
 			walking.stop();
@@ -322,7 +322,7 @@ public class Player extends Entity {
 				// System.out.println("sol üst üst bok");
 				dy = 0;
 			}
-			// collisionChech();
+			// collisionCheck();
 			charX += speed * dash * Gdx.graphics.getDeltaTime() * dx * 0.7;
 			charY += speed * dash * Gdx.graphics.getDeltaTime() * dy * 0.7;
 

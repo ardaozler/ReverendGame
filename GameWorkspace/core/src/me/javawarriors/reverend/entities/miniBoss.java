@@ -31,7 +31,11 @@ public class miniBoss extends Entity {
 	float Speed = 500;// used in move
 	int dx = 0, dy = 0;
 	int HP, HPtemp;
-
+	 int shootAngle =0;
+	 int shootX=9000;
+	 int shootY=9000;
+	 int shoot1X=-9000;
+	 int shoot1Y=-9000;
 	int dirx = 0;
 	int diry = 0;
 	double xkatsayisi, ykatsayisi, magnitude, ykatsayisiShoot, xkatsayisiShoot;
@@ -153,14 +157,13 @@ public class miniBoss extends Entity {
 			if (!alerted) {
 				alert.play();
 				alerted = true;
+				showHealthBar =true;
 			}
 			if (HP > 200) {
 				shoot1(charX, charY, collisionLayer);
 				Speed = speed / 2;
 			} else if (HP <= 200 && HP > 100) {
-				// shoot2
-			} else {
-				// shoot3
+				shoot2(charX, charY, collisionLayer);
 			}
 			inVicinity = true;
 			if (Math.abs(charX - screen.getPlayer().charX) < 200 && Math.abs(charY - screen.getPlayer().charY) < 200) {
@@ -219,19 +222,61 @@ public class miniBoss extends Entity {
 					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
 			// some retardness is in this but idk how to find it dinçer helb
 			bullets.add(new Bullet(playerX, playerY, collisionLayer,
-					(float) (screen.getPlayer().charX + hipotenus * Math.sin(0.1)),
-					(float) (screen.getPlayer().charY + hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
+					(float) (screen.getPlayer().charX +200),
+					(float) (screen.getPlayer().charY + 200), MobName, this.screen, bulletSpeed));
 			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer,
-					(float) (screen.getPlayer().charX + hipotenus * Math.sin(0.1)),
-					(float) (screen.getPlayer().charY + hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
+					(float) (screen.getPlayer().charX + 200),
+					(float) (screen.getPlayer().charY + 200), MobName, this.screen, bulletSpeed));
 
 			bullets.add(new Bullet(playerX, playerY, collisionLayer,
-					(float) (screen.getPlayer().charX - hipotenus * Math.sin(0.1)),
-					(float) (screen.getPlayer().charY - hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
+					(float) (screen.getPlayer().charX -200),
+					(float) (screen.getPlayer().charY -200), MobName, this.screen, bulletSpeed));
 			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer,
-					(float) (screen.getPlayer().charX - hipotenus * Math.sin(0.1)),
-					(float) (screen.getPlayer().charY - hipotenus * Math.tan(0.1)), MobName, this.screen, bulletSpeed));
+					(float) (screen.getPlayer().charX -200),
+					(float) (screen.getPlayer().charY -200), MobName, this.screen, bulletSpeed));
 
+		}
+
+	}
+	private void shoot2(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
+		 	
+		shootAngle++;
+		 if(shootAngle<90) {
+			 shootX-=200;
+			 shoot1X+=200;
+			// shootY+=200;
+		 }
+		 else if(shootAngle<180&&shootAngle>=90) {
+			 //shootX-=200;
+			 shootY-=200;
+			 shoot1Y+=200;
+		 }else if(shootAngle<270&&shootAngle>=180) {
+			 shootX+=200;
+			 shoot1X-=200;
+			 //shootY-=200;
+		 }else if(shootAngle>=270&&shootAngle<360) {
+			 //shootX+=200;
+			 shootY+=200;
+			 shoot1Y-=200;
+			 
+		 }else {
+			 shootAngle=0;
+		 }
+		
+		if (screen.getMbullets().size() == 0 || shootTime > 0.05) {
+			shootTime = 0;
+			System.out.println("shoot"+shootX+" "+shootY);
+			bullets.add(new Bullet(playerX, playerY, collisionLayer, charX+shootX, charY+shootY,
+					MobName, this.screen, bulletSpeed));
+			
+			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, charX+shootX,
+					charY+shootY, MobName, this.screen, bulletSpeed));
+			
+			bullets.add(new Bullet(playerX, playerY, collisionLayer, charX+shoot1X, charY+shoot1Y,
+					MobName, this.screen, bulletSpeed));
+			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, charX+shoot1X,
+					charY+shoot1Y, MobName, this.screen, bulletSpeed));
+			
 		}
 
 	}
@@ -334,6 +379,14 @@ public class miniBoss extends Entity {
 
 	public void setScreen(GameScreen screen) {
 		this.screen = screen;
+	}
+
+	public boolean isShowHealthBar() {
+		return showHealthBar;
+	}
+
+	public void setShowHealthBar(boolean showHealthBar) {
+		this.showHealthBar = showHealthBar;
 	}
 
 	public TiledMapTileLayer getCollisionLayer() {
