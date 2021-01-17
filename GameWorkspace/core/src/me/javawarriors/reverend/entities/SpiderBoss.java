@@ -137,11 +137,11 @@ public class SpiderBoss extends Entity {
 	}
 
 	public void Vicinity() {
-		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1500) {
+		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1300) {
 			active = true;
 		}
 
-		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1500) {
+		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1300) {
 			if (!alerted) {
 				screen.music.stop();
 				bossmusic.play();
