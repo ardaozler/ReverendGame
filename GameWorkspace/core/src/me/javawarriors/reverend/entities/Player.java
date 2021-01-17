@@ -544,7 +544,7 @@ public class Player extends Entity {
 	public TextureRegion GetHealthFrame() {
 		healthBarFrameNoTemp = 10 - (HP / 10);
 		healthBarFrameNo = healthBarFrameNoTemp;
-		if (healthBarFrameNoTemp >= 10)
+		if (healthBarFrameNoTemp >= 10 ||healthBarFrameNoTemp<0)
 			healthBarFrameNo = 10;
 		return (healthBar[healthBarFrameNo].getKeyFrame(stateTime));
 	}

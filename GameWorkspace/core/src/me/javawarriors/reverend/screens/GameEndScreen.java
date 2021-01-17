@@ -17,14 +17,13 @@ public class GameEndScreen implements Screen {
 
 	ReverendGame game;
 
-	Texture exitButtonActive, exitButtonInactive, playButtonActive, playButtonInactive;
+	Texture exitButtonActive, exitButtonInactive, playButtonActive, playButtonInactive, reverendLogo;
 
 	public GameEndScreen(ReverendGame game) {
 		this.game = game;
+		reverendLogo = new Texture("ENDGAME.png");
 		exitButtonActive = new Texture("ExitW.png");
 		exitButtonInactive = new Texture("ExitR.png");
-		playButtonActive = new Texture("PlayW.png");
-		playButtonInactive = new Texture("PlayR.png");
 	}
 
 	@Override
@@ -34,17 +33,13 @@ public class GameEndScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
+		Gdx.gl.glClearColor(0.2f, 0.3f, 0.35f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.getBatch().begin();
+		game.getBatch().draw(reverendLogo, 0, 0, 1920, 1080);
 		if (mouseInput() == 1) {
-			game.getBatch().draw(playButtonInactive, ButtonX, PlayButtonY, ButtonWidth, ButtonHeight);
 			game.getBatch().draw(exitButtonActive, ButtonX, ExitButtonY, ButtonWidth, ButtonHeight);
-		} else if (mouseInput() == 2) {
-			game.getBatch().draw(playButtonActive, ButtonX, PlayButtonY, ButtonWidth, ButtonHeight);
-			game.getBatch().draw(exitButtonInactive, ButtonX, ExitButtonY, ButtonWidth, ButtonHeight);
 		} else {
-			game.getBatch().draw(playButtonInactive, ButtonX, PlayButtonY, ButtonWidth, ButtonHeight);
 			game.getBatch().draw(exitButtonInactive, ButtonX, ExitButtonY, ButtonWidth, ButtonHeight);
 		}
 		game.getBatch().end();
@@ -52,21 +47,13 @@ public class GameEndScreen implements Screen {
 	}
 
 	public int mouseInput() {
-		//ExitButtonHover
+		// ExitButtonHover
 		if (1080 - Gdx.input.getY() > ((ExitButtonY)) && 1080 - Gdx.input.getY() < ((ExitButtonY) + ButtonHeight)
 				&& Gdx.input.getX() > ButtonX && Gdx.input.getX() < ButtonX + ButtonWidth) {
-			if(Gdx.input.isTouched()) {
+			if (Gdx.input.isTouched()) {
 				Gdx.app.exit();
 			}
 			return 1;
-			//PlayButtonHover
-		} else if (1080 - Gdx.input.getY() > ((PlayButtonY)) && 1080 - Gdx.input.getY() < ((PlayButtonY) + ButtonHeight)
-				&& Gdx.input.getX() > ButtonX && Gdx.input.getX() < ButtonX + ButtonWidth) {
-			if(Gdx.input.isTouched()) {
-				this.dispose();
-				game.setScreen(new GameScreen(game));
-			}
-			return 2;
 		} else
 			return 0;
 	}

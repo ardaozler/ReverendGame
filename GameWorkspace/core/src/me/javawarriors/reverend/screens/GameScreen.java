@@ -16,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 import me.javawarriors.reverend.ReverendGame;
+import me.javawarriors.reverend.entities.Blood;
 import me.javawarriors.reverend.entities.Bullet;
 import me.javawarriors.reverend.entities.Healing;
 import me.javawarriors.reverend.entities.Mob1;
@@ -46,6 +47,7 @@ public class GameScreen implements Screen {
 	private Player player;
 	private Trap trap;
 	private Healing heal;
+	private ArrayList<Blood> bloods;
 	private ArrayList<Bullet> bullets;
 	private ArrayList<Bullet> pbullets;
 	private ArrayList<Bullet> mbullets;
@@ -66,6 +68,7 @@ public class GameScreen implements Screen {
 	public GameScreen(ReverendGame game) {
 
 		this.game = game;
+		bloods = new ArrayList<Blood>();
 		shields = new ArrayList<Shield>();
 		bullets = new ArrayList<Bullet>();
 		pbullets = new ArrayList<Bullet>();
@@ -119,7 +122,7 @@ public class GameScreen implements Screen {
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 8836, 1761, 50);
 		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob2a", 8500, 2000, 200, 20, 40, "bebe1.png");
+				"Mob2a", 8500, 2000, 200, 20, 40, "bebe1.png", 11, 12);
 		trap = new Trap(player, this, 7423, 2364);
 		trap = new Trap(player, this, 8441, 2942);
 		trap = new Trap(player, this, 8777, 2436);
@@ -190,7 +193,7 @@ public class GameScreen implements Screen {
 
 		// Boss room
 		heal = new Healing(player, this, 4667, 9408);
-		
+
 		renderer.getBatch().setShader(shader);
 	}
 
@@ -251,6 +254,10 @@ public class GameScreen implements Screen {
 
 			}
 		}
+		
+		for(Blood blood : bloods) {
+			blood.render((SpriteBatch) renderer.getBatch());
+		}
 
 		for (Mob1 mob : mob1s) {
 			mob.Update(Gdx.graphics.getDeltaTime());
@@ -295,7 +302,6 @@ public class GameScreen implements Screen {
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
-		
 
 		for (sBullet bullet : sbullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
@@ -318,9 +324,9 @@ public class GameScreen implements Screen {
 			renderer.getBatch().draw(miniBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
 					10 * 3f);
 		}
-		//SpiderBossHealth
+		// SpiderBossHealth
 		if (spiderBoss.isShowHealthBar()) {
-			renderer.getBatch().draw(miniBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
+			renderer.getBatch().draw(spiderBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
 					10 * 3f);
 		}
 		// player
@@ -344,9 +350,9 @@ public class GameScreen implements Screen {
 
 		if (player.getHP() >= 1000) {
 			this.dispose();
-			game.setScreen(new GameEndScreen(game));// TODO: Game End Screen Reverend yazısı altında Made By Bora
-													// Güneral Dinçer İnce Arda Özler
+			game.setScreen(new GameEndScreen(game));
 		}
+
 	}
 
 	@Override
@@ -375,6 +381,14 @@ public class GameScreen implements Screen {
 
 	public void setPbullets(ArrayList<Bullet> pbullets) {
 		this.pbullets = pbullets;
+	}
+
+	public TiledMap getMap() {
+		return map;
+	}
+
+	public void setMap(TiledMap map) {
+		this.map = map;
 	}
 
 	public ArrayList<Bullet> getMbullets() {
@@ -458,6 +472,14 @@ public class GameScreen implements Screen {
 	@Override
 	public void hide() {
 
+	}
+
+	public ArrayList<Blood> getBloods() {
+		return bloods;
+	}
+
+	public void setBloods(ArrayList<Blood> bloods) {
+		this.bloods = bloods;
 	}
 
 	public ArrayList<SpiderBoss> getSpiderBosses() {

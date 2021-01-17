@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 import me.javawarriors.reverend.screens.GameScreen;
 
@@ -36,6 +35,10 @@ public class SpiderBoss extends Entity {
 	int shootY = 9000;
 	int shoot1X = -9000;
 	int shoot1Y = -9000;
+	int shoot2X = 9000;
+	int shoot2Y = -9000;
+	int shoot3X = -9000;
+	int shoot3Y = 9000;
 	int dirx = 0;
 	int diry = 0;
 	double xkatsayisi, ykatsayisi, magnitude, ykatsayisiShoot, xkatsayisiShoot;
@@ -56,6 +59,10 @@ public class SpiderBoss extends Entity {
 	Sound dead = Gdx.audio.newSound(Gdx.files.internal("calebblemum.mp3"));
 	Sound alert = Gdx.audio.newSound(Gdx.files.internal("alert.mp3"));
 	boolean alerted = false;
+
+	// lil bebies
+	private Mob2 mob2a;
+	private float babyTime = 0;
 
 	// collision
 	private TiledMapTileLayer collisionLayer;
@@ -97,6 +104,7 @@ public class SpiderBoss extends Entity {
 		bossHealthBar[10] = new Animation<>(0, healthBarSpriteSheet[10]);
 
 		HP = 600;
+
 		screen.getSpiderBosses().add(this);
 		setPosition(charX, charY);
 	}
@@ -104,9 +112,7 @@ public class SpiderBoss extends Entity {
 	public void Update(float delta) {
 		stateTime += Gdx.graphics.getDeltaTime();
 		shootTime += delta;
-		if (active) {
-
-		}
+		babyTime += delta;
 
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
@@ -139,14 +145,26 @@ public class SpiderBoss extends Entity {
 				showHealthBar = true;
 			}
 			if (HP > 400) {
-				shoot(charX, charY, collisionLayer);
+				shoot2(charX, charY, collisionLayer);
+				if (babyTime > 5) {
+					babyTime = 0;
+					makeBabies(1);
+				}
 			} else if (HP <= 400 && HP > 200) {
 				shoot1(charX, charY, collisionLayer);
+				if (babyTime > 4) {
+					babyTime = 0;
+					makeBabies(1);
+				}
 			} else if (HP <= 200) {
 				shoot2(charX, charY, collisionLayer);
+				if (babyTime > 3) {
+					babyTime = 0;
+					makeBabies(1);
+				}
 			}
 			inVicinity = true;
-			
+
 		}
 
 	}
@@ -158,21 +176,24 @@ public class SpiderBoss extends Entity {
 			float x = bullet.getX() + bullet.getWidth();
 			float y = bullet.getY() + bullet.getHeight();
 			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight && !bullet.isCollided()) {
-				System.out.println("did collide");
-				System.out.println(isDamaged);
 				if (bullet.secondsElapsed > 0.15) {
-					
-					System.out.println("did damage");
 					bullet.setCollided(true);
 					bullet.setRemove(true);
 					HP -= 5;
-					System.out.println("mob " + HP);
 					isDamaged = true;
 				}
 				return true;
 			}
 		}
 		return false;
+	}
+
+	public void makeBabies(int i) {
+		for (; i > 0; i--) {
+			mob2a = new Mob2((TiledMapTileLayer) screen.getMap().getLayers().get(3),
+					(TiledMapTileLayer) screen.getMap().getLayers().get(0), screen, "Mob2a", (int) this.getX(),
+					(int) this.getY(), 250, 20, 40, "orumcekebebe.png", 10, 16);
+		}
 	}
 
 	public boolean isDead() {
@@ -219,25 +240,40 @@ public class SpiderBoss extends Entity {
 
 	}
 
+	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
+		if (screen.getSbullets().size() == 0 || shootTime > 0.16) {
+			shootTime = 0;
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
+					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
+			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
+					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
+		}
+
+	}
+
 	private void shoot2(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
 
 		shootAngle++;
 		if (shootAngle < 90) {
 			shootX -= 200;
 			shoot1X += 200;
-			// shootY+=200;
+			shoot2Y += 200;
+			shoot3Y -= 200;
 		} else if (shootAngle < 180 && shootAngle >= 90) {
-			// shootX-=200;
 			shootY -= 200;
 			shoot1Y += 200;
+			shoot2X -= 200;
+			shoot3X += 200;
 		} else if (shootAngle < 270 && shootAngle >= 180) {
 			shootX += 200;
 			shoot1X -= 200;
-			// shootY-=200;
+			shoot2Y -= 200;
+			shoot3Y += 200;
 		} else if (shootAngle >= 270 && shootAngle < 360) {
-			// shootX+=200;
 			shootY += 200;
 			shoot1Y -= 200;
+			shoot2X += 200;
+			shoot3X -= 200;
 
 		} else {
 			shootAngle = 0;
@@ -246,7 +282,6 @@ public class SpiderBoss extends Entity {
 		if (screen.getSbullets().size() == 0 || shootTime > 0.05) {
 			frameNo = 1;
 			shootTime = 0;
-			System.out.println("shoot" + shootX + " " + shootY);
 			bullets.add(new sBullet(playerX, playerY, collisionLayer, charX + shootX, charY + shootY, MobName,
 					this.screen, bulletSpeed));
 
@@ -257,17 +292,16 @@ public class SpiderBoss extends Entity {
 					this.screen, bulletSpeed));
 			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shoot1X, charY + shoot1Y,
 					MobName, this.screen, bulletSpeed));
-		}
-
-	}
-
-	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-		if (screen.getSbullets().size() == 0 || shootTime > 0.16) {
-			shootTime = 0;
-			bullets.add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
-					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
-			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
-					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
+			
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, charX + shoot2X, charY + shoot2Y, MobName,
+					this.screen, bulletSpeed));
+			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shoot2X, charY + shoot2Y,
+					MobName, this.screen, bulletSpeed));
+			
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, charX + shoot3X, charY + shoot3Y, MobName,
+					this.screen, bulletSpeed));
+			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shoot3X, charY + shoot3Y,
+					MobName, this.screen, bulletSpeed));
 		}
 
 	}
@@ -324,10 +358,12 @@ public class SpiderBoss extends Entity {
 
 	public TextureRegion GetBossHealthFrame() {
 		HPtemp = HP;
-		if (HP > 150) {
-			bossHealthBarFrameNoTemp = 20 - (HPtemp / 15);
-		} else {
-			bossHealthBarFrameNoTemp = 10 - (HPtemp / 15);
+		if (HP > 400) {
+			bossHealthBarFrameNoTemp = 30 - (HPtemp / 20);
+		} else if(HP<=400 && HP>200) {
+			bossHealthBarFrameNoTemp = 20 - (HPtemp / 20);
+		}else {
+			bossHealthBarFrameNoTemp = 10 - (HPtemp / 20);
 		}
 		bossHealthBarFrameNo = bossHealthBarFrameNoTemp;
 		if (bossHealthBarFrameNoTemp >= 20) {

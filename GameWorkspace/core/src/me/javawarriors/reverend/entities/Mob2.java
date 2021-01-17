@@ -39,19 +39,25 @@ public class Mob2 extends Entity {
 	private static final float charAnimationSpeed = 0.15f;
 	float stateTime;
 	boolean inVicinity;
+	private Blood blood;
 
 	// collision
 	private TiledMapTileLayer collisionLayer;
 	private TiledMapTileLayer mobcollisionLayer;
 
 	public Mob2(TiledMapTileLayer collisionLayer, TiledMapTileLayer MobcollisionLayer, GameScreen screen,
-			String MobName, int x, int y, int speed, int health, int damage, String TextureName) {
+			String MobName, int x, int y, int speed, int health, int damage, String TextureName,
+			int textureWidthinPixels, int textureHeightinPixels) {
 		this.speed = speed;
 		this.damage = damage;
 		this.MobName = MobName;
 		this.collisionLayer = collisionLayer;
+		this.charX = x;
+		this.charY = y;
 		this.screen = screen;
 		this.mobcollisionLayer = MobcollisionLayer;
+		this.charWidthInPixels = textureWidthinPixels;
+		this.charHeightInPixels = textureHeightinPixels;
 		walk = new Animation[6];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture(TextureName), charWidthInPixels,
 				charHeightInPixels);
@@ -105,7 +111,6 @@ public class Mob2 extends Entity {
 				if (bullet.secondsElapsed > 0.15) {
 					bullet.setCollided(true);
 					HP -= 5;
-					System.out.println("mob " + HP);
 					bullet.setRemove(true);
 				}
 				return true;
@@ -117,6 +122,7 @@ public class Mob2 extends Entity {
 	public boolean isDead() {
 
 		if (HP < 0) {
+			blood = new Blood(screen, charX, charY);
 			return true;
 		}
 		return false;
@@ -137,7 +143,7 @@ public class Mob2 extends Entity {
 	public void BlowUp() {
 		HP = -1;
 		screen.getPlayer().setHP(screen.getPlayer().getHP() - damage);
-
+		blood = new Blood(screen, charX, charY);
 	}
 
 	public ArrayList<Bullet> getMBullets() {
@@ -225,7 +231,7 @@ public class Mob2 extends Entity {
 	}
 
 	public void render(SpriteBatch batch) {
-		batch.draw(GetFrame(), getX(), getY(), getWidth(), getHeight());
+		batch.draw(GetFrame(), getX(), getY(), charWidthInPixels * 4, charHeightInPixels * 4);
 	}
 
 }
