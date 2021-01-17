@@ -32,6 +32,7 @@ public class Player extends Entity {
 	int HP;
 	int bulletSpeed = 800;
 	boolean isShieldOn = false;
+	float slow = 5;
 
 	// char Animation properties
 	Animation<TextureRegion>[] dashIndicator;
@@ -48,8 +49,8 @@ public class Player extends Entity {
 	int shieldFrameNo;
 	int shieldFrameNoTemp;
 	float stateTime;
-	float soundTimer=25;
-	
+	float soundTimer = 25;
+
 	// collision
 	private TiledMapTileLayer collisionLayer;
 
@@ -62,13 +63,13 @@ public class Player extends Entity {
 	float dashTimer = 0;// duration of the dash
 	Sound dashSfx = Gdx.audio.newSound(Gdx.files.internal("dash.ogg"));
 	Sound walking = Gdx.audio.newSound(Gdx.files.internal("running_og.wav"));
-	
+
 	public Player(TiledMapTileLayer collisionLayer, GameScreen screen) {
-		
+
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		frameNo = 0;
-		
+
 		shieldIndicator = new Animation[9];
 		TextureRegion[][] shieldSpriteSheet = TextureRegion.split(new Texture("shieldIndicator.png"), 17, 18);
 		shieldIndicator[0] = new Animation<>(0, shieldSpriteSheet[0]);
@@ -119,26 +120,26 @@ public class Player extends Entity {
 	}
 
 	public void Update(float delta) {
-		
-		//System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY)); 
+
+		// System.out.println("player loc x" +(int)(charX)+ " y "+(int)(charY));
 		float oldX = charX, oldY = charY;
 		boolean collision = false;
 		stateTime += delta;
+		slow += delta;
 		shieldCooldown += delta;
 		dashCooldown += delta;
 		dashTimer += delta;
-		soundTimer+=delta;
+		soundTimer += delta;
 		move();
-		//walking.play();
-		if((dx!=0||dy!=0)&&soundTimer>=25) {
-			
-			soundTimer=0;
+		// walking.play();
+		if ((dx != 0 || dy != 0) && soundTimer >= 25) {
+
+			soundTimer = 0;
 			walking.play(0.15f);
-		}else if(dx==0&&dy==0) {
-			soundTimer=25;
+		} else if (dx == 0 && dy == 0) {
+			soundTimer = 25;
 			walking.stop();
-			
-			
+
 		}
 
 		if (Gdx.input.isTouched()) {
@@ -168,6 +169,11 @@ public class Player extends Entity {
 
 		if (dashTimer > 0.2) {
 			dash();
+		}
+		if(slow <5) {
+			speed = 200;
+		}else {
+			speed = 600;
 		}
 		if (Shield != null) {
 			Shield.update(delta);
@@ -218,7 +224,7 @@ public class Player extends Entity {
 			walking.dispose();
 			dx = 0;
 			dy = 0;
-			
+
 		}
 	}
 
@@ -235,7 +241,24 @@ public class Player extends Entity {
 					if (!isShieldOn) {
 						HP -= 5;
 					}
-					//System.out.println("Player " + HP);
+					// System.out.println("Player " + HP);
+					isDamaged = true;
+				}
+				return true;
+			}
+		}
+		for (sBullet bullet : screen.getSbullets()) {
+
+			float x = bullet.getX() + bullet.getWidth();
+			float y = bullet.getY() + bullet.getHeight();
+			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight && !bullet.isCollided()) {
+				if (bullet.secondsElapsed > 0.1 && !isDamaged) {
+					bullet.setCollided(true);
+					bullet.setRemove(true);
+					if (!isShieldOn) {
+						HP -= 5;
+						slow = 0;
+					}
 					isDamaged = true;
 				}
 				return true;
@@ -305,7 +328,7 @@ public class Player extends Entity {
 			frameNo = 1;
 			dx = 1;
 			dy = 1;
-			
+
 			if (isCellBlocked(charX + getWidth() * 1 / 2 + 10, charY + getHeight() * 1 / 3)) {
 				// System.out.println("sağ üst sağ bok");
 				dx = 0;
@@ -503,23 +526,26 @@ public class Player extends Entity {
 	}
 
 	public TextureRegion GetShieldFrame() {
-		shieldFrameNoTemp = 8 - (int)(shieldCooldown);
+		shieldFrameNoTemp = 8 - (int) (shieldCooldown);
 		shieldFrameNo = shieldFrameNoTemp;
-		if (shieldFrameNoTemp  <= 0) shieldFrameNo = 0;
+		if (shieldFrameNoTemp <= 0)
+			shieldFrameNo = 0;
 		return (shieldIndicator[shieldFrameNo].getKeyFrame(stateTime));
 	}
 
 	public TextureRegion GetDashFrame() {
-		dashFrameNoTemp = 8 - ((int)(dashCooldown*10))/5;
+		dashFrameNoTemp = 8 - ((int) (dashCooldown * 10)) / 5;
 		dashFrameNo = dashFrameNoTemp;
-		if (dashFrameNoTemp  <= 0) dashFrameNo = 0;
+		if (dashFrameNoTemp <= 0)
+			dashFrameNo = 0;
 		return (dashIndicator[dashFrameNo].getKeyFrame(stateTime));
 	}
 
 	public TextureRegion GetHealthFrame() {
-		healthBarFrameNoTemp = 10-(HP/10);
+		healthBarFrameNoTemp = 10 - (HP / 10);
 		healthBarFrameNo = healthBarFrameNoTemp;
-		if(healthBarFrameNoTemp>=10) healthBarFrameNo = 10;
+		if (healthBarFrameNoTemp >= 10)
+			healthBarFrameNo = 10;
 		return (healthBar[healthBarFrameNo].getKeyFrame(stateTime));
 	}
 

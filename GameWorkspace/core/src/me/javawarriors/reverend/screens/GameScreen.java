@@ -22,8 +22,10 @@ import me.javawarriors.reverend.entities.Mob1;
 import me.javawarriors.reverend.entities.Mob2;
 import me.javawarriors.reverend.entities.Player;
 import me.javawarriors.reverend.entities.Shield;
+import me.javawarriors.reverend.entities.SpiderBoss;
 import me.javawarriors.reverend.entities.Trap;
 import me.javawarriors.reverend.entities.miniBoss;
+import me.javawarriors.reverend.entities.sBullet;
 
 public class GameScreen implements Screen {
 
@@ -39,6 +41,7 @@ public class GameScreen implements Screen {
 	private Mob1 mob1a;
 	private Mob2 mob2a;
 	private miniBoss miniBoss;
+	private SpiderBoss spiderBoss;
 
 	private Player player;
 	private Trap trap;
@@ -46,10 +49,12 @@ public class GameScreen implements Screen {
 	private ArrayList<Bullet> bullets;
 	private ArrayList<Bullet> pbullets;
 	private ArrayList<Bullet> mbullets;
+	private ArrayList<sBullet> sbullets;
 	private ArrayList<Shield> shields;
 	private ArrayList<Mob1> mob1s;
 	private ArrayList<Mob2> mob2s;
 	private ArrayList<miniBoss> miniBosses;
+	private ArrayList<SpiderBoss> spiderBosses;
 	private ArrayList<Trap> traps;
 	private ArrayList<Healing> heals;
 	ReverendGame game;
@@ -65,8 +70,10 @@ public class GameScreen implements Screen {
 		bullets = new ArrayList<Bullet>();
 		pbullets = new ArrayList<Bullet>();
 		mbullets = new ArrayList<Bullet>();
+		sbullets = new ArrayList<sBullet>();
 		mob1s = new ArrayList<Mob1>();
 		miniBosses = new ArrayList<miniBoss>();
+		spiderBosses = new ArrayList<SpiderBoss>();
 		mob2s = new ArrayList<Mob2>();
 		traps = new ArrayList<Trap>();
 		heals = new ArrayList<Healing>();
@@ -93,6 +100,8 @@ public class GameScreen implements Screen {
 		// Tutorial room
 		trap = new Trap(player, this, 126, 3136);
 		heal = new Healing(player, this, 1150, 3712);
+		spiderBoss = new SpiderBoss((TiledMapTileLayer) map.getLayers().get(3),
+				(TiledMapTileLayer) map.getLayers().get(0), this, "spiderBoss", 467, 2276, 550, 500);
 
 		// first mob room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -129,7 +138,7 @@ public class GameScreen implements Screen {
 		trap = new Trap(player, this, 5701, 4858);
 
 		// first to the left
-		
+
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 457, 4401, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -180,7 +189,7 @@ public class GameScreen implements Screen {
 		// Boss room
 		heal = new Healing(player, this, 4667, 9408);
 		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
-				this, "miniBoss", 4672, 7776, 50, 500);
+				this, "miniBoss", 4670, 7776, 50, 500);
 		renderer.getBatch().setShader(shader);
 	}
 
@@ -255,19 +264,24 @@ public class GameScreen implements Screen {
 				miniBoss.setInactive();
 			}
 		}
-		for (miniBoss miniBoss : miniBosses) {
-			miniBoss.render((SpriteBatch) renderer.getBatch());
-		}
-
-		for (Mob1 mob1 : mob1s) {
-			mob1.render((SpriteBatch) renderer.getBatch());
-		}
 
 		for (Mob2 mob : mob2s) {
 			mob.Update(Gdx.graphics.getDeltaTime());
 			if (mob.isDead()) {
 				mob.setInactive();
 			}
+		}
+
+		for (SpiderBoss spiderBoss : spiderBosses) {
+			spiderBoss.Update(Gdx.graphics.getDeltaTime());
+		}
+
+		for (miniBoss miniBoss : miniBosses) {
+			miniBoss.render((SpriteBatch) renderer.getBatch());
+		}
+
+		for (Mob1 mob1 : mob1s) {
+			mob1.render((SpriteBatch) renderer.getBatch());
 		}
 
 		for (Mob2 mob2 : mob2s) {
@@ -277,6 +291,16 @@ public class GameScreen implements Screen {
 		for (Bullet bullet : bullets) {
 			bullet.render((SpriteBatch) renderer.getBatch());
 		}
+		
+
+		for (sBullet bullet : sbullets) {
+			bullet.render((SpriteBatch) renderer.getBatch());
+		}
+
+		for (SpiderBoss spiderBoss : spiderBosses) {
+			spiderBoss.render((SpriteBatch) renderer.getBatch());
+		}
+
 		// HUD
 		renderer.getBatch().draw(player.GetDashFrame(), camera.position.x - 658,
 				camera.position.y - this.camera.viewportWidth / 4 + 39, 17 * 3f, 18 * 3f);
@@ -284,11 +308,13 @@ public class GameScreen implements Screen {
 				camera.position.y - this.camera.viewportWidth / 4 + 39, 17 * 3f, 18 * 3f);
 		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
 				camera.position.y - this.camera.viewportWidth / 4, 72 * 5, 25 * 5);
+
 		// miniBossHealth
 		if (miniBoss.isShowHealthBar()) {
 			renderer.getBatch().draw(miniBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
 					10 * 3f);
 		}
+
 		// player
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
 				player.getHeight());
@@ -363,6 +389,14 @@ public class GameScreen implements Screen {
 		this.miniBosses = miniBosses;
 	}
 
+	public ArrayList<sBullet> getSbullets() {
+		return sbullets;
+	}
+
+	public void setSbullets(ArrayList<sBullet> sbullets) {
+		this.sbullets = sbullets;
+	}
+
 	public ArrayList<Mob2> getMob2s() {
 		return mob2s;
 	}
@@ -416,6 +450,14 @@ public class GameScreen implements Screen {
 	@Override
 	public void hide() {
 
+	}
+
+	public ArrayList<SpiderBoss> getSpiderBosses() {
+		return spiderBosses;
+	}
+
+	public void setSpiderBosses(ArrayList<SpiderBoss> spiderBosses) {
+		this.spiderBosses = spiderBosses;
 	}
 
 	@Override

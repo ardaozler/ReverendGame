@@ -13,7 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 
 import me.javawarriors.reverend.screens.GameScreen;
 
-public class miniBoss extends Entity {
+public class SpiderBoss extends Entity {
 
 	GameScreen screen;
 	boolean active = true;
@@ -23,8 +23,8 @@ public class miniBoss extends Entity {
 	String MobName;
 	float charX = 600;
 	float charY = 1800;
-	int charWidthInPixels = 26;
-	int charHeightInPixels = 34;
+	int charWidthInPixels = 47;
+	int charHeightInPixels = 32;
 	float charWidth = charWidthInPixels * 4;
 	float charHeight = charHeightInPixels * 4;
 	float speed = 500;// the speed that was given in constructor
@@ -47,9 +47,10 @@ public class miniBoss extends Entity {
 	Animation<TextureRegion>[] bossHealthBar;
 	Animation<TextureRegion>[] walk;
 	int bossHealthBarFrameNoTemp, bossHealthBarFrameNo;
-	private static final float charAnimationSpeed = 0.15f;
+	private static final float charAnimationSpeed = 0.1f;
 	boolean showHealthBar = false;
 	float stateTime;
+	int frameNo = 0;
 
 	boolean inVicinity;
 	Sound dead = Gdx.audio.newSound(Gdx.files.internal("calebblemum.mp3"));
@@ -61,9 +62,9 @@ public class miniBoss extends Entity {
 	private TiledMapTileLayer mobcollisionLayer;
 
 	// bullet
-	private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	private ArrayList<sBullet> bullets = new ArrayList<sBullet>();
 
-	public miniBoss(TiledMapTileLayer collisionLayer, TiledMapTileLayer MobcollisionLayer, GameScreen screen,
+	public SpiderBoss(TiledMapTileLayer collisionLayer, TiledMapTileLayer MobcollisionLayer, GameScreen screen,
 			String MobName, int x, int y, int bulletSpeed, int walkingSpeed) {
 		this.charX = x;
 		this.charY = y;
@@ -74,12 +75,12 @@ public class miniBoss extends Entity {
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		this.mobcollisionLayer = MobcollisionLayer;
-		walk = new Animation[6];
 
-		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("RedBoi-sheet.png"), charWidthInPixels,
-				charHeightInPixels);
-
+		walk = new Animation[2];
+		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("SpiderBossFinal-sheet.png"),
+				charWidthInPixels, charHeightInPixels);
 		walk[0] = new Animation<>(charAnimationSpeed, walkSpriteSheet[0]);
+		walk[1] = new Animation<>(charAnimationSpeed, walkSpriteSheet[1]);
 
 		bossHealthBar = new Animation[11];
 		TextureRegion[][] healthBarSpriteSheet = TextureRegion.split(new Texture("bossHealth.png"), 41, 7);
@@ -95,22 +96,22 @@ public class miniBoss extends Entity {
 		bossHealthBar[9] = new Animation<>(0, healthBarSpriteSheet[9]);
 		bossHealthBar[10] = new Animation<>(0, healthBarSpriteSheet[10]);
 
-		HP = 300;
-		screen.getMiniBosses().add(this);
+		HP = 600;
+		screen.getSpiderBosses().add(this);
+		setPosition(charX, charY);
 	}
 
 	public void Update(float delta) {
+		stateTime += Gdx.graphics.getDeltaTime();
 		shootTime += delta;
-		float oldX = charX, oldY = charY;
-		boolean collision = false;
 		if (active) {
-			move();
+
 		}
 
 		// concurrent modification exception olmaması için ikinci array açıp looplama
 		// bittikten sorna siliyoruz
-		ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-		for (Bullet bullet : screen.getMbullets()) {
+		ArrayList<sBullet> bulletsToRemove = new ArrayList<sBullet>();
+		for (sBullet bullet : screen.getSbullets()) {
 
 			bullet.update(Gdx.graphics.getDeltaTime());
 
@@ -119,30 +120,8 @@ public class miniBoss extends Entity {
 				isDamaged = false;
 			}
 		}
-		screen.getBullets().removeAll(bulletsToRemove);
+		screen.getSbullets().removeAll(bulletsToRemove);
 
-		// top left
-		collision = isCellBlocked(getX(), getY() + getHeight() * 1 / 3);
-
-		// bot left
-		if (!collision) {
-			collision = isCellBlocked(getX(), getY());
-		}
-		// top right
-		if (!collision) {
-			collision = isCellBlocked(getX() + getWidth() * 1 / 2, getY() + getHeight() * 1 / 3);
-		}
-		// bot right
-		if (!collision) {
-			collision = isCellBlocked(getX() + getWidth() * 1 / 2, getY());
-		}
-
-		if (collision) {
-
-			charX = oldX;
-			charY = oldY;
-
-		}
 		HitScan();
 
 		Vicinity();
@@ -159,10 +138,11 @@ public class miniBoss extends Entity {
 				alerted = true;
 				showHealthBar = true;
 			}
-			if (HP > 150) {
+			if (HP > 400) {
+				shoot(charX, charY, collisionLayer);
+			} else if (HP <= 400 && HP > 200) {
 				shoot1(charX, charY, collisionLayer);
-				Speed = speed / 2;
-			} else if (HP <= 150) {
+			} else if (HP <= 200) {
 				shoot2(charX, charY, collisionLayer);
 			}
 			inVicinity = true;
@@ -213,24 +193,24 @@ public class miniBoss extends Entity {
 		ykatsayisiShoot = ykatsayisiShoot / hipotenus;
 		xkatsayisiShoot = xkatsayisiShoot / hipotenus;
 
-		if (screen.getMbullets().size() == 0 || shootTime > 0.16) {
+		if (screen.getSbullets().size() == 0 || shootTime > 0.16) {
 			shootTime = 0;
 
-			bullets.add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX, screen.getPlayer().charY,
-					MobName, this.screen, bulletSpeed));
-			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
 					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
-			// some retardness is in this but idk how to find it dinçer helb
-			bullets.add(new Bullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX + 200),
+			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
+					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
+
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX + 200),
 					(float) (screen.getPlayer().charY + 200), MobName, this.screen, bulletSpeed));
-			screen.getMbullets()
-					.add(new Bullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX + 200),
+			screen.getSbullets()
+					.add(new sBullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX + 200),
 							(float) (screen.getPlayer().charY + 200), MobName, this.screen, bulletSpeed));
 
-			bullets.add(new Bullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX - 200),
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX - 200),
 					(float) (screen.getPlayer().charY - 200), MobName, this.screen, bulletSpeed));
-			screen.getMbullets()
-					.add(new Bullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX - 200),
+			screen.getSbullets()
+					.add(new sBullet(playerX, playerY, collisionLayer, (float) (screen.getPlayer().charX - 200),
 							(float) (screen.getPlayer().charY - 200), MobName, this.screen, bulletSpeed));
 
 		}
@@ -261,98 +241,38 @@ public class miniBoss extends Entity {
 			shootAngle = 0;
 		}
 
-		if (screen.getMbullets().size() == 0 || shootTime > 0.05) {
+		if (screen.getSbullets().size() == 0 || shootTime > 0.05) {
+			frameNo = 1;
 			shootTime = 0;
 			System.out.println("shoot" + shootX + " " + shootY);
-			bullets.add(new Bullet(playerX, playerY, collisionLayer, charX + shootX, charY + shootY, MobName,
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, charX + shootX, charY + shootY, MobName,
 					this.screen, bulletSpeed));
 
-			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, charX + shootX, charY + shootY,
+			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shootX, charY + shootY,
 					MobName, this.screen, bulletSpeed));
 
-			bullets.add(new Bullet(playerX, playerY, collisionLayer, charX + shoot1X, charY + shoot1Y, MobName,
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, charX + shoot1X, charY + shoot1Y, MobName,
 					this.screen, bulletSpeed));
-			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, charX + shoot1X, charY + shoot1Y,
+			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shoot1X, charY + shoot1Y,
 					MobName, this.screen, bulletSpeed));
-
 		}
 
 	}
 
 	private void shoot(float playerX, float playerY, TiledMapTileLayer collisionLayer) {
-		if (screen.getMbullets().size() == 0 || shootTime > 0.16) {
+		if (screen.getSbullets().size() == 0 || shootTime > 0.16) {
 			shootTime = 0;
-			bullets.add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX, screen.getPlayer().charY,
-					MobName, this.screen, bulletSpeed));
-			screen.getMbullets().add(new Bullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
+			bullets.add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
+					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
+			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, screen.getPlayer().charX,
 					screen.getPlayer().charY, MobName, this.screen, bulletSpeed));
 		}
 
 	}
 
-	public ArrayList<Bullet> getMBullets() {
-		return screen.getBullets();
-	}
-
-	private boolean isCellBlocked(float x, float y) {
-		Cell cell = collisionLayer.getCell((int) (x / (collisionLayer.getTileWidth() * 4)),
-				(int) (y / (collisionLayer.getTileHeight() * 4)));
-		Cell bosCell = mobcollisionLayer.getCell((int) (x / (mobcollisionLayer.getTileWidth() * 4)),
-				(int) (y / (mobcollisionLayer.getTileHeight() * 4)));
-
-		return (cell != null && cell.getTile() != null && cell.getTile().getProperties().containsKey("blocked"))
-				|| (bosCell != null && bosCell.getTile() != null
-						&& bosCell.getTile().getProperties().containsKey("blocked"));
-	}
-
-	@Override
-	public void move() {
-		stateTime += Gdx.graphics.getDeltaTime();
-		moveChange++;
-		if (moveChange > 15) {
-			moveChange = 0;
-
-			xkatsayisi = Math.random();
-			ykatsayisi = Math.random();
-			// magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi *
-			// ykatsayisi)));
-			// ykatsayisi = ykatsayisi / magnitude;
-			// xkatsayisi = xkatsayisi / magnitude;
-
-			double random = Math.random();
-			if (random < 0.14) {
-				dirx = -1;
-				diry = -1;
-			} else if (random > 0.14 && random < 0.28) {
-				dirx = -1;
-				diry = 1;
-			} else if (random > 0.42 && random < 0.56) {
-				dirx = 1;
-				diry = -1;
-			} else if (random > 0.56 && random < 0.7) {
-				dirx = 1;
-				diry = 1;
-			} else {
-				if (inVicinity) {
-					dirx = 1;
-					diry = 1;
-					xkatsayisi = screen.getPlayer().getX() - charX;
-					ykatsayisi = screen.getPlayer().getY() - charY;
-				}
-			}
-			magnitude = Math.abs(Math.sqrt((xkatsayisi * xkatsayisi) + (ykatsayisi * ykatsayisi)));
-			ykatsayisi = ykatsayisi / magnitude;
-			xkatsayisi = xkatsayisi / magnitude;
-		}
-		charX += dirx * xkatsayisi * Speed * Gdx.graphics.getDeltaTime();
-		charY += diry * ykatsayisi * Speed * Gdx.graphics.getDeltaTime();
-
-		setPosition(charX, charY);
-
-	}
-
 	public void setInactive() {
 		if (!isDead) {
+			screen.getPlayer().setHP(1000);
 			isDead = true;
 			showHealthBar = false;
 			dead.play();
@@ -397,7 +317,7 @@ public class miniBoss extends Entity {
 	}
 
 	public TextureRegion GetFrame() {
-		return (walk[0].getKeyFrame(stateTime, true));
+		return (walk[frameNo].getKeyFrame(stateTime, true));
 	}
 
 	public TextureRegion GetBossHealthFrame() {
@@ -440,6 +360,12 @@ public class miniBoss extends Entity {
 
 	public void render(SpriteBatch batch) {
 		batch.draw(GetFrame(), getX(), getY(), getWidth(), getHeight());
+	}
+
+	@Override
+	public void move() {
+		// TODO Auto-generated method stub
+		// i cant mooooove
 	}
 
 }
