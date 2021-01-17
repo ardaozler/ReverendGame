@@ -3,6 +3,7 @@ package me.javawarriors.reverend.entities;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -57,7 +58,8 @@ public class SpiderBoss extends Entity {
 
 	boolean inVicinity;
 	Sound dead = Gdx.audio.newSound(Gdx.files.internal("calebblemum.mp3"));
-	Sound alert = Gdx.audio.newSound(Gdx.files.internal("alert.mp3"));
+	Music bossmusic = Gdx.audio.newMusic(Gdx.files.internal("back2back.mp3"));
+	
 	boolean alerted = false;
 
 	// lil bebies
@@ -82,6 +84,7 @@ public class SpiderBoss extends Entity {
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		this.mobcollisionLayer = MobcollisionLayer;
+		bossmusic.setVolume(0.2f);
 
 		walk = new Animation[2];
 		TextureRegion[][] walkSpriteSheet = TextureRegion.split(new Texture("SpiderBossFinal-sheet.png"),
@@ -138,9 +141,10 @@ public class SpiderBoss extends Entity {
 			active = true;
 		}
 
-		if (Math.abs(charX - screen.getPlayer().charX) < 700 && Math.abs(charY - screen.getPlayer().charY) < 700) {
+		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1500) {
 			if (!alerted) {
-				alert.play();
+				screen.music.stop();
+				bossmusic.play();
 				alerted = true;
 				showHealthBar = true;
 			}
@@ -370,6 +374,14 @@ public class SpiderBoss extends Entity {
 			bossHealthBarFrameNo = 10;
 		}
 		return (bossHealthBar[bossHealthBarFrameNo].getKeyFrame(0));
+	}
+
+	public Music getBossmusic() {
+		return bossmusic;
+	}
+
+	public void setBossmusic(Music bossmusic) {
+		this.bossmusic = bossmusic;
 	}
 
 	public boolean isInVicinity() {

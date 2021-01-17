@@ -3,6 +3,7 @@ package me.javawarriors.reverend.entities;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -33,14 +34,14 @@ public class Mob2 extends Entity {
 	int diry = 0;
 	double xkatsayisi, ykatsayisi, magnitude;
 	int moveChange = 0;
-
+	Sound splash = Gdx.audio.newSound(Gdx.files.internal("splash.ogg"));
 	// char Animation properties
 	Animation<TextureRegion>[] walk;
 	private static final float charAnimationSpeed = 0.15f;
 	float stateTime;
 	boolean inVicinity;
 	private Blood blood;
-
+	boolean justDied=false;
 	// collision
 	private TiledMapTileLayer collisionLayer;
 	private TiledMapTileLayer mobcollisionLayer;
@@ -122,6 +123,11 @@ public class Mob2 extends Entity {
 	public boolean isDead() {
 
 		if (HP < 0) {
+			if(!justDied) {
+				justDied=true;
+				splash.play();
+			}
+			
 			blood = new Blood(screen, charX, charY);
 			return true;
 		}
@@ -132,7 +138,7 @@ public class Mob2 extends Entity {
 		if (Math.abs(charX - screen.getPlayer().charX) < 1000 && Math.abs(charY - screen.getPlayer().charY) < 1000) {
 			active = true;
 		}
-		if (Math.abs(charX - screen.getPlayer().charX) < 300 && Math.abs(charY - screen.getPlayer().charY) < 300) {
+		if (Math.abs(charX - screen.getPlayer().charX) < 1000 && Math.abs(charY - screen.getPlayer().charY) < 1000) {
 			inVicinity = true;
 		}
 		if (Math.abs(charX - screen.getPlayer().charX) < 30 && Math.abs(charY - screen.getPlayer().charY) < 30) {
@@ -141,6 +147,7 @@ public class Mob2 extends Entity {
 	}
 
 	public void BlowUp() {
+		splash.play();
 		HP = -1;
 		screen.getPlayer().setHP(screen.getPlayer().getHP() - damage);
 		blood = new Blood(screen, charX, charY);

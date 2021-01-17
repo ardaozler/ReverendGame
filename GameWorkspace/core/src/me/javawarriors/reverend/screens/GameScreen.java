@@ -62,7 +62,7 @@ public class GameScreen implements Screen {
 	ReverendGame game;
 
 	// music
-	Music music;
+	public Music music;
 	boolean bgmusic = false;
 
 	public GameScreen(ReverendGame game) {
@@ -103,16 +103,15 @@ public class GameScreen implements Screen {
 		// Tutorial room
 		trap = new Trap(player, this, 126, 3136);
 		heal = new Healing(player, this, 1150, 3712);
-		spiderBoss = new SpiderBoss((TiledMapTileLayer) map.getLayers().get(3),
-				(TiledMapTileLayer) map.getLayers().get(0), this, "spiderBoss", 467, 2276, 550, 500);
+		
 
 		// first mob room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 3596, 1851, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 4351, 2336, 50);
-		trap = new Trap(player, this, 4159, 2052);
-		trap = new Trap(player, this, 4158, 2430);
+		trap = new Trap(player, this, 4160, 2048);
+		trap = new Trap(player, this, 4160, 2432);
 
 		// second room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -123,11 +122,11 @@ public class GameScreen implements Screen {
 				"Mob1a", 8836, 1761, 50);
 		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob2a", 8500, 2000, 200, 20, 40, "bebe1.png", 11, 12);
-		trap = new Trap(player, this, 7423, 2364);
-		trap = new Trap(player, this, 8441, 2942);
-		trap = new Trap(player, this, 8777, 2436);
-		trap = new Trap(player, this, 8455, 1787);
-		heal = new Healing(player, this, 8188, 3204);
+		trap = new Trap(player, this, 7423, 2368);
+		trap = new Trap(player, this, 8448, 2944);
+		trap = new Trap(player, this, 8768, 2432);
+		trap = new Trap(player, this, 8448, 1792);
+		heal = new Healing(player, this, 8196, 3200);
 
 		// 2 kapili room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -136,9 +135,9 @@ public class GameScreen implements Screen {
 				"Mob1a", 5673, 4750, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 5129, 5385, 50);
-		trap = new Trap(player, this, 5176, 4606);
-		trap = new Trap(player, this, 3773, 4481);
-		trap = new Trap(player, this, 5701, 4858);
+		trap = new Trap(player, this, 5184, 4608);
+		trap = new Trap(player, this, 3776, 4480);
+		trap = new Trap(player, this, 5696, 4864);
 
 		// first to the left
 
@@ -146,11 +145,11 @@ public class GameScreen implements Screen {
 				"Mob1a", 457, 4401, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 1341, 4475, 50);
-		trap = new Trap(player, this, 3898, 6143);
-		trap = new Trap(player, this, 1216, 4542);
-		trap = new Trap(player, this, 318, 4669);
-		trap = new Trap(player, this, 959, 5112);
-		heal = new Healing(player, this, 2745, 6275);
+		trap = new Trap(player, this, 3904, 6143);
+		trap = new Trap(player, this, 1216, 4544);
+		trap = new Trap(player, this, 320, 4672);
+		trap = new Trap(player, this, 960, 5120);
+		heal = new Healing(player, this, 2752, 6275);
 
 		// fake boss room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -161,14 +160,14 @@ public class GameScreen implements Screen {
 				"Mob1a", 2113, 7551, 50);
 		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
 				this, "miniBoss", 2113, 7551, 50, 500);
-		trap = new Trap(player, this, 695, 7613);
-		trap = new Trap(player, this, 956, 8452);
-		trap = new Trap(player, this, 1851, 8386);
-		trap = new Trap(player, this, 1851, 7555);
-		trap = new Trap(player, this, 386, 8450);
-		trap = new Trap(player, this, 1084, 9088);
-		trap = new Trap(player, this, 2170, 9146);
-		heal = new Healing(player, this, 1273, 9343);
+		trap = new Trap(player, this, 704, 7616);
+		trap = new Trap(player, this, 960, 8448);
+		trap = new Trap(player, this, 1856, 8384);
+		trap = new Trap(player, this, 1856, 7552);
+		trap = new Trap(player, this, 384, 8448);
+		trap = new Trap(player, this, 1088, 9088);
+		trap = new Trap(player, this, 2176, 9152);
+		heal = new Healing(player, this, 1280, 9344);
 
 		// sagdan ilk room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -177,22 +176,24 @@ public class GameScreen implements Screen {
 				"Mob1a", 8118, 4278, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 8134, 5484, 50);
-		trap = new Trap(player, this, 6650, 5444);
-		trap = new Trap(player, this, 7677, 4925);
-		trap = new Trap(player, this, 8183, 4289);
-		trap = new Trap(player, this, 8315, 5124);
+		trap = new Trap(player, this, 6656, 5440);
+		trap = new Trap(player, this, 7680, 4928);
+		trap = new Trap(player, this, 8192, 4288);
+		trap = new Trap(player, this, 8320, 5120);
 
 		// sagdan ikinci room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 8778, 8919, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 7764, 8271, 50);
-		trap = new Trap(player, this, 8893, 8126);
-		trap = new Trap(player, this, 7806, 8252);
-		trap = new Trap(player, this, 8504, 8766);
+		trap = new Trap(player, this, 8896, 8128);
+		trap = new Trap(player, this, 7808, 8256);
+		trap = new Trap(player, this, 8512, 8768);
 
 		// Boss room
-		heal = new Healing(player, this, 4667, 9408);
+		heal = new Healing(player, this, 4672, 9408);
+		spiderBoss = new SpiderBoss((TiledMapTileLayer) map.getLayers().get(3),
+				(TiledMapTileLayer) map.getLayers().get(0), this, "spiderBoss", 4672, 7776, 550, 500);
 
 		renderer.getBatch().setShader(shader);
 	}
@@ -474,6 +475,14 @@ public class GameScreen implements Screen {
 
 	}
 
+	public boolean isBgmusic() {
+		return bgmusic;
+	}
+
+	public void setBgmusic(boolean bgmusic) {
+		this.bgmusic = bgmusic;
+	}
+
 	public ArrayList<Blood> getBloods() {
 		return bloods;
 	}
@@ -495,6 +504,7 @@ public class GameScreen implements Screen {
 		player.getDashSfx().dispose();
 		player.getWalking().dispose();
 		music.dispose();
+		spiderBoss.getBossmusic().dispose();
 		map.dispose();
 		renderer.dispose();
 

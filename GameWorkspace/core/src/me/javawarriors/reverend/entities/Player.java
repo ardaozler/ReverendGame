@@ -21,8 +21,8 @@ public class Player extends Entity {
 	Shield Shield;
 
 	// char properties
-	float charX = 500;
-	float charY = 2200;
+	float charX = 4667;
+	float charY =  9408;
 	int charWidthInPixels = 25;
 	int charHeightInPixels = 29;
 	float charWidth = charWidthInPixels * 4;
