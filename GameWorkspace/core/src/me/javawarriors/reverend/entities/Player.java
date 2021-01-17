@@ -21,8 +21,8 @@ public class Player extends Entity {
 	Shield Shield;
 
 	// char properties
-	float charX = 4667;
-	float charY =  9408;
+	float charX = 500;
+	float charY =  2000;
 	int charWidthInPixels = 25;
 	int charHeightInPixels = 29;
 	float charWidth = charWidthInPixels * 4;
@@ -37,6 +37,7 @@ public class Player extends Entity {
 	// char Animation properties
 	Animation<TextureRegion>[] dashIndicator;
 	Animation<TextureRegion>[] shieldIndicator;
+	Animation<TextureRegion>[] attack;
 	Animation<TextureRegion>[] healthBar;
 	Animation<TextureRegion>[] walk;
 	Texture HealNotification;
@@ -69,7 +70,12 @@ public class Player extends Entity {
 		this.collisionLayer = collisionLayer;
 		this.screen = screen;
 		frameNo = 0;
-
+		
+		attack = new Animation[1];
+		TextureRegion[][] attackS= TextureRegion.split(new Texture("Attack.png"), 17,
+				18);
+		attack[0] = new Animation<>(0, attackS[0]);
+	
 		shieldIndicator = new Animation[9];
 		TextureRegion[][] shieldSpriteSheet = TextureRegion.split(new Texture("shieldIndicator.png"), 17, 18);
 		shieldIndicator[0] = new Animation<>(0, shieldSpriteSheet[0]);
@@ -523,6 +529,10 @@ public class Player extends Entity {
 
 	public void setWalking(Sound walking) {
 		this.walking = walking;
+	}
+	
+	public TextureRegion GetAttackFrame() {
+		return (attack[0].getKeyFrame(0));
 	}
 
 	public TextureRegion GetShieldFrame() {

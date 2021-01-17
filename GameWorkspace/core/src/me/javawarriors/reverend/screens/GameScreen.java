@@ -103,7 +103,6 @@ public class GameScreen implements Screen {
 		// Tutorial room
 		trap = new Trap(player, this, 126, 3136);
 		heal = new Healing(player, this, 1150, 3712);
-		
 
 		// first mob room
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
@@ -121,7 +120,9 @@ public class GameScreen implements Screen {
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 8836, 1761, 50);
 		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob2a", 8500, 2000, 200, 20, 40, "bebe1.png", 11, 12);
+				"Mob2a", 9021, 1761, 200, 20, 40, "bebe1.png", 11, 12);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 7567, 2616, 200, 20, 40, "bebe1.png", 11, 12);
 		trap = new Trap(player, this, 7423, 2368);
 		trap = new Trap(player, this, 8448, 2944);
 		trap = new Trap(player, this, 8768, 2432);
@@ -135,6 +136,10 @@ public class GameScreen implements Screen {
 				"Mob1a", 5673, 4750, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 5129, 5385, 50);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 5129, 5385, 500, 10, 40, "yesilbebe.png", 12, 12);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 5673, 4750, 500, 10, 40, "yesilbebe.png", 12, 12);
 		trap = new Trap(player, this, 5184, 4608);
 		trap = new Trap(player, this, 3776, 4480);
 		trap = new Trap(player, this, 5696, 4864);
@@ -155,9 +160,15 @@ public class GameScreen implements Screen {
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 1173, 8250, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
-				"Mob1a", 212, 8950, 50);
+				"Mob1a", 2120, 8950, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 2113, 7551, 50);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 1173, 8250, 150, 40, 60, "kirmizibebe.png", 12, 14);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 2120, 8950, 150, 40, 60, "kirmizibebe.png", 12, 14);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 2113, 7551, 150, 40, 60, "kirmizibebe.png", 12, 14);
 		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
 				this, "miniBoss", 2113, 7551, 50, 500);
 		trap = new Trap(player, this, 704, 7616);
@@ -176,6 +187,10 @@ public class GameScreen implements Screen {
 				"Mob1a", 8118, 4278, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 8134, 5484, 50);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 8134, 4278, 200, 20, 40, "bebe1.png", 11, 12);
+		mob2a = new Mob2((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
+				"Mob2a", 7269, 4986, 200, 20, 40, "bebe1.png", 11, 12);
 		trap = new Trap(player, this, 6656, 5440);
 		trap = new Trap(player, this, 7680, 4928);
 		trap = new Trap(player, this, 8192, 4288);
@@ -255,8 +270,8 @@ public class GameScreen implements Screen {
 
 			}
 		}
-		
-		for(Blood blood : bloods) {
+
+		for (Blood blood : bloods) {
 			blood.render((SpriteBatch) renderer.getBatch());
 		}
 
@@ -315,6 +330,8 @@ public class GameScreen implements Screen {
 		// HUD
 		renderer.getBatch().draw(player.GetDashFrame(), camera.position.x - 658,
 				camera.position.y - this.camera.viewportWidth / 4 + 39, 17 * 3f, 18 * 3f);
+		renderer.getBatch().draw(player.GetAttackFrame(), camera.position.x - 595,
+				camera.position.y - this.camera.viewportWidth / 4 + 39, 17 * 3f, 18 * 3f);
 		renderer.getBatch().draw(player.GetShieldFrame(), camera.position.x - 531,
 				camera.position.y - this.camera.viewportWidth / 4 + 39, 17 * 3f, 18 * 3f);
 		renderer.getBatch().draw(player.GetHealthFrame(), camera.position.x - 800,
@@ -327,8 +344,8 @@ public class GameScreen implements Screen {
 		}
 		// SpiderBossHealth
 		if (spiderBoss.isShowHealthBar()) {
-			renderer.getBatch().draw(spiderBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
-					10 * 3f);
+			renderer.getBatch().draw(spiderBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390,
+					49 * 3f, 10 * 3f);
 		}
 		// player
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),

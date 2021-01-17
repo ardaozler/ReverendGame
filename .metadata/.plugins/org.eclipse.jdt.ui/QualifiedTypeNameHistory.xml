@@ -27,4 +27,5 @@
     <fullyQualifiedTypeName name="com.badlogic.gdx.Input.Keys"/>
     <fullyQualifiedTypeName name="com.badlogic.gdx.graphics.glutils.ShaderProgram"/>
     <fullyQualifiedTypeName name="me.javawarriors.reverend.entities.SpiderBoss"/>
+    <fullyQualifiedTypeName name="me.javawarriors.reverend.entities.Blood"/>
 </qualifiedTypeNameHistroy>

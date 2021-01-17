@@ -4,16 +4,16 @@
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="bulletS"/>
+		<item key="selection" value="dis"/>
 		<list key="findhistory">
+			<item value="dis"/>
+			<item value="sys"/>
+			<item value="set"/>
+			<item value="map"/>
 			<item value="shoo"/>
 			<item value="yka"/>
 			<item value="shield"/>
 			<item value="frameno"/>
-			<item value="renderer"/>
-			<item value="anan"/>
-			<item value="speed"/>
-			<item value="walk"/>
 		</list>
 		<list key="replacehistory">
 		</list>

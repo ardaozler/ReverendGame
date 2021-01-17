@@ -59,7 +59,7 @@ public class SpiderBoss extends Entity {
 	boolean inVicinity;
 	Sound dead = Gdx.audio.newSound(Gdx.files.internal("calebblemum.mp3"));
 	Music bossmusic = Gdx.audio.newMusic(Gdx.files.internal("back2back.mp3"));
-	
+
 	boolean alerted = false;
 
 	// lil bebies
@@ -148,19 +148,19 @@ public class SpiderBoss extends Entity {
 				alerted = true;
 				showHealthBar = true;
 			}
-			if (HP > 400) {
-				shoot2(charX, charY, collisionLayer);
+			if (HP > 2 * HP / 3) {
+				shoot(charX, charY, collisionLayer);
 				if (babyTime > 5) {
 					babyTime = 0;
 					makeBabies(1);
 				}
-			} else if (HP <= 400 && HP > 200) {
+			} else if (HP <= 2 * HP / 3 && HP > HP / 3) {
 				shoot1(charX, charY, collisionLayer);
 				if (babyTime > 4) {
 					babyTime = 0;
 					makeBabies(1);
 				}
-			} else if (HP <= 200) {
+			} else if (HP <= HP / 3) {
 				shoot2(charX, charY, collisionLayer);
 				if (babyTime > 3) {
 					babyTime = 0;
@@ -296,12 +296,12 @@ public class SpiderBoss extends Entity {
 					this.screen, bulletSpeed));
 			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shoot1X, charY + shoot1Y,
 					MobName, this.screen, bulletSpeed));
-			
+
 			bullets.add(new sBullet(playerX, playerY, collisionLayer, charX + shoot2X, charY + shoot2Y, MobName,
 					this.screen, bulletSpeed));
 			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shoot2X, charY + shoot2Y,
 					MobName, this.screen, bulletSpeed));
-			
+
 			bullets.add(new sBullet(playerX, playerY, collisionLayer, charX + shoot3X, charY + shoot3Y, MobName,
 					this.screen, bulletSpeed));
 			screen.getSbullets().add(new sBullet(playerX, playerY, collisionLayer, charX + shoot3X, charY + shoot3Y,
@@ -362,11 +362,11 @@ public class SpiderBoss extends Entity {
 
 	public TextureRegion GetBossHealthFrame() {
 		HPtemp = HP;
-		if (HP > 400) {
+		if (HP > 2 * HP / 3) {
 			bossHealthBarFrameNoTemp = 30 - (HPtemp / 20);
-		} else if(HP<=400 && HP>200) {
+		} else if (HP <= 2 * HP / 3 && HP > HP / 3) {
 			bossHealthBarFrameNoTemp = 20 - (HPtemp / 20);
-		}else {
+		} else {
 			bossHealthBarFrameNoTemp = 10 - (HPtemp / 20);
 		}
 		bossHealthBarFrameNo = bossHealthBarFrameNoTemp;
