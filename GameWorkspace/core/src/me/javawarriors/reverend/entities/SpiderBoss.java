@@ -146,9 +146,7 @@ public class SpiderBoss extends Entity {
 				shoot2(charX, charY, collisionLayer);
 			}
 			inVicinity = true;
-			if (Math.abs(charX - screen.getPlayer().charX) < 200 && Math.abs(charY - screen.getPlayer().charY) < 200) {
-				inVicinity = false;
-			}
+			
 		}
 
 	}
@@ -160,7 +158,11 @@ public class SpiderBoss extends Entity {
 			float x = bullet.getX() + bullet.getWidth();
 			float y = bullet.getY() + bullet.getHeight();
 			if (x > charX && x < charX + charWidth && y > charY && y < charY + charHeight && !bullet.isCollided()) {
-				if (bullet.secondsElapsed > 0.15 && !isDamaged) {
+				System.out.println("did collide");
+				System.out.println(isDamaged);
+				if (bullet.secondsElapsed > 0.15) {
+					
+					System.out.println("did damage");
 					bullet.setCollided(true);
 					bullet.setRemove(true);
 					HP -= 5;

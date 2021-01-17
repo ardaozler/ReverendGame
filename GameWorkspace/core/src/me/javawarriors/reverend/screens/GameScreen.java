@@ -79,7 +79,7 @@ public class GameScreen implements Screen {
 		heals = new ArrayList<Healing>();
 		music = Gdx.audio.newMusic(Gdx.files.internal("bgmusic.mp3"));
 		music.setVolume(0.2f);
-
+		music.setLooping(true);
 	}
 
 	@Override
@@ -156,6 +156,8 @@ public class GameScreen implements Screen {
 				"Mob1a", 212, 8950, 50);
 		mob1a = new Mob1((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0), this,
 				"Mob1a", 2113, 7551, 50);
+		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
+				this, "miniBoss", 2113, 7551, 50, 500);
 		trap = new Trap(player, this, 695, 7613);
 		trap = new Trap(player, this, 956, 8452);
 		trap = new Trap(player, this, 1851, 8386);
@@ -188,8 +190,7 @@ public class GameScreen implements Screen {
 
 		// Boss room
 		heal = new Healing(player, this, 4667, 9408);
-		miniBoss = new miniBoss((TiledMapTileLayer) map.getLayers().get(3), (TiledMapTileLayer) map.getLayers().get(0),
-				this, "miniBoss", 4670, 7776, 50, 500);
+		
 		renderer.getBatch().setShader(shader);
 	}
 
@@ -274,6 +275,9 @@ public class GameScreen implements Screen {
 
 		for (SpiderBoss spiderBoss : spiderBosses) {
 			spiderBoss.Update(Gdx.graphics.getDeltaTime());
+			if (spiderBoss.isDead()) {
+				spiderBoss.setInactive();
+			}
 		}
 
 		for (miniBoss miniBoss : miniBosses) {
@@ -314,7 +318,11 @@ public class GameScreen implements Screen {
 			renderer.getBatch().draw(miniBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
 					10 * 3f);
 		}
-
+		//SpiderBossHealth
+		if (spiderBoss.isShowHealthBar()) {
+			renderer.getBatch().draw(miniBoss.GetBossHealthFrame(), camera.position.x, camera.position.y + 390, 49 * 3f,
+					10 * 3f);
+		}
 		// player
 		renderer.getBatch().draw(player.GetFrame(), player.getX(), player.getY(), player.getWidth(),
 				player.getHeight());
