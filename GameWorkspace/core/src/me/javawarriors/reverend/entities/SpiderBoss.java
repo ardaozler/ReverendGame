@@ -137,41 +137,41 @@ public class SpiderBoss extends Entity {
 	}
 
 	public void Vicinity() {
-		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1300) {
-			active = true;
-		}
+        if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1300) {
+            active = true;
+        }
 
-		if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1300) {
-			if (!alerted) {
-				screen.music.stop();
-				bossmusic.play();
-				alerted = true;
-				showHealthBar = true;
-			}
-			if (HP > 2 * HP / 3) {
-				shoot(charX, charY, collisionLayer);
-				if (babyTime > 5) {
-					babyTime = 0;
-					makeBabies(1);
-				}
-			} else if (HP <= 2 * HP / 3 && HP > HP / 3) {
-				shoot1(charX, charY, collisionLayer);
-				if (babyTime > 4) {
-					babyTime = 0;
-					makeBabies(1);
-				}
-			} else if (HP <= HP / 3) {
-				shoot2(charX, charY, collisionLayer);
-				if (babyTime > 3) {
-					babyTime = 0;
-					makeBabies(1);
-				}
-			}
-			inVicinity = true;
+        if (Math.abs(charX - screen.getPlayer().charX) < 1500 && Math.abs(charY - screen.getPlayer().charY) < 1300) {
+            if (!alerted) {
+                screen.music.stop();
+                bossmusic.play();
+                alerted = true;
+                showHealthBar = true;
+            }
+            if (HP > 2 * 600 / 3) {
+                shoot(charX, charY, collisionLayer);
+                if (babyTime > 5) {
+                    babyTime = 0;
+                    makeBabies(1);
+                }
+            } else if (HP <= 2 * 600 / 3 && HP > 600 / 3) {
+                shoot1(charX, charY, collisionLayer);
+                if (babyTime > 4) {
+                    babyTime = 0;
+                    makeBabies(1);
+                }
+            } else if (HP <= 600 / 3) {
+                shoot2(charX, charY, collisionLayer);
+                if (babyTime > 3) {
+                    babyTime = 0;
+                    makeBabies(1);
+                }
+            }
+            inVicinity = true;
 
-		}
+        }
 
-	}
+    }
 
 	public boolean HitScan() {
 
@@ -183,7 +183,7 @@ public class SpiderBoss extends Entity {
 				if (bullet.secondsElapsed > 0.15) {
 					bullet.setCollided(true);
 					bullet.setRemove(true);
-					HP -= 5;
+					HP -= 20;
 					isDamaged = true;
 				}
 				return true;
@@ -361,20 +361,20 @@ public class SpiderBoss extends Entity {
 	}
 
 	public TextureRegion GetBossHealthFrame() {
-		HPtemp = HP;
-		if (HP > 2 * HP / 3) {
-			bossHealthBarFrameNoTemp = 30 - (HPtemp / 20);
-		} else if (HP <= 2 * HP / 3 && HP > HP / 3) {
-			bossHealthBarFrameNoTemp = 20 - (HPtemp / 20);
-		} else {
-			bossHealthBarFrameNoTemp = 10 - (HPtemp / 20);
-		}
-		bossHealthBarFrameNo = bossHealthBarFrameNoTemp;
-		if (bossHealthBarFrameNoTemp >= 20) {
-			bossHealthBarFrameNo = 10;
-		}
-		return (bossHealthBar[bossHealthBarFrameNo].getKeyFrame(0));
-	}
+        HPtemp = HP;
+        if (HP > 2 * 600 / 3) {
+            bossHealthBarFrameNoTemp = 30 - (HPtemp / 20);
+        } else if (HP <= 2 * 600 / 3 && HP > 600 / 3) {
+            bossHealthBarFrameNoTemp = 20 - (HPtemp / 20);
+        } else {
+            bossHealthBarFrameNoTemp = 10 - (HPtemp / 20);
+        }
+        bossHealthBarFrameNo = bossHealthBarFrameNoTemp;
+        if (bossHealthBarFrameNoTemp >= 20) {
+            bossHealthBarFrameNo = 10;
+        }
+        return (bossHealthBar[bossHealthBarFrameNo].getKeyFrame(0));
+    }
 
 	public Music getBossmusic() {
 		return bossmusic;

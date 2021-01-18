@@ -15,7 +15,7 @@ public class Blood {
 
 	
 	GameScreen screen;
-	Sound SquishSound = Gdx.audio.newSound(Gdx.files.internal("trap.wav"));
+
 	
 	private static Texture texture;
 	private static TextureRegion textureRegion;
