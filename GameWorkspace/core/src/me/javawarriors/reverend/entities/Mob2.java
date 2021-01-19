@@ -41,7 +41,7 @@ public class Mob2 extends Entity {
 	float stateTime;
 	boolean inVicinity;
 	private Blood blood;
-	boolean justDied=false;
+	boolean justDied = false;
 	// collision
 	private TiledMapTileLayer collisionLayer;
 	private TiledMapTileLayer mobcollisionLayer;
@@ -123,12 +123,11 @@ public class Mob2 extends Entity {
 	public boolean isDead() {
 
 		if (HP < 0) {
-			if(!justDied) {
-				justDied=true;
+			if (!justDied) {
+				justDied = true;
+				blood = new Blood(screen, charX, charY);
 				splash.play();
 			}
-			
-			blood = new Blood(screen, charX, charY);
 			return true;
 		}
 		return false;

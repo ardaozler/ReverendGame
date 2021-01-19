@@ -21,8 +21,6 @@ public class Blood {
 	private static TextureRegion textureRegion;
 
 	public Blood( GameScreen GameScreen, float x, float y) {
-		System.out.println("is bleeeeeed");
-		
 		this.screen = GameScreen;
 		this.x = x;
 		this.y = y;
